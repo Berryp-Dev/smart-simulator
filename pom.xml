@@ -27,6 +27,8 @@
         <cxf.version>4.0.5</cxf.version>
         <ibm-mq.version>3.3.1</ibm-mq.version>
         <springdoc.version>2.6.0</springdoc.version>
+        <openapi-generator.version>7.19.0</openapi-generator.version>
+        <jackson-databind-nullable.version>0.2.12</jackson-databind-nullable.version>
     </properties>
 
     <dependencyManagement>
@@ -53,12 +55,30 @@
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>${openapi-generator.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <modules>
         <module>smart-simulator-core</module>
         <module>smart-simulator-paperless</module>
+        <module>smart-simulator-account-raccordo-partitario</module>
         <module>smart-simulator-app</module>
         <!--
             Ogni sottosistema simulato viene aggiunto qui come modulo separato,

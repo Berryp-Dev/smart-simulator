@@ -1,0 +1,1105 @@
+openapi: 3.0.3
+info:
+  title: Smart Engine Raccordo Partitario API
+  description: API for managing service account lifecycle in the Raccordo Partitario system.
+  version: 1.6.0
+  x-change-log:
+    - version: 1.5.0
+      date: 2026-02-04
+      changes:
+        - Added field "entitySubType" to "ProdInfo" schema.
+    - version: 1.6.0
+      date: 2026-08-10
+      changes:
+        - Added endpoint "/smartengine/raccordo/can-be-created" and related schemas to check if a new service account can be created.
+        - Refactor of schemas using the common components for better reusability and standard adoption.
+  
+tags:
+- name: Sales
+  description: Operations related to the Raccordo Partitario system.
+paths:
+  /smartcatalog/raccordo/can-be-created:
+    post:
+      summary: Checks if the input is valid for a new sold.
+      description: This endpoint check if a set of information is compatible with a new service account in the legacy system.
+      tags:
+        - Sales
+      operationId: canBeCreated
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CanBeCreatedRequest'
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CanBeCreatedResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/create:
+    post:
+      summary: Create a new service account in the legacy system.
+      description: This endpoint creates a new service account in the legacy system.
+      tags:
+      - Sales
+      operationId: create      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDtoRequest'
+      responses:
+        '201':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/reserve:
+    post:
+      summary: Reserve the service account in the legacy system.
+      description: This endpoint reserves a service account in the legacy system.
+      tags:
+      - Sales
+      operationId: reserve
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReserveDtoRequest'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReserveDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/activate:
+    post:
+      summary: Activate the service account in the legacy system.
+      description: This endpoint activates a service account in the legacy system.
+      tags:
+      - Sales
+      operationId: activate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivateDtoRequest'
+      responses:
+        '201':
+          description: Service account activated successfully. Response only in raccordo partitario carte implementation for a tattical reason. Will be removed in future versions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivateDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/getmaininfo:
+    post:
+      summary: Retrieve main information of the service account.
+      description: This endpoint retrieves the main information of a service account in the legacy system.
+      tags:
+      - Sales
+      operationId: getMainInfo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMainInfoDtoRequest'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMainInfoDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/getexternalkey:
+    post:
+      summary: Retrieve the external key of the service account.
+      description: This endpoint retrieves the external key of a service account in the legacy system.
+      tags:
+      - Sales
+      operationId: getExternalKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetExternalKeyDtoRequest'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExternalKeyDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/setsettlementserviceaccountkey:
+    post:
+      summary: Set the settlement service account key.
+      description: This endpoint sets the settlement service account key in the legacy system.
+      tags:
+      - Sales
+      operationId: setSettlementServiceAccountKey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetSettlementServiceAccountKeyDtoRequest'
+      responses:
+        '201':
+          description: Settlement service account key set successfully.
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/getothsrvactns:
+    post:
+      summary: Retrieve associated account services.
+      description: This endpoint retrieves associated account services for the service account in the legacy system.
+      tags:
+      - Sales
+      operationId: getOthSrvActns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOthSrvActnsDtoRequest'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOthSrvActnsDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/getadditionalattributes:
+    post:
+      summary: Retrieve additional attributes for the service account.
+      description: This endpoint retrieves additional attributes for the service account in the legacy system.
+      tags:
+      - Sales
+      operationId: getAdditionalAttributes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAdditionalAttributesDtoRequest'
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAdditionalAttributesDtoResponse'
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/setfinalndg:
+    post:
+      summary: et the final NDG for the service account.
+      description: This endpoint sets the final NDG for the service account in the legacy system.
+      tags:
+      - Sales
+      operationId: setFinalNdg
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetFinalNdgDtoRequest'
+      responses:
+        '201':
+          description: Final NDG set successfully.
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+  /smartengine/raccordo/cancel:
+    post:
+      summary: Cancel the service account.
+      description: This endpoint cancels the service account in the legacy system.
+      tags:
+      - Sales
+      operationId: cancel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelDtoRequest'
+      responses:
+        '201':
+          description: Service account canceled successfully.
+        '300':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error300'
+        '301':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error301'
+        '302':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error302'
+        '303':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error303'
+        '304':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error304'
+        '400':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error400'
+        '401':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error401'
+        '403':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error403'
+        '404':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error404'
+        '405':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error405'
+        '406':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error406'
+        '409':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error409'
+        '422':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error422'
+        '429':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error429'
+        '500':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error500'
+        '501':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error501'
+        '502':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error502'
+        '503':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error503'
+        '504':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error504'
+        '505':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error505'
+        '511':
+          $ref: 'components-v1.2.2.yaml#/components/responses/Error511'
+components:
+  schemas:
+
+    # Product information schema
+    SrvActnData:
+      type: object
+      description: Service account action information.
+      properties:
+        bankCod:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/BankCod'
+        officeCod:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/OfficeCod'
+        srvCod:
+          type: string
+          description: PLAB technical service code.
+        key:
+          type: string
+          description: Key that identifies the preregistration account service or the account service under change process.
+        externalKey:
+          type: string
+          description: Account service key on the legacy application. Can be null during preactivation phase (selling or change offer that requires new account service) but must be set before final activation. Always set for change/close processes on pre-existing account service.
+        legacyId:
+          type: string
+          description: Internal legacy ID. Set if the legacy application has an internal immutable ID for each account service.
+        tsStart:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/DateTimeType'
+        tsEnd:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/DateTimeType'
+        settlementSrvActn:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntExtKey'
+        statusInfo:
+          $ref: '#/components/schemas/StatusInfoRP'
+        ndgInfo:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/NdgInfo'
+        prodInfo:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/ProdInfo'
+        srvActnInfo:
+          type: object
+          description: Specific information for the settlement account (theoretically optional, but each account is defined in this entity).
+
+    StatusInfoRP:
+      type: object
+      description: Status information.
+      properties:
+        tsStatus:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/DateTimeType'
+        status:
+          enum: [CREATED, CONFIGURED, RESERVED, ACTIVE, CANCELED]
+          description: Status code.
+        sStatus:
+          type: string
+          description: Sub status code.
+
+    CanBeCreatedRequest:
+      type: object
+      description: Request for checking if a service account can be created.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          required:
+            - srvActnPreDatas
+          properties:
+            additionalUserData:
+              type: object
+              description: >
+                Additional user data for checks. Known properties include:
+                - ivaasEnable: user has IVAAS enabled (true/false)
+            settlementSrvActn:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntExtKey'
+            srvActnPreDatas:
+              type: array
+              description: List of service account data for pre-creation checks.
+              items:
+                $ref: '#/components/schemas/SimpleProduct'
+
+    SimpleProduct:
+      type: object
+      description: Service account data for pre-creation checks.
+      required:
+        - bankCod
+        - srvCod
+        - officeCod
+        - ndgInfo
+        - externalProdInfo
+      properties:
+        bankCod:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/BankCod'
+        srvCod:
+          type: string
+          description: Service code for the service account.
+          example: "CC"
+        officeCod:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/OfficeCod'
+        ndgInfo:
+          allOf:
+            - $ref: 'components-v1.2.2.yaml#/components/schemas/NdgInfo'
+            - type: object
+              description: Additional NDG information for the service account.
+              properties:
+                ndgNature:
+                  type: string
+                  description: Nature of the NDG.
+                  enum:
+                    - NATURAL_PERSON
+                    - JURIDICAL_PERSON
+                    - JOINT_OWNERSHIP
+                  example: "NATURAL_PERSON"
+          example:
+            cntrNdgKey: "12345678901"
+            cntrNdgType: "REAL"
+            ndgNature: "NATURAL_PERSON"
+        externalProdInfo:
+          type: object
+          description: External product information for the service account.
+          required:
+            - prodExtKey
+          properties:
+            prodExtKey:
+              type: string
+              description: External product key.
+              example: "D001"
+            prodAttrs:
+              type: array
+              description: List of product attributes from CPQ catalog.
+              items:
+                type: object
+                required:
+                  - attrCod
+                  - attrVal
+                properties:
+                  attrCod:
+                    type: string
+                    description: Code of the product attribute CPQ layers have '#' character as joiner -> "TEMPLATE#GRUPPO#SOTTOGRUPO#ATTRIBUTO#DATO".
+                    example: "002#SIMV#ALLOC#33#21"
+                  attrVal:
+                    type: string
+                    description: Value of the product attribute.
+                    example: "Value1"
+
+    CanBeCreatedResponse:
+      type: object
+      description: Response for the create service account request.
+      properties:
+        results:
+          type: array
+          description: List of results for each service account data checked.
+          items:
+            type: object
+            required:
+              - srvActnPreData
+              - canBeCreated
+            properties:
+              srvActnPreData:
+                $ref: '#/components/schemas/SimpleProduct'
+              canBeCreated:
+                type: boolean
+                description: Indicates if the service account can be created.
+              motivationCode:
+                type: string
+                description: Motivation code for the result.
+                example: "NC_001"
+              motivationDescription:
+                type: string
+                description: Motivation description for the result.
+                example: "The service account cannot be created due to missing information."
+              additionalInfo:
+                type: array
+                description: List of additional information should be given.
+                items:
+                  $ref: 'components-v1.2.2.yaml#/components/schemas/AdditionalAttribute'
+
+    CreateDtoRequest:
+      type: object
+      description: Request for creating a new service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvActnData:
+              $ref: '#/components/schemas/SrvActnData'
+
+    CreateDtoResponse:
+      type: object
+      description: Response for the create service account request.
+      properties:
+        srvAcntKey:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+        statusInfo:
+          $ref: '#/components/schemas/StatusInfoRP'
+
+    ReserveDtoRequest:
+      type: object
+      description: Request for reserving a service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+
+    ReserveDtoResponse:
+      type: object
+      description: Response for the reserve service account request.
+      properties:
+        srvAcntExtKey:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntExtKey'
+
+    ActivateDtoRequest:
+      type: object
+      description: Request for activating a service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+
+    ActivateDtoResponse:
+      type: object
+      description: Response for activating a service account.
+      properties:
+        newAncillaryData:
+          type: array
+          description: List of new ancillary data created during activation.
+          items:
+            $ref: 'components-v1.2.2.yaml#/components/schemas/AdditionalAttribute'
+
+    GetMainInfoDtoRequest:
+      type: object
+      description: Request for retrieving main information of the service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+
+    GetMainInfoDtoResponse:
+      type: object
+      description: Response for retrieving main information of the service account.
+      properties:
+        srvActnData:
+          $ref: '#/components/schemas/SrvActnData'
+
+    GetExternalKeyDtoRequest:
+      type: object
+      description: Request for retrieving the external key of the service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+    
+    GetExternalKeyDtoResponse:
+      type: object
+      properties: 
+        srvAcntExtKey:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntExtKey'
+
+    SetSettlementServiceAccountKeyDtoRequest:
+      type: object
+      description: Request for setting the settlement service account key.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+            settlementAccountSrv:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntExtKey'
+          required:
+          - caseID
+          - srvAcntKey
+          - settlementAccountSrv
+          
+    GetOthSrvActnsDtoRequest:
+      type: object
+      description: Request for retrieving associated account services.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+
+    GetOthSrvActnsDtoResponse:
+      type: object
+      description: Response for retrieving associated account services.
+      properties: 
+        srvActnData:
+          type: array
+          items:
+            $ref: '#/components/schemas/SrvActnData'
+
+    GetAdditionalAttributesDtoRequest:
+      type: object
+      description: Request for retrieving additional attributes for the service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+
+    GetAdditionalAttributesDtoResponse:
+      type: object
+      description: Generic list of additional attributes as key-value pairs.
+      properties:
+        accountAdditionalAttributes:
+          $ref: '#/components/schemas/AdditionalAttributes'
+        contractAdditionalAttributes:
+          $ref: '#/components/schemas/AdditionalAttributes'
+
+    AdditionalAttributes:
+      type: object
+      properties:
+        qualifiers:
+          type: array
+          items:
+            $ref: 'components-v1.2.2.yaml#/components/schemas/AdditionalAttribute'
+        ancillaryData:
+          type: array
+          items:
+            $ref: 'components-v1.2.2.yaml#/components/schemas/AdditionalAttribute'
+
+    SetFinalNdgDtoRequest:
+      type: object
+      description: Request for setting the final NDG for the service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+            ndgInfo:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/NdgInfo'
+          required:
+          - caseID
+          - srvAcntKey
+          - ndgInfo
+
+    CancelDtoRequest:
+      type: object
+      description: Request for canceling the service account.
+      properties:
+        header:
+          $ref: 'components-v1.2.2.yaml#/components/schemas/Header'
+        payload:
+          type: object
+          properties:
+            caseID:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/CaseID'
+            srvAcntKey:
+              $ref: 'components-v1.2.2.yaml#/components/schemas/SrvAcntKey'
+          required:
+          - caseID
+          - srvAcntKey
+

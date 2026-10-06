@@ -1,0 +1,698 @@
+info:
+  title: Common components
+  description: Common components used across the Smart Engine API.
+  version: 1.2.2
+  
+  x-change-log:
+    - version: 1.2.1
+      date: 2026-02-04
+      changes:
+        - Added field "earlyDeletion" to "ProcessFlags" schema.
+        - Refactor Error schema to adherence to Hermes standard.
+        - Added "AdditionalAttribute" schema.
+    - version: 1.2.2
+      date: 2026-06-08
+      changes:
+        - Added field "loadOfferByOperationalProduct" to "ProcessFlags" schema.
+        - Added `LabelledCode` schema to represent code description items.
+components:
+  schemas:  
+  # Common Header schema used across the API
+    Header:
+      type: object
+      properties:
+        timestamp:
+          $ref: '#/components/schemas/DateTimeType'
+        trackId:
+          type: string
+        applicationId:
+          type: string
+        operationCode:
+            type: string
+        channel:
+            type: string
+        terminal:
+            type: string
+        companyCode:
+            type: string
+        branchCode:
+            type: string
+        user:
+            type: string
+        profile:
+            type: string
+        logicalChannel:
+            type: string
+        idempotencyId:
+            type: string
+        transactionId:
+          type: string
+      example:
+        timestamp: 2024-01-18T15:04:05Z
+        trackId: "b7e3c2e2-8f4a-4e2a-9c1a-2d5e6f7a8b9c"
+        applicationId: "APP123456"
+        operationCode: "OP123456"
+        channel: "WEB"
+        terminal: "TERM123456"
+        companyCode: "01005"
+        branchCode: "01600"
+        user: "h88064"
+        profile: "PROFILE123456"
+        logicalChannel: "12-190-025"
+        idempotencyId: "IDEMPOTENCY123456"
+        transactionId: "TRANSACTION123456"
+
+    # Common Data and Time types used across the API
+    DateTimeType:
+      type: string
+      format: date-time
+      description: The date time in RFC 3339 format.
+      example: 2024-01-18T15:04:05Z
+
+    DateType:
+      type: string
+      format: date
+      description: The date in RFC 3339 format (YYYY-MM-DD).
+      example: 2024-01-18
+
+    Currency:
+      type: string
+      description: Currency code in ISO 4217 format.
+      example: EUR
+      enum:
+        - AED
+        - ARS
+        - AUD
+        - BRL
+        - CAD
+        - CHF
+        - CNY
+        - CZK
+        - DKK
+        - EUR
+        - GBP
+        - HKD
+        - HUF
+        - IDR
+        - ILS
+        - INR
+        - JPY
+        - KRW
+        - MXN
+        - NOK
+        - NZD
+        - PHP
+        - PLN
+        - RON
+        - RUB
+        - SAR
+        - SEK
+        - SGD
+        - THB
+        - TRY
+        - USD
+        - ZAR
+
+    ServiceErrorDto:
+      type: object
+      description: Contains the details of each error present in service exceptions.
+      properties:
+        errorCode:
+          type: string
+          description: Error code.
+        errorMessage:
+          type: string
+          description: Error description.
+        technicalDescription:
+          type: string
+          description: Technical details.
+      example:
+        errorCode: "ERR_VAL_001"
+        errorMessage: "Invalid request parameters."
+        technicalDescription: "The 'bankCod' field is missing or invalid."
+
+    # Common Error Response used across the API
+    ErrorResponse:
+      type: object
+      description: Object used to return exceptions raised by the microservice's exposed services.
+      properties:
+        mainError:
+          $ref: '#/components/schemas/ServiceErrorDto'
+          description: The main error (always present).
+        errorList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceErrorDto'
+          description: Additional list of errors (optional).
+
+    # Status information schema
+    StatusInfo:
+      type: object
+      description: Status of the created service account. the status can be one of CREATED, CONFIGURED.
+      properties:
+        tsStatus:
+          $ref: '#/components/schemas/DateTimeType'
+        status:
+          type: string
+          description: Status code.
+        sStatus:
+          type: string
+          description: Sub status code.
+
+   #   srvAcntKey Used by Standard Omichannel new process
+    SrvAcntKey:
+      type: object
+      properties:
+        bankCod:
+          $ref: '#/components/schemas/BankCod'      
+        srvCod:
+          type: string
+          description: Service code for the settlement account.
+        key:
+          type: string
+          description: Key of the settlement account service.
+      required:
+      - bankCod
+      - srvCod
+      - key
+      example:
+        bankCod: "01005"
+        srvCod: "CC"
+        key: "SRV123456"
+
+    SrvAcntExtKey:
+      allOf:
+        - $ref: '#/components/schemas/SrvAcntKey'
+        - type: object
+          properties:
+            officeCod:
+              $ref: '#/components/schemas/OfficeCod'
+          required:
+          - officeCod
+          example:
+            officeCod: "01600"
+
+    CntrKey:
+      type: object
+      properties:
+        plabCntr_ty:
+          type: string
+          description: Type of the PLAB contract.
+        plabCntr_key:
+          type: string
+          description: Key of the PLAB contract.          
+        branchId:
+          type: string
+          description: Identifier of the bank branch associated with the contract.
+        srvCod:
+          type: string
+          description: Code identifying the customer relationship or banking service.
+        actnKey:
+          type: string
+          description: Account key associated with the contract.
+      required:
+      - plabCntr_ty
+      - plabCntr_key
+      - branchId
+      - srvCod
+      - actnKey
+      example:
+        plabCntr_ty: "RAG"
+        plabCntr_key: "CNTR123456"
+        branchId: "BR123456"
+        srvCod: "SRV123456"
+        actnKey: "ACTN123456"
+    ParentCaseID:
+      type: string
+      description: ID of the parent Case.
+      example: "1234567890"
+
+    BankCod:
+      type: string
+      description: ABI Bank code.
+      example: "01005"
+      maxLength: 5
+      minLength: 5
+
+    OfficeCod:
+      type: string
+      description: Agency\Office bank code.
+      example: "12345"
+      maxLength: 5
+      minLength: 5
+
+    CaseID:
+      type: string
+      description: ID of the Case.
+      example: '123e4567-e89b-12d3-a456-426614174000'
+
+    NdgInfo:
+      type: object
+      properties:
+        cntrNdgKey:
+          type: string
+          description: NDG identifier of contract owner.
+        cntrNdgType:
+          type: string
+          description: Type of NDG (e.g., Prospect, Customer, etc.).
+        cntrSignNdgKeys:
+          type: array
+          items:
+            type: string
+          description: List of NDG identifiers for contract signatories.
+      required:
+      - cntrNdgKey
+      example:
+        cntrNdgKey: "NDG123456"
+        cntrNdgType: "REAL"
+        cntrSignNdgKeys: ["NDG654321", "NDG789012"]
+    
+    SrvActnData:
+      type: object
+      description: Service account action information.
+      properties:
+        bankCod:
+          $ref: '#/components/schemas/BankCod'
+        officeCod:
+          $ref: '#/components/schemas/OfficeCod'
+        srvCod:
+          type: string
+          description: PLAB technical service code.
+        key:
+          type: string
+          description: Key that identifies the preregistration account service or the account service under change process.
+        externalKey:
+          type: string
+          description: Account service key on the legacy application. Can be null during preactivation phase (selling or change offer that requires new account service) but must be set before final activation. Always set for change/close processes on pre-existing account service.
+        legacyId:
+          type: string
+          description: Internal legacy ID. Set if the legacy application has an internal immutable ID for each account service.
+        tsStart:
+          $ref: '#/components/schemas/DateTimeType'
+        tsEnd:
+          $ref: '#/components/schemas/DateTimeType'
+        settlementSrvActn:
+          $ref: '#/components/schemas/SrvAcntExtKey'
+        statusInfo:
+          $ref: '#/components/schemas/StatusInfo'
+        ndgInfo:
+          $ref: '#/components/schemas/NdgInfo'
+        prodInfo:
+          $ref: '#/components/schemas/ProdInfo'
+        srvActnInfo:
+          type: object
+          description: Specific information for the settlement account (theoretically optional, but each account is defined in this entity).
+
+    # Product information schema
+    ProdInfo:
+      type: object
+      properties:
+        prodKey:
+          type: string
+          description: Product code.
+        moduleKeys:
+          type: array
+          description: Module codes associated with the product (either active or to be activated).
+          items:
+            type: string
+        agrmnts:
+          type: array
+          description: List of modules (optional for single-module cases).
+          items:
+            type: object
+            properties:
+              ty:
+                type: string
+                description: Type of the agreement.
+                default: RAG
+              sTy:
+                type: string
+                description: Subtype of the agreement.
+                default: CNV
+              key:
+                type: string
+                description: Key of the agreement.
+            required:
+              - ty
+              - sTy
+              - key 
+        prodExtKeys:
+          type: array
+          description: List of external product keys.
+          items:
+            type: string
+        prodAttrs:
+          type: array
+          description: List of product attributes.
+          items:
+            type: object
+            properties:
+              attrCod:
+                type: string
+                description: Code of the product attribute.
+              attrVal:
+                type: string
+                description: Value of the product attribute.
+
+    CaseDetail:
+      type: object
+      properties:
+        key:
+          type: string
+          description: External key.
+        tsStart:
+          $ref: '#/components/schemas/DateTimeType'
+        tsEnd:
+          $ref: '#/components/schemas/DateTimeType'
+        bankCod:
+          $ref: '#/components/schemas/BankCod'
+        officeCod:
+          $ref: '#/components/schemas/OfficeCod'
+        ty:
+          type: string
+          description: Case type.
+        sTy:
+          type: string
+          description: Case subtype.
+        tsStatus:
+          $ref: '#/components/schemas/DateTimeType'
+        status:
+          type: string
+          description: Status code.
+        isLastActionOK:
+          type: boolean
+          description: OK = 1, KO = 0.
+        newSrv:
+          type: object
+          properties:
+            plabCntr_ty:
+              type: string
+              description: Type of the PLAB contract.
+            plabCntr_key:
+              type: string
+              description: Key of the PLAB contract.          
+            branchId:
+              type: string
+              description: Identifier of the bank branch associated with the contract.
+            srvCod:
+              type: string
+              description: Code identifying the customer relationship or banking service.
+            actnKey:
+              type: string
+              description: Account key associated with the contract.
+            srvAcnt_ty:
+              type: string
+              description: Type (PLAB technical service code).
+            srvAcnt_sty:
+              type: string
+              description: Subtype (PLAB relationship subtype).
+            srvAcnt_key:
+              type: string
+              description: External key (temporary relationship key).
+            srvAcnt_externalkey:
+              type: string
+              description: External key (legacy relationship key).
+        oldSrv:
+          type: object
+          properties:
+            plabCntr_ty:
+              type: string
+              description: Type of the PLAB contract.
+            plabCntr_key:
+              type: string
+              description: Key of the PLAB contract.          
+            branchId:
+              type: string
+              description: Identifier of the bank branch associated with the contract.
+            srvCod:
+              type: string
+              description: Code identifying the customer relationship or banking service.
+            actnKey:
+              type: string
+              description: Account key associated with the contract.
+            srvAcnt_ty:
+              type: string
+              description: Type (technical service code).
+            srvAcnt_sty:
+              type: string
+              description: Subtype (PLAB relationship subtype).
+            srvAcnt_externalkey:
+              type: string
+              description: External key (legacy relationship key).
+
+    AdditionalProperties:
+      type: array
+      items:
+        type: object
+        properties:
+          key:
+            type: string
+          value:
+            type: string
+        required:
+        - key
+        - value
+        example:
+          key: "additionalProp1"
+          value: "value1"
+
+    ProcessFlags:
+      type: object
+      properties:
+        earlyReserve:
+          type: boolean
+          description: Flag indicating if reserve on partitario is in preContract step.
+          default: false
+        earlyDeletion:
+          type: boolean
+          description: Flag indicating if deletion on partitario is in reserve step.
+          default: false
+        explicitPreContractActivation:
+          type: boolean
+          description: Flag indicating if preContract activation is explicit.
+          default: false
+        explicitContractActivation:
+          type: boolean
+          description: Flag indicating if Contract activation is explicit.
+          default: false
+        skipDDSGenerationCheck:
+          type: boolean
+          description: Flag indicating if DDS generation check must be skipped.
+          default: false
+        loadOfferByOperationalProduct:
+          type: boolean
+          description: Flag indicating if calculation of the offer must be done by operational product during create phase. If operational product is not present or multiple product detected, an exception will be raised.
+          default: false
+    Amount:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: An amount with two decimal places of precision.
+          multipleOf: 0.01
+        currency:
+          $ref: '#/components/schemas/Currency'
+      example:
+        amount: 100.00
+        currency: EUR
+
+    AdditionalAttribute:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Name of the additional attribute.
+        value:
+          type: string
+          description: Value of the additional attribute.
+      required:
+        - key
+        - value
+      example:
+        key: "additionalAttribute1"
+        value: "value1"
+
+    AgreementCodes:
+      type: object
+      properties:
+        ty:
+          type: string
+          description: Type of the agreement.
+          example: RAG
+        sTy:
+          type: string
+          description: Subtype of the agreement.
+          example: CNV
+        key:
+          type: string
+          description: Key of the agreement.
+          example: "agreementKey123"
+        ente:
+          type: string
+          description: Branch associated with the agreement.
+          example: "branch123"
+      required:
+        - ty
+        - sTy
+        - key
+        - ente
+
+    LabelledCode:
+      type: object
+      required:
+        - code
+        - label
+      description: Represents a code with its corresponding label or description.
+      properties:
+        code:
+          type: string
+          description: Code of the item.
+          example: "CODE123"
+        label:
+          type: string
+          description: Description of the item.
+          example: "Description for CODE123"
+
+  responses:
+    ErrorResponse:
+      description: Generic error response.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - header
+              - payload
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              payload:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    Error300:
+      description: Multiple Choices.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error301:
+      description: Moved Permanently.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error302:
+      description: Found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error303:
+      description: See Other.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error304:
+      description: Not modified.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error400:
+      description: Bad Request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error401:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error403:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error404:
+      description: Not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error405:
+      description: Method not allowed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error406:
+      description: Not acceptable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error409:
+      description: Conflict.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error422:
+      description: Unprocessable entity.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error429:
+      description: Too many requests.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error500:
+      description: Internal Server Error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error501:
+      description: Not implemented.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error502:
+      description: Bad gateway.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error503:
+      description: Service unavailable.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error504:
+      description: Gateway timeout.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error505:
+      description: HTTP Version Not Supported.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Error511:
+      description: Network Authentication Required.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

@@ -31,7 +31,11 @@
             <artifactId>smart-simulator-paperless</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.capgemini.smart.simulator</groupId>
+            <artifactId>smart-simulator-account-raccordo-partitario</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
