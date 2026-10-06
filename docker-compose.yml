@@ -1,0 +1,53 @@
+version: "3.8"
+
+# Ambiente locale per testare smart-simulator-core (e, in futuro, i moduli
+# sottosistema) senza dover disporre di infrastruttura condivisa.
+# Le credenziali/porte sono coerenti con i default in application.yml.
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: smart-simulator-postgres
+    environment:
+      POSTGRES_DB: smart_simulator
+      POSTGRES_USER: smart_simulator
+      POSTGRES_PASSWORD: smart_simulator
+    ports:
+      - "5433:5432"   # host:container - 5433 per evitare conflitti con un Postgres locale sulla 5432
+    volumes:
+      - smart-simulator-pgdata:/var/lib/postgresql/data
+      # Script di provisioning schema (da aggiungere in seguito):
+      # - ./sql/init:/docker-entrypoint-initdb.d
+
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: smart-simulator-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # Single-node, modalita' KRaft (senza Zookeeper)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  ibmmq:
+    image: icr.io/ibm-messaging/mq:latest
+    container_name: smart-simulator-ibmmq
+    environment:
+      LICENSE: accept
+      MQ_QMGR_NAME: QM1
+      MQ_APP_PASSWORD: passw0rd
+      MQ_ADMIN_PASSWORD: passw0rd
+    ports:
+      - "1414:1414"   # canale MQ (DEV.APP.SVRCONN)
+      - "9443:9443"   # console web IBM MQ (https://localhost:9443/ibmmq/console)
+
+volumes:
+  smart-simulator-pgdata:

@@ -1,0 +1,16 @@
+# Valori dell'ambiente dev per il sottosistema Paperless.
+
+smart-simulator:
+  # Configurazione coda/broker per scenario dello scenario Practice Configure.
+  # Il campo "broker" e' informativo: il modulo usa un'unica connessione IBM MQ
+  # (vedi ibm.mq.* negli application*.yml dell'app), condivisa da
+  # JmsConfig/MqPublisherService del core.
+  paperless:
+    mq:
+      queue-map:
+        paperlessPracticeConfigure:
+          queue-name: DEV.QUEUE.2
+          broker: nhMqBroker
+        paperlessDocumentSignature:
+          queue-name: DEV.QUEUE.1
+          broker: nhMqBroker

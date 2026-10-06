@@ -1,0 +1,13 @@
+# Configurazione specifica del modulo sottosistema Paperless, importata da
+# smart-simulator-app/application.yml via spring.config.import. Contiene solo
+# i valori identici in tutti gli ambienti; coda/broker per scenario stanno in
+# paperless-config-<env>.yml. I valori condivisi da tutti i sottosistemi
+# (porta, datasource, connessione IBM MQ, bootstrap Kafka) stanno invece
+# negli application*.yml dell'app.
+
+smart-simulator:
+  # Default applicativi per sottosistema, usati da StaticDefaultsResolver (core)
+  defaults:
+    paperless:
+      priority: "NORMALE"
+      canale-default: "WEB"
