@@ -256,8 +256,9 @@ fisso sono nell'adapter MQ.
 
 ## Sottosistema: Account — Raccordo Partitario
 
-**Stato**: modulo creato con le interfacce autogenerate dagli YAML. **Tutti i
-12 servizi sono non implementati** e rispondono HTTP 501 (vedi sotto).
+**Stato**: modulo creato con le interfacce autogenerate dagli YAML. **`create` è
+implementato; gli altri 11 servizi sono non implementati** e rispondono HTTP 501
+(vedi sotto).
 L'implementazione avviene un servizio per volta, con una sezione di
 specifica per ciascuno da aggiungere qui.
 
@@ -284,7 +285,7 @@ CODING-STANDARDS "Moduli con interfacce autogenerate da YAML".
 | operationId | Path | Successo |
 |---|---|---|
 | `canBeCreated` | `/smartcatalog/raccordo/can-be-created` (così nello YAML; il suo changelog parla di `smartengine`, si segue lo YAML) | 201 |
-| `create` | `/smartengine/raccordo/create` | 201 |
+| `create` | `/smartengine/raccordo/create` | 201 (implementato) |
 | `reserve` | `/smartengine/raccordo/reserve` | 200 |
 | `activate` | `/smartengine/raccordo/activate` | 201 |
 | `getMainInfo` | `/smartengine/raccordo/getmaininfo` | 200 |
@@ -323,3 +324,39 @@ errorList[]}}`):
 
 **Persistenza**: nessuna per ora. Lo schema DB sarà uno solo per l'intero
 modulo (non uno per area/API), da definire quando un servizio ne avrà bisogno.
+
+### Servizio: Create (`create`)
+
+**Endpoint**: POST `/smartengine/raccordo/create` (`SalesApi.create`), successo 201.
+Esagono nel package `...raccordopartitario.sales.create` (`domain/model`,
+`application/port/in`, `application/service`, `adapter/in/rest/mapper`); la
+`Resource` Sales resta in `sales/adapter/in/rest/resource`.
+
+**Request** (`CreateDtoRequest`: `header` + `payload{caseID, srvActnData}`): i campi
+usati sono `payload.srvActnData.bankCod` e `payload.srvActnData.srvCod` (String,
+opzionali). L'obbligatorietà e i vincoli sono quelli dell'interfaccia (bean
+validation dello YAML, es. `bankCod` di 5 caratteri → 400 con la busta dello
+YAML): nessun validator applicativo.
+
+**Response 201** (`CreateDtoResponse`: solo `srvAcntKey` e `statusInfo`):
+
+| Campo | Valore |
+|---|---|
+| `srvAcntKey.bankCod` | `payload.srvActnData.bankCod` della request |
+| `srvAcntKey.srvCod` | `payload.srvActnData.srvCod` della request |
+| `srvAcntKey.key` | UUID generato a ogni chiamata (`UUID.randomUUID()`) |
+| `statusInfo.status` | `CREATED` (enum generato) |
+| `statusInfo.sStatus` | `Creato` |
+| `statusInfo.tsStatus` | istante corrente, UTC, troncato ai millisecondi |
+
+- **Nessun `header` nella response**: il contratto non lo dichiara, quindi non
+  si gestisce né si aggiunge alcun header (nemmeno HTTP).
+- **Formato di `tsStatus`**: ISO-8601 UTC prodotto dall'`ObjectMapper` di Spring,
+  che può omettere gli zeri finali dei millisecondi (es. `2026-10-06T23:21:55.13Z`).
+- **`bankCod`/`srvCod` assenti** (o `payload`/`srvActnData` assenti): 201 senza
+  errori; il valore assente è riportato assente (`null`, come serializzano i
+  modelli generati) in `srvAcntKey`.
+- **Nessuna persistenza**: servizio senza stato.
+- **Errori**: advice invariato (header della request riecheggiato, `timestamp`/
+  `trackId` generati solo se la request non è leggibile).
+

@@ -250,7 +250,7 @@ Interfacce REST autogenerate da tre YAML (`components-v1.2.2.yaml`,
 con `openapi-generator-maven-plugin` 7.19.0; 12 operazioni, **tutte non
 implementate** (HTTP 501 con la busta dello YAML). Deroga REPLICA ORIGINALE
 (sistema: Raccordo Partitario Conti) confinata in `adapter/in/*`; `domain` e
-`application` non esistono ancora. Package radice
+`application` esistono solo per i servizi implementati (oggi `create`). Package radice
 `com.capgemini.smart.simulator.account.raccordopartitario`; il livello
 `lifecycle` inizialmente previsto per Sales è stato rimosso. Corretto con un
 template `pojo.mustache` il problema dei metodi fluenti `set*` letti da Jackson
@@ -261,6 +261,14 @@ verde, Swagger 200, 12 endpoint a 501, `/v3/api-docs` identico agli YAML,
 sha256 degli YAML invariati, Paperless invariato. Dettaglio in
 `SmartSimulator-SERVICES-SPECIFICATION.md`, procedura per un nuovo raccordo in
 `README.md`.
+
+**Primo servizio del raccordo implementato: `create` (2026-10-07).** POST
+`/smartengine/raccordo/create` → 201 con `srvAcntKey` (codici dalla request, `key`
+UUID), `statusInfo` (`CREATED`, `Creato`, `tsStatus` UTC al millisecondo); la
+response non ha `header` per contratto. Esagono in `sales/create` (domain,
+application, mapper), senza persistenza; primi test unitari del modulo (surefire
+3.2.5 fissato nel pom del modulo, il default di Maven non esegue JUnit 5). Gli
+altri 11 servizi restano 501. Dettaglio in `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
 **In attesa:** ambiente `sit` (profilo già ammesso dal controllo all'avvio,
 ma `application-sit.yml` e `paperless-config-sit.yml` non esistono ancora,

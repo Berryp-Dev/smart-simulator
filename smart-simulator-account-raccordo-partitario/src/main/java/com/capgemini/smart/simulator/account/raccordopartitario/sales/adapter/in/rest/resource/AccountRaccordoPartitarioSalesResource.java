@@ -21,17 +21,29 @@ import com.capgemini.smart.simulator.account.raccordopartitario.sales.adapter.in
 import com.capgemini.smart.simulator.account.raccordopartitario.sales.adapter.in.rest.model.ReserveDtoResponse;
 import com.capgemini.smart.simulator.account.raccordopartitario.sales.adapter.in.rest.model.SetFinalNdgDtoRequest;
 import com.capgemini.smart.simulator.account.raccordopartitario.sales.adapter.in.rest.model.SetSettlementServiceAccountKeyDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.sales.create.adapter.in.rest.mapper.AccountRaccordoCreateMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.sales.create.application.port.in.CreateAccountRaccordoUseCase;
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Implementa l'interfaccia generata {@link SalesApi}: tutte le operazioni
- * rispondono HTTP 501 (non ancora implementate).
+ * Implementa l'interfaccia generata {@link SalesApi}: {@code create} è
+ * implementata, le altre operazioni rispondono HTTP 501 (non ancora implementate).
  */
 @RestController
 @ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
 public class AccountRaccordoPartitarioSalesResource implements SalesApi {
+
+    private final CreateAccountRaccordoUseCase createAccountRaccordoUseCase;
+    private final AccountRaccordoCreateMapper createMapper;
+
+    public AccountRaccordoPartitarioSalesResource(CreateAccountRaccordoUseCase createAccountRaccordoUseCase,
+                                                  AccountRaccordoCreateMapper createMapper) {
+        this.createAccountRaccordoUseCase = createAccountRaccordoUseCase;
+        this.createMapper = createMapper;
+    }
 
     @Override
     public ResponseEntity<ActivateDtoResponse> activate(ActivateDtoRequest activateDtoRequest) {
@@ -50,7 +62,9 @@ public class AccountRaccordoPartitarioSalesResource implements SalesApi {
 
     @Override
     public ResponseEntity<CreateDtoResponse> create(CreateDtoRequest createDtoRequest) {
-        throw new NotImplementedOperationException(createDtoRequest);
+        CreateDtoResponse response = createMapper.toResponse(
+                createAccountRaccordoUseCase.createAccountRaccordo(createMapper.toDomain(createDtoRequest)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override

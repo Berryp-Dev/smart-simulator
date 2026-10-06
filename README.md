@@ -53,8 +53,10 @@ smart-simulator/
         │   ├── common/adapter/in/rest/   (advice, busta d'errore, eccezione "non implementato")
         │   ├── config/                   (interceptor locale + web config del modulo)
         │   ├── sales/adapter/in/rest/resource/             (Resource Sales)
+        │   ├── sales/create/             (esagono di `create`: domain, application, adapter/in/rest/mapper)
         │   └── currentaccount/configure/adapter/in/rest/resource/  (Resource Configure)
-        └── openapi-templates/pojo.mustache   (template del generatore, vedi sotto)
+        ├── openapi-templates/pojo.mustache   (template del generatore, vedi sotto)
+        └── test/java/...             (test unitari di `create`)
     Gli YAML NON stanno nel modulo ma in
     smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/
 ```
@@ -213,7 +215,7 @@ Note:
 ## Ancora da definire
 
 - Prossimo sottosistema da aggiungere (dopo la verifica della struttura a boot unico).
-- Implementazione dei servizi di `account-raccordo-partitario` (oggi tutti 501), uno per volta.
+- Implementazione dei servizi di `account-raccordo-partitario` (oggi solo `create` è implementato, gli altri 11 sono 501), uno per volta.
 - Nomi effettivi di topic Kafka e code IBM MQ per i sottosistemi futuri.
 - Valori degli ambienti diversi da `dev` per i file `application-sit.yml` e
   `paperless-config-sit.yml` (da fornire).

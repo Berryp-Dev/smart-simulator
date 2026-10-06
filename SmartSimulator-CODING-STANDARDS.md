@@ -306,6 +306,12 @@ del modulo, con queste regole:
   `mainError` uguale alla prima; `header` riecheggiato dalla richiesta
   (senza campi null) o, se non disponibile, generato con `timestamp` e
   `trackId`.
+- **Header di risposta di successo**: la response di successo riecheggia l'`header`
+  della request senza modifiche (stesso oggetto e valori, nessun attributo
+  generato, nessuna copia via Jackson). Si applica solo alle response il cui
+  contratto YAML dichiara `header`; se la response non lo dichiara non si
+  aggiunge nulla (né attributi né header HTTP). La regola degli errori non
+  cambia.
 - **Lingua**: un interceptor del modulo imposta `Locale.ENGLISH` solo quando il
   handler è una `Resource` del modulo (confronto sul tipo, non sul path), così
   i messaggi di bean validation sono in inglese senza toccare gli altri

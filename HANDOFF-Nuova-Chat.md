@@ -14,7 +14,7 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 - Un solo modulo avviabile (`smart-simulator-app`, porta 9082); `smart-simulator-core` e `smart-simulator-paperless` sono librerie.
 - Persistenza con `JdbcTemplate` (nessun Hibernate/JPA). Struttura per area → API con esagono completo per API, port in uscita senza JAXB/DTO, allo use case arriva solo il dominio tramite mapper. Paperless (Configure e Signature) è implementato, refactorizzato e verificato; resta solo da controllare a mano il contenuto dei messaggi MQ (vedi `PROJECT-CONTEXT.md`).
 
-- Modulo `smart-simulator-account-raccordo-partitario` creato: interfacce autogenerate da YAML, 12 servizi tutti non implementati (501). Procedura per un nuovo raccordo nel `README.md`; dettagli in `SERVICES-SPECIFICATION` e `CODING-STANDARDS`.
+- Modulo `smart-simulator-account-raccordo-partitario` creato: interfacce autogenerate da YAML, 12 servizi: `create` implementato, gli altri 11 non implementati (501). Procedura per un nuovo raccordo nel `README.md`; dettagli in `SERVICES-SPECIFICATION` e `CODING-STANDARDS`.
 
 ## Prossimo obiettivo
 

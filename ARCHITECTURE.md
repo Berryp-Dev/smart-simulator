@@ -188,6 +188,10 @@ di REPLICA ORIGINALE (sezione 5) esteso a tutto il modulo.
   altrimenti generato. La lingua inglese è imposta solo agli endpoint del
   modulo da un interceptor che riconosce il **tipo del handler** (mai il
   path).
+- Header di risposta di successo = header della request senza modifiche: si
+  applica solo alle response il cui contratto YAML dichiara `header`; se la
+  response non lo dichiara non si aggiunge nulla. La regola degli errori non
+  cambia.
 - La deroga resta confinata in `adapter/in/*`. `domain` e `application`
   seguono lo standard e si creano solo quando un servizio viene implementato,
   con l'esagono diviso per operazione.
