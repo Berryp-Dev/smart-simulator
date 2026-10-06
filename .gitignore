@@ -1,0 +1,18 @@
+.metadata/
+.sonarlint/
+.vscode/
+**/.factorypath
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# SonarLint
+.sona**int/
+
+# Build
+target/
+
+# Logs
+*.log
