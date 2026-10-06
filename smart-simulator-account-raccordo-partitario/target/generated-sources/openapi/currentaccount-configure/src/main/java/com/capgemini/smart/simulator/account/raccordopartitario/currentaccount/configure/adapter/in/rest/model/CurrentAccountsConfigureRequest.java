@@ -21,7 +21,7 @@ import jakarta.annotation.Generated;
  * CurrentAccountsConfigureRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-10-06T23:59:37.471629900+02:00[Europe/Rome]", comments = "Generator version: 7.19.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-10-07T00:07:54.504437400+02:00[Europe/Rome]", comments = "Generator version: 7.19.0")
 public class CurrentAccountsConfigureRequest {
 
   private SrvAcntKey srvAcntKey;

@@ -35,17 +35,28 @@ smart-simulator/
 │       ├── annotation/  ReplicatesOriginalBehavior
 │       └── util/        StringUtil, DateTimeUtil, CollectionUtil, NumberUtil,
 │                        JsonUtil, RandomUtil
-└── smart-simulator-paperless/   (sottosistema Paperless, libreria)
+├── smart-simulator-paperless/   (sottosistema Paperless, libreria)
+│   └── src/main/
+│       ├── java/com/capgemini/smart/simulator/paperless/
+│       │   ├── config/               (wiring a livello di modulo)
+│       │   ├── practice/             (area)
+│       │   │   └── configure/        (API, struttura esagonale completa)
+│       │   └── document/             (area)
+│       │       └── signature/        (API, struttura esagonale completa)
+│       └── resources/paperless-config.yml   (valori comuni del sottosistema)
+│           paperless-config-dev.yml, paperless-config-sit.yml
+│                                            (broker/code MQ per ambiente)
+└── smart-simulator-account-raccordo-partitario/   (raccordo partitario, libreria)
+    ├── pom.xml                  (una execution di openapi-generator per ogni YAML con `paths`)
     └── src/main/
-        ├── java/com/capgemini/smart/simulator/paperless/
-        │   ├── config/               (wiring a livello di modulo)
-        │   ├── practice/             (area)
-        │   │   └── configure/        (API, struttura esagonale completa)
-        │   └── document/             (area)
-        │       └── signature/        (API, struttura esagonale completa)
-        └── resources/paperless-config.yml   (valori comuni del sottosistema)
-            paperless-config-dev.yml, paperless-config-sit.yml
-                                             (broker/code MQ per ambiente)
+        ├── java/com/capgemini/smart/simulator/account/raccordopartitario/
+        │   ├── common/adapter/in/rest/   (advice, busta d'errore, eccezione "non implementato")
+        │   ├── config/                   (interceptor locale + web config del modulo)
+        │   ├── sales/adapter/in/rest/resource/             (Resource Sales)
+        │   └── currentaccount/configure/adapter/in/rest/resource/  (Resource Configure)
+        └── openapi-templates/pojo.mustache   (template del generatore, vedi sotto)
+    Gli YAML NON stanno nel modulo ma in
+    smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/
 ```
 
 Un solo processo (`smart-simulator-app`) espone i servizi di tutti i
@@ -140,9 +151,69 @@ L'app gira sulla porta **9082**; Swagger UI su
 6. Riusare `KafkaPublisherService` / `MqPublisherService` / `DefaultsResolver`
    dal core, con un producer/port/adapter dedicato per funzionalità.
 
+## Aggiungere un nuovo raccordo partitario generato da YAML
+
+Procedura semplificata per ottenere la struttura di un nuovo raccordo con le
+interfacce **autogenerate** dagli YAML OpenAPI e tutti i servizi inizialmente
+**non implementati** (HTTP 501). Esempio di riferimento: il modulo
+`smart-simulator-account-raccordo-partitario`. Le regole della deroga sono in
+`ARCHITECTURE.md` (sezione 6) e in CODING-STANDARDS ("Moduli con interfacce
+autogenerate da YAML").
+
+1. Fare un commit pulito. Copiare gli YAML in
+   `smart-simulator-app/src/main/resources/openapi/<nome-raccordo>/`, tutti
+   nella stessa cartella (i `$ref` tra file sono relativi). Gli YAML non si
+   modificano mai: se il contratto cambia si sostituiscono i file e si rifà il
+   build.
+2. Creare il modulo libreria `smart-simulator-<nome-raccordo>` clonando quello
+   dell'account e rinominando package, id delle execution, cartelle di output
+   e nomi delle classi. Package radice:
+   `com.capgemini.smart.simulator.<sottosistema>.<nomeraccordo>`.
+3. Registrarlo in `<modules>` del pom parent e come dipendenza di
+   `smart-simulator-app` (controllare che la dipendenza sia davvero presente
+   nel pom dell'app).
+4. Nel pom del modulo: una execution di `openapi-generator-maven-plugin` per
+   ogni YAML che contiene `paths`, **mai** per il file dei componenti comuni
+   (non è un'API). Ogni execution ha `apiPackage`/`modelPackage` propri, output
+   in `generated-sources/openapi/<nome>` e `templateDirectory` sul
+   `pojo.mustache` del modulo. Versione del plugin e property di
+   `jackson-databind-nullable` sono già nel pom parent. Il generato non va
+   committato.
+5. Creare una `Resource` per ogni interfaccia `*Api` generata (una per tag
+   dello YAML): implementa l'interfaccia generata, è annotata
+   `@ReplicatesOriginalBehavior(system, reference)` e ogni metodo lancia
+   `NotImplementedOperationException`.
+6. Aggiornare l'`assignableTypes` dell'advice e i tipi di handler riconosciuti
+   dall'interceptor locale sulle nuove `Resource`.
+7. Verificare: build verde dalla root con `BUILD SUCCESS`; Swagger UI risponde
+   200; ogni endpoint risponde 501 con la busta dello YAML; `/v3/api-docs`
+   coincide con gli YAML (nessuna proprietà inventata); sha256 degli YAML
+   invariati.
+8. Con più raccordi nella stessa app controllare le collisioni di nomi tra
+   schemi (springdoc unisce gli schemi per nome semplice) e tra `operationId`.
+
+Note:
+- **`pojo.mustache`**: copia del template `JavaSpring/pojo.mustache` del
+  generatore (versione 7.19.0) con sole due annotazioni `@JsonIgnore` in più.
+  Serve perché il generatore crea metodi fluenti con lo stesso nome del campo
+  (es. `settlementDate(...)`): quando il nome inizia per `set` Jackson li legge
+  come setter e pubblica nel contratto proprietà inesistenti (`tlementDate`).
+  A ogni upgrade del plugin: riconfrontare il template con l'originale e
+  rifare la scansione dei metodi fluenti `set*`.
+- **Windows**: i percorsi del modulo sono lunghi; eseguire
+  `git config core.longpaths true`.
+- **Rinomina di directory**: chiudere VSCode o disabilitare le estensioni Java
+  e Spring Boot Tools, altrimenti il language server blocca le cartelle.
+- Le classi comuni (advice, busta d'errore, interceptor) e il template stanno
+  oggi solo nel modulo dell'account e si clonano con il modulo. Al secondo
+  raccordo andrà valutato se estrarle in un punto condiviso.
+- L'implementazione dei singoli servizi non fa parte di questa procedura: segue
+  il flusso di lavoro del progetto (specifica, design, prompt per Claude Code).
+
 ## Ancora da definire
 
 - Prossimo sottosistema da aggiungere (dopo la verifica della struttura a boot unico).
+- Implementazione dei servizi di `account-raccordo-partitario` (oggi tutti 501), uno per volta.
 - Nomi effettivi di topic Kafka e code IBM MQ per i sottosistemi futuri.
 - Valori degli ambienti diversi da `dev` per i file `application-sit.yml` e
   `paperless-config-sit.yml` (da fornire).

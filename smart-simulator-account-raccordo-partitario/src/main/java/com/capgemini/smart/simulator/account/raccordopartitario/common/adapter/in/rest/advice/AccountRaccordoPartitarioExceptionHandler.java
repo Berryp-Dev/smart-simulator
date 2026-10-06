@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ import java.util.UUID;
  * Origine dei valori: {@code errorMessage} 400 = description di Error400 e 501 =
  * description di Error501 (components-v1.2.2.yaml); {@code errorCode} = status
  * come stringa; {@code technicalDescription} dei 400 = percorso del campo +
- * messaggio (default); quella del 501 e' il fallback "Servizio non implementato".
+ * messaggio (default); quella del 501 e' il fallback "Service not implemented".
  */
 @RestControllerAdvice(assignableTypes = {
         AccountRaccordoPartitarioSalesResource.class,
@@ -52,8 +53,12 @@ public class AccountRaccordoPartitarioExceptionHandler {
 
     private static final String BAD_REQUEST_MESSAGE = "Bad Request.";
     private static final String NOT_IMPLEMENTED_MESSAGE = "Not implemented.";
-    private static final String NOT_IMPLEMENTED_TECHNICAL_DESCRIPTION = "Servizio non implementato";
-    private static final String MALFORMED_BODY_DESCRIPTION = "Corpo della richiesta non valido o malformato";
+    private static final String NOT_IMPLEMENTED_TECHNICAL_DESCRIPTION = "Service not implemented";
+    private static final String MALFORMED_BODY_DESCRIPTION = "Request body is invalid or malformed";
+
+    private static final Comparator<Violation> VIOLATION_ORDER = Comparator
+            .comparing((Violation violation) -> violation.fieldPath() == null ? "" : violation.fieldPath())
+            .thenComparing(violation -> violation.message() == null ? "" : violation.message());
 
     private final ObjectMapper objectMapper;
 
@@ -70,18 +75,18 @@ public class AccountRaccordoPartitarioExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<AccountRaccordoPartitarioErrorBody> handleBeanValidation(MethodArgumentNotValidException ex) {
-        List<ErrorItem> errors = ex.getBindingResult().getAllErrors().stream()
-                .map(this::mapToErrorItem)
+        List<Violation> violations = ex.getBindingResult().getAllErrors().stream()
+                .map(this::mapToViolation)
                 .toList();
-        return buildBadRequest(ex.getBindingResult().getTarget(), errors);
+        return buildBadRequest(ex.getBindingResult().getTarget(), violations);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<AccountRaccordoPartitarioErrorBody> handleConstraintViolation(ConstraintViolationException ex) {
-        List<ErrorItem> errors = ex.getConstraintViolations().stream()
-                .map(this::mapToErrorItem)
+        List<Violation> violations = ex.getConstraintViolations().stream()
+                .map(this::mapToViolation)
                 .toList();
-        return buildBadRequest(null, errors);
+        return buildBadRequest(null, violations);
     }
 
     /**
@@ -91,10 +96,10 @@ public class AccountRaccordoPartitarioExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<AccountRaccordoPartitarioErrorBody> handleMessageNotReadable(HttpMessageNotReadableException ex) {
-        log.warn("Corpo della richiesta non leggibile: {}", ex.getMessage());
+        log.warn("Unreadable request body: {}", ex.getMessage());
         String fieldPath = resolveFieldPath(ex.getCause());
         String description = resolveMessageNotReadableDescription(ex.getCause(), fieldPath);
-        return buildBadRequest(null, List.of(buildBadRequestItem(fieldPath, description)));
+        return buildBadRequest(null, List.of(new Violation(fieldPath, description)));
     }
 
     /**
@@ -104,21 +109,21 @@ public class AccountRaccordoPartitarioExceptionHandler {
      */
     private String resolveMessageNotReadableDescription(Throwable cause, String fieldPath) {
         if (cause instanceof InvalidFormatException invalidFormat) {
-            return "Valore non valido: '" + invalidFormat.getValue() + "'";
+            return "Invalid value: '" + invalidFormat.getValue() + "'";
         }
         if (fieldPath != null && !fieldPath.isEmpty() && cause instanceof ValueInstantiationException) {
-            return "Valore non valido";
+            return "Invalid value";
         }
         return MALFORMED_BODY_DESCRIPTION;
     }
 
-    private ErrorItem mapToErrorItem(ObjectError error) {
+    private Violation mapToViolation(ObjectError error) {
         String fieldPath = error instanceof FieldError fieldError ? fieldError.getField() : error.getObjectName();
-        return buildBadRequestItem(fieldPath, error.getDefaultMessage());
+        return new Violation(fieldPath, error.getDefaultMessage());
     }
 
-    private ErrorItem mapToErrorItem(ConstraintViolation<?> violation) {
-        return buildBadRequestItem(violation.getPropertyPath().toString(), violation.getMessage());
+    private Violation mapToViolation(ConstraintViolation<?> violation) {
+        return new Violation(violation.getPropertyPath().toString(), violation.getMessage());
     }
 
     private ErrorItem buildBadRequestItem(String fieldPath, String message) {
@@ -126,10 +131,22 @@ public class AccountRaccordoPartitarioExceptionHandler {
         return new ErrorItem(String.valueOf(HttpStatus.BAD_REQUEST.value()), BAD_REQUEST_MESSAGE, technicalDescription);
     }
 
-    /** L'errore principale e' il primo rilevato; errorList contiene tutte le violazioni. */
-    private ResponseEntity<AccountRaccordoPartitarioErrorBody> buildBadRequest(Object request, List<ErrorItem> errors) {
+    /**
+     * Le violazioni sono ordinate per percorso del campo (alfabetico crescente),
+     * a parita' per messaggio: l'ordine e' deterministico. L'errore principale e'
+     * il primo; errorList contiene tutte le violazioni nello stesso ordine.
+     */
+    private ResponseEntity<AccountRaccordoPartitarioErrorBody> buildBadRequest(Object request, List<Violation> violations) {
+        List<ErrorItem> errors = violations.stream()
+                .sorted(VIOLATION_ORDER)
+                .map(violation -> buildBadRequestItem(violation.fieldPath(), violation.message()))
+                .toList();
         ErrorItem mainError = errors.isEmpty() ? buildBadRequestItem(null, MALFORMED_BODY_DESCRIPTION) : errors.get(0);
         return build(HttpStatus.BAD_REQUEST, request, new Payload(mainError, errors));
+    }
+
+    /** Violazione grezza (percorso del campo + messaggio) prima della costruzione dell'ErrorItem. */
+    private record Violation(String fieldPath, String message) {
     }
 
     private ResponseEntity<AccountRaccordoPartitarioErrorBody> build(HttpStatus status, Object request, Payload payload) {

@@ -251,3 +251,75 @@ fisso sono nell'adapter MQ.
 
 **Use case**: `NotifyPaperlessDocumentSignatureUseCase` (port/in), ritorna
 `void`.
+
+---
+
+## Sottosistema: Account — Raccordo Partitario
+
+**Stato**: modulo creato con le interfacce autogenerate dagli YAML. **Tutti i
+12 servizi sono non implementati** e rispondono HTTP 501 (vedi sotto).
+L'implementazione avviene un servizio per volta, con una sezione di
+specifica per ciascuno da aggiungere qui.
+
+**Modulo**: `smart-simulator-account-raccordo-partitario`; package radice
+`com.capgemini.smart.simulator.account.raccordopartitario`.
+
+**Comportamento**: REPLICA ORIGINALE (sistema: Raccordo Partitario Conti, rif:
+nome del file YAML). Le `Resource` sono annotate con
+`@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference =
+"<file yaml>")`. Contratto al 100% dello YAML; vedi ARCHITECTURE.md sezione 6 e
+CODING-STANDARDS "Moduli con interfacce autogenerate da YAML".
+
+**YAML sorgente** (in
+`smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/`):
+
+| File | Contenuto |
+|---|---|
+| `components-v1.2.2.yaml` | Non è un'API: schemi comuni (`Header`, `ErrorResponse`, `SrvAcntKey`, `Currency`, ...) e response `Error300`...`Error511`. Nessuna execution propria. |
+| `raccordopartitario_sales.yaml` | 11 operazioni POST, tag `Sales` → interfaccia `SalesApi`, `Resource` `AccountRaccordoPartitarioSalesResource` (package `...sales.adapter.in.rest`). |
+| `raccordopartitario_sales_currentaccounts_configure.yaml` | 1 operazione POST, tag `Current-Account` → `CurrentAccountApi`, `Resource` `AccountRaccordoPartitarioCurrentAccountConfigureResource` (package `...currentaccount.configure.adapter.in.rest`). |
+
+**Operazioni** (tutte POST):
+
+| operationId | Path | Successo |
+|---|---|---|
+| `canBeCreated` | `/smartcatalog/raccordo/can-be-created` (così nello YAML; il suo changelog parla di `smartengine`, si segue lo YAML) | 201 |
+| `create` | `/smartengine/raccordo/create` | 201 |
+| `reserve` | `/smartengine/raccordo/reserve` | 200 |
+| `activate` | `/smartengine/raccordo/activate` | 201 |
+| `getMainInfo` | `/smartengine/raccordo/getmaininfo` | 200 |
+| `getExternalKey` | `/smartengine/raccordo/getexternalkey` | 200 |
+| `setSettlementServiceAccountKey` | `/smartengine/raccordo/setsettlementserviceaccountkey` | 201, senza body |
+| `getOthSrvActns` | `/smartengine/raccordo/getothsrvactns` | 200 |
+| `getAdditionalAttributes` | `/smartengine/raccordo/getadditionalattributes` | 200 |
+| `setFinalNdg` | `/smartengine/raccordo/setfinalndg` | 201, senza body |
+| `cancel` | `/smartengine/raccordo/cancel` | 201, senza body |
+| `CurrentAccountConfigure` | `/ui-app/raccordo/sales/current-accounts/configure` | 204 |
+
+**Gestione errori** (advice scoped alle due `Resource`, busta dello YAML
+`{header, payload{mainError{errorCode, errorMessage, technicalDescription},
+errorList[]}}`):
+
+| Caso | Status | `errorMessage` | `technicalDescription` |
+|---|---|---|---|
+| Bean validation, `ConstraintViolationException` | 400 | `Bad Request.` (description di `Error400` nello YAML) | percorso del campo + messaggio (default), es. `payload.caseID: must not be null` |
+| Enum o valore non convertibile | 400 | `Bad Request.` | percorso del campo + `Invalid value: '<v>'` (o `Invalid value`) |
+| JSON malformato, body vuoto, struttura di tipo errato | 400 | `Bad Request.` | `Request body is invalid or malformed` (preceduto dal percorso del campo se noto) |
+| Servizio non implementato | 501 | `Not implemented.` (description di `Error501`) | `Service not implemented` (fallback: lo YAML non ha testo tecnico) |
+
+- `errorCode` = status HTTP come stringa (default, non ricavato dallo YAML).
+- `errorList` contiene tutte le violazioni, ordinate per percorso del campo;
+  `mainError` coincide con la prima.
+- `header`: riecheggiato dalla richiesta, senza i campi null, se il body è
+  leggibile e lo contiene; altrimenti generato con `timestamp` e `trackId`.
+- Messaggi di bean validation in inglese per le sole richieste del modulo
+  (interceptor sul tipo del handler).
+
+**Note sul generato**:
+- Per ogni YAML con `paths` esiste una execution; gli schemi comuni sono generati
+  due volte (uno per package) e springdoc li espone una volta per nome.
+- Il template `pojo.mustache` evita le proprietà inventate (`tlement...`): vedi
+  README e CODING-STANDARDS.
+
+**Persistenza**: nessuna per ora. Lo schema DB sarà uno solo per l'intero
+modulo (non uno per area/API), da definire quando un servizio ne avrà bisogno.

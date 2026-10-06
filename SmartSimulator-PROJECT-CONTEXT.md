@@ -71,16 +71,26 @@ smart-simulator/
 │       ├── exception/   ValidationException
 │       ├── annotation/  ReplicatesOriginalBehavior
 │       └── util/        StringUtil, DateTimeUtil, CollectionUtil, NumberUtil, JsonUtil, RandomUtil
-└── smart-simulator-paperless/    (primo modulo sottosistema, libreria)
-    ├── pom.xml                      (dipende da smart-simulator-core)
-    ├── paperless-config.yml         (broker/coda MQ del sottosistema, importato
-    │                                 dall'app)
-    └── src/main/java/com/capgemini/smart/simulator/paperless/
-        ├── config/                  (wiring a livello di modulo)
-        ├── practice/                (area)
-        │   └── configure/           (API, struttura esagonale completa)
-        └── document/                (area)
-            └── signature/           (API, struttura esagonale completa)
+├── smart-simulator-paperless/    (primo modulo sottosistema, libreria)
+│   ├── pom.xml                      (dipende da smart-simulator-core)
+│   ├── paperless-config.yml         (broker/coda MQ del sottosistema, importato
+│   │                                 dall'app)
+│   └── src/main/java/com/capgemini/smart/simulator/paperless/
+│       ├── config/                  (wiring a livello di modulo)
+│       ├── practice/                (area)
+│       │   └── configure/           (API, struttura esagonale completa)
+│       └── document/                (area)
+│           └── signature/           (API, struttura esagonale completa)
+└── smart-simulator-account-raccordo-partitario/  (secondo modulo sottosistema, libreria)
+    ├── pom.xml                      (una execution di openapi-generator per YAML con `paths`)
+    └── src/main/
+        ├── java/com/capgemini/smart/simulator/account/raccordopartitario/
+        │   ├── common/adapter/in/rest/   (advice, busta d'errore, eccezione)
+        │   ├── config/                   (interceptor locale, web config)
+        │   ├── sales/adapter/in/rest/resource/
+        │   └── currentaccount/configure/adapter/in/rest/resource/
+        └── openapi-templates/pojo.mustache
+    (gli YAML stanno in smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/)
 ```
 
 **Struttura (ristrutturazione eseguita e verificata)**:
@@ -123,6 +133,11 @@ i servizi di tutti i sottosistemi.
 - **Swagger/OpenAPI**: dipendenza `springdoc-openapi-starter-webmvc-ui`
   nel core (ereditata automaticamente da ogni modulo sottosistema), UI
   disponibile su `/swagger-ui.html` di ciascun modulo avviato
+- **Interfacce autogenerate da YAML** (raccordo partitario): contratto generato
+  con `openapi-generator-maven-plugin` 7.19.0 (property
+  `jackson-databind-nullable` 0.2.12 nel parent), `interfaceOnly`; gli YAML
+  vivono in `smart-simulator-app/src/main/resources/openapi/<raccordo>/` e non si
+  modificano. Vedi CODING-STANDARDS, "Moduli con interfacce autogenerate da YAML"
 - **Request DTO per operazione**: ogni scenario/operazione ha la propria
   request dedicata; i valori non specificati esplicitamente E non
   obbligatori vengono risolti tramite `DefaultsResolver` (impl. base:
@@ -229,6 +244,24 @@ variabili `DB_*`, `MQ_*`, `KAFKA_BOOTSTRAP_SERVERS` non sono più lette.
 Da verificare a mano: avvio da VSCode (Boot Dashboard) e messaggi MQ con
 il profilo `dev`.
 
+**Modulo `smart-simulator-account-raccordo-partitario`: creato (2026-10-07).**
+Interfacce REST autogenerate da tre YAML (`components-v1.2.2.yaml`,
+`raccordopartitario_sales.yaml`, `raccordopartitario_sales_currentaccounts_configure.yaml`)
+con `openapi-generator-maven-plugin` 7.19.0; 12 operazioni, **tutte non
+implementate** (HTTP 501 con la busta dello YAML). Deroga REPLICA ORIGINALE
+(sistema: Raccordo Partitario Conti) confinata in `adapter/in/*`; `domain` e
+`application` non esistono ancora. Package radice
+`com.capgemini.smart.simulator.account.raccordopartitario`; il livello
+`lifecycle` inizialmente previsto per Sales è stato rimosso. Corretto con un
+template `pojo.mustache` il problema dei metodi fluenti `set*` letti da Jackson
+(proprietà `tlement...` inventate). Errori in inglese, violazioni ordinate per
+percorso del campo (`mainError` deterministico), inglese imposto solo ai
+messaggi del modulo da un interceptor sul tipo del handler. Verificati: build
+verde, Swagger 200, 12 endpoint a 501, `/v3/api-docs` identico agli YAML,
+sha256 degli YAML invariati, Paperless invariato. Dettaglio in
+`SmartSimulator-SERVICES-SPECIFICATION.md`, procedura per un nuovo raccordo in
+`README.md`.
+
 **In attesa:** ambiente `sit` (profilo già ammesso dal controllo all'avvio,
 ma `application-sit.yml` e `paperless-config-sit.yml` non esistono ancora,
 mancano i valori).
@@ -269,6 +302,11 @@ XML su MQ dopo i refactoring 2 e 3 — Configure su `DEV.QUEUE.2` (5 scenari,
 `CodiceFiscale` `XXXXXXXXXXXXXXXX`, un solo `PARZIALE`/`ERRORE_FIRMA`).
 
 **Da fare (prossimo passo):**
+- Implementare i servizi di `account-raccordo-partitario` uno per volta (primo
+  servizio da scegliere): per ciascuno specifica, design di `domain` e
+  `application` (esagono diviso per operazione), prompt per Claude Code
+- Aperto, da decidere: `target/` risulta tracciato da git nel commit di partenza
+  e non esiste un `.gitignore`
 - Verificare a mano avvio da VSCode e messaggi MQ con il profilo `dev`;
   poi creare i file di `sit` quando arrivano i valori
 - Definire il prossimo sottosistema (nasce come libreria con struttura per

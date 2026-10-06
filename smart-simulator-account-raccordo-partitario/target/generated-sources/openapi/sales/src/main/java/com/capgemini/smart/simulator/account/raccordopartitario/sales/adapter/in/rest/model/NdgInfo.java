@@ -22,7 +22,7 @@ import jakarta.annotation.Generated;
  * NdgInfo
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-10-06T23:59:32.741841700+02:00[Europe/Rome]", comments = "Generator version: 7.19.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-10-07T00:07:49.813398600+02:00[Europe/Rome]", comments = "Generator version: 7.19.0")
 public class NdgInfo {
 
   private String cntrNdgKey;

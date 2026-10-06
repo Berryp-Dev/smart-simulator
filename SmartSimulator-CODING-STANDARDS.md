@@ -271,6 +271,53 @@ Comportamento: REPLICA ORIGINALE (sistema: <NomeSistema>, rif: <WSDL/doc>)
   quelli standard del progetto: è solo il **contratto esterno** a poter
   cambiare
 
+### Moduli con interfacce autogenerate da YAML
+
+Quando il contratto di un intero modulo è definito da YAML OpenAPI (caso del
+raccordo partitario) la deroga REPLICA ORIGINALE vale per tutte le `Resource`
+del modulo, con queste regole:
+
+- **Generazione**: `openapi-generator-maven-plugin` (versione gestita nel
+  `pluginManagement` del parent), generatore `spring` con `interfaceOnly`,
+  `useSpringBoot3`, Jakarta EE, `skipDefaultInterface`, `useBeanValidation`,
+  `useTags`; nessun supporting file, test o documentazione generati. Una
+  execution per ogni YAML con `paths`; il file dei componenti comuni non ha
+  execution. Il codice generato sta in `target/generated-sources` e non si
+  committa.
+- **Contratto**: nomi di campi, enum, modelli, path e status code sono quelli
+  dello YAML, senza adattamenti (niente suffisso `Code`, niente `DtoReq`/
+  `DtoResp`, niente enum gemelli). Gli YAML non si modificano mai.
+- **Template `pojo.mustache`** del modulo (copia del template del generatore
+  alla versione in uso, con due `@JsonIgnore` in più sui metodi fluenti), per
+  evitare che Jackson legga i metodi fluenti `set*` come setter e pubblichi
+  proprietà non presenti nello YAML. Da riconfrontare con l'originale e da
+  riscansionare a ogni upgrade del plugin.
+- **Resource**: implementa l'interfaccia generata, annotata
+  `@ReplicatesOriginalBehavior(system, reference)` con `reference` = nome del
+  file YAML. Per i servizi non implementati ogni metodo lancia
+  `NotImplementedOperationException`.
+- **Errori**: un `@RestControllerAdvice` scoped (`assignableTypes`) produce la
+  busta dello YAML per: bean validation, `ConstraintViolationException`,
+  deserializzazione, corpo non leggibile e 501. `errorCode` = status come
+  stringa; testi fissi in inglese (quelli presenti nello YAML hanno la
+  precedenza); `technicalDescription` = percorso del campo + messaggio;
+  `errorList` con tutte le violazioni ordinate per percorso del campo
+  (alfabetico, a parità per messaggio, quelle senza percorso per prime) e
+  `mainError` uguale alla prima; `header` riecheggiato dalla richiesta
+  (senza campi null) o, se non disponibile, generato con `timestamp` e
+  `trackId`.
+- **Lingua**: un interceptor del modulo imposta `Locale.ENGLISH` solo quando il
+  handler è una `Resource` del modulo (confronto sul tipo, non sul path), così
+  i messaggi di bean validation sono in inglese senza toccare gli altri
+  sottosistemi.
+- **Confini**: `domain` e `application` seguono lo standard e non importano
+  classi generate né web. Si creano solo all'implementazione di un servizio,
+  con l'esagono diviso per operazione; il mapper converte tra modelli generati
+  e dominio.
+- **Verifiche tipiche** dopo ogni intervento sul modulo: build verde, tutti gli
+  endpoint non implementati rispondono 501, `/v3/api-docs` coincide con gli
+  YAML, sha256 degli YAML invariati.
+
 ## Struttura dei moduli e avvio
 
 - **Un solo modulo avviabile**: `smart-simulator-app`. Contiene l'unica

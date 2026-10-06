@@ -18,6 +18,7 @@ com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\m
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\GetOthSrvActnsDtoResponse.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\ReserveDtoResponse.class
 com\capgemini\smart\simulator\account\raccordopartitario\common\adapter\in\rest\advice\AccountRaccordoPartitarioExceptionHandler.class
+com\capgemini\smart\simulator\account\raccordopartitario\config\AccountRaccordoPartitarioWebConfig.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\NdgInfo.class
 com\capgemini\smart\simulator\account\raccordopartitario\common\adapter\in\rest\dto\AccountRaccordoPartitarioErrorBody$Payload.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\ActivateDtoResponse.class
@@ -29,11 +30,13 @@ com\capgemini\smart\simulator\account\raccordopartitario\currentaccount\configur
 com\capgemini\smart\simulator\account\raccordopartitario\currentaccount\configure\adapter\in\rest\model\Currency.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\CanBeCreatedRequest.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\AdditionalAttribute.class
+com\capgemini\smart\simulator\account\raccordopartitario\config\AccountRaccordoPartitarioLocaleInterceptor.class
 com\capgemini\smart\simulator\account\raccordopartitario\common\adapter\in\rest\dto\AccountRaccordoPartitarioErrorBody.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\GetMainInfoDtoResponse.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\CreateDtoRequestPayload.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\CreateDtoResponse.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\SimpleProduct.class
+com\capgemini\smart\simulator\account\raccordopartitario\common\adapter\in\rest\advice\AccountRaccordoPartitarioExceptionHandler$Violation.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\GetAdditionalAttributesDtoRequest.class
 com\capgemini\smart\simulator\account\raccordopartitario\sales\adapter\in\rest\model\AdditionalAttributes.class
 com\capgemini\smart\simulator\account\raccordopartitario\common\adapter\in\rest\exception\NotImplementedOperationException.class

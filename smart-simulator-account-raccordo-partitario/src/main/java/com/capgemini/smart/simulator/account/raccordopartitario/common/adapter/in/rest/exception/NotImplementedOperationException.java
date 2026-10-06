@@ -10,7 +10,7 @@ public class NotImplementedOperationException extends RuntimeException {
     private final transient Object request;
 
     public NotImplementedOperationException(Object request) {
-        super("Servizio non implementato");
+        super("Service not implemented");
         this.request = request;
     }
 
