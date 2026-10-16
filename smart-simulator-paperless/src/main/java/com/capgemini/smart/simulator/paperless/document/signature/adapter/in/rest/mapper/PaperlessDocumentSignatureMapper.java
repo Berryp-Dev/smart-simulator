@@ -1,7 +1,8 @@
 package com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.mapper;
 
+import com.capgemini.smart.simulator.core.rest.request.RestRequest;
 import com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.dto.PaperlessDocumentSignatureDtoReq;
-import com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.dto.enums.PaperlessDocumentSignatureScenarioCode;
+import com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode;
 import com.capgemini.smart.simulator.paperless.document.signature.domain.model.PaperlessDocumentSignature;
 
 /**
@@ -15,25 +16,9 @@ public final class PaperlessDocumentSignatureMapper {
     private PaperlessDocumentSignatureMapper() {
     }
 
-    public static PaperlessDocumentSignature mapToDomain(PaperlessDocumentSignatureDtoReq request) {
-        com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode scenarioCode =
-                mapToDomainScenarioCode(request.scenarioCode());
-        return new PaperlessDocumentSignature(request.practiceIdOmnichannel(), request.scope(), scenarioCode,
-                request.listDocuments());
+    public static PaperlessDocumentSignature mapToDomain(RestRequest<PaperlessDocumentSignatureDtoReq> request) {
+        return new PaperlessDocumentSignature(request.getPayload().getPracticeIdOmnichannel(), request.getPayload().getScope(), PaperlessDocumentSignatureScenarioCode.valueOf(request.getPayload().getScenarioCode().name()) ,
+                request.getPayload().getListDocuments());
     }
-
-    private static com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode
-            mapToDomainScenarioCode(PaperlessDocumentSignatureScenarioCode dtoScenarioCode) {
-        if (dtoScenarioCode == null) {
-            return null;
-        }
-        return switch (dtoScenarioCode) {
-            case ALL_SIGNED ->
-                    com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode.ALL_SIGNED;
-            case PARTIAL_SIGNATURE ->
-                    com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode.PARTIAL_SIGNATURE;
-            case SIGNATURE_ERROR ->
-                    com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode.SIGNATURE_ERROR;
-        };
-    }
+    
 }

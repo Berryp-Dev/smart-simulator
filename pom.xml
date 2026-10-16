@@ -3,6 +3,27 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <scm>
+        <connection>scm:git:https://bk-smartsale.pl.s2-eu.capgemini.com/gitlab/smart-sales/smart-simulator.git
+        </connection>
+        <developerConnection>
+            scm:git:https://bk-smartsale.pl.s2-eu.capgemini.com/gitlab/smart-sales/smart-simulator.git
+        </developerConnection>
+        <url>scm:https://bk-smartsale.pl.s2-eu.capgemini.com/gitlab/smart-sales/smart-simulator.git</url>
+        <tag>HEAD</tag>
+    </scm>
+
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <url>http://nexus3-core:8081/nexus3/repository/smart-sales-maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>http://nexus3-core:8081/nexus3/repository/smart-sales-maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <groupId>com.capgemini.smart.simulator</groupId>
     <artifactId>smart-simulator-parent</artifactId>
@@ -27,8 +48,6 @@
         <cxf.version>4.0.5</cxf.version>
         <ibm-mq.version>3.3.1</ibm-mq.version>
         <springdoc.version>2.6.0</springdoc.version>
-        <openapi-generator.version>7.19.0</openapi-generator.version>
-        <jackson-databind-nullable.version>0.2.12</jackson-databind-nullable.version>
     </properties>
 
     <dependencyManagement>
@@ -55,30 +74,12 @@
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.openapitools</groupId>
-                <artifactId>jackson-databind-nullable</artifactId>
-                <version>${jackson-databind-nullable.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.openapitools</groupId>
-                    <artifactId>openapi-generator-maven-plugin</artifactId>
-                    <version>${openapi-generator.version}</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
     <modules>
         <module>smart-simulator-core</module>
         <module>smart-simulator-paperless</module>
-        <module>smart-simulator-account-raccordo-partitario</module>
         <module>smart-simulator-app</module>
         <!--
             Ogni sottosistema simulato viene aggiunto qui come modulo separato,

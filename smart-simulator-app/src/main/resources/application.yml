@@ -13,15 +13,25 @@ spring:
 
   config:
     import: classpath:paperless-config.yml
-
-  # Il database non e' usato in questa versione: senza datasource l'avvio
-  # fallirebbe perche' spring-boot-starter-jdbc e' nel core. Rimuovere questa
-  # esclusione e reinserire spring.datasource.* negli application-<env>.yml
-  # quando servira' la persistenza.
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
-
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+server:
+  servlet:
+    context-path: /smart-simulator
+

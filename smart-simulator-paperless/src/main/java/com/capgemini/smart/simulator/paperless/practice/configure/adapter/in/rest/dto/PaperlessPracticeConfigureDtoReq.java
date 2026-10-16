@@ -1,7 +1,11 @@
 package com.capgemini.smart.simulator.paperless.practice.configure.adapter.in.rest.dto;
 
 import com.capgemini.smart.simulator.paperless.practice.configure.adapter.in.rest.dto.enums.PaperlessPracticeConfigureScenarioCode;
+
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Request DTO dell'operazione POST /paperless/practice/configure.
@@ -18,9 +22,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * {@code PaperlessPracticeConfigureValidator}): l'annotazione non introduce
  * validazione Bean Validation ne' altera la deserializzazione.
  */
-public record PaperlessPracticeConfigureDtoReq(
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String practiceIdOmnichannel,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String customerDenomination,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) PaperlessPracticeConfigureScenarioCode scenarioCode,
-        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) String scope) {
+@Data
+@NoArgsConstructor
+// @AllArgsConstructor
+
+public class PaperlessPracticeConfigureDtoReq{
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) 
+        String practiceIdOmnichannel;
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) 
+        String customerDenomination;
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) 
+        PaperlessPracticeConfigureScenarioCode scenarioCode;
+        @Schema(requiredMode = Schema.RequiredMode.REQUIRED) 
+        String scope;
 }

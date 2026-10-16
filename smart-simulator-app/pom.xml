@@ -16,9 +16,13 @@
     <name>SmartSimulator :: App</name>
     <description>
         Unico modulo avviabile del progetto: espone in un solo processo tutti
-        i sottosistemi simulati (core + ogni modulo sottosistema), con
-        un'unica Swagger UI su /swagger-ui.html.
+        i sottosistemi simulati (core + ogni modulo sottosistema).
     </description>
+	
+	<properties>
+        <lombok.version>1.18.30</lombok.version>
+    </properties>
+
 
     <dependencies>
         <dependency>
@@ -31,19 +35,23 @@
             <artifactId>smart-simulator-paperless</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.capgemini.smart.simulator</groupId>
-            <artifactId>smart-simulator-account-raccordo-partitario</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
+        <finalName>smartsimulator</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

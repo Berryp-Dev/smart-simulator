@@ -1,6 +1,7 @@
 package com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.rest.ApiError;
+import com.capgemini.smart.simulator.core.rest.request.RestRequest;
 import com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.dto.PaperlessDocumentSignatureDtoReq;
 import com.capgemini.smart.simulator.paperless.document.signature.adapter.in.rest.mapper.PaperlessDocumentSignatureMapper;
 import com.capgemini.smart.simulator.paperless.document.signature.application.port.in.NotifyPaperlessDocumentSignatureUseCase;
@@ -22,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = "Document")
 @RequestMapping("/paperless/document")
-public class PaperlessDocumentSignatureResource {
+public class PaperlessDocumentSignatureRestResource {
 
     private final NotifyPaperlessDocumentSignatureUseCase notifyPaperlessDocumentSignatureUseCase;
 
-    public PaperlessDocumentSignatureResource(NotifyPaperlessDocumentSignatureUseCase notifyPaperlessDocumentSignatureUseCase) {
+    public PaperlessDocumentSignatureRestResource(NotifyPaperlessDocumentSignatureUseCase notifyPaperlessDocumentSignatureUseCase) {
         this.notifyPaperlessDocumentSignatureUseCase = notifyPaperlessDocumentSignatureUseCase;
     }
 
@@ -36,7 +37,7 @@ public class PaperlessDocumentSignatureResource {
                     content = @Content(schema = @Schema(implementation = ApiError.class)))
     })
     @PostMapping("/signature")
-    public ResponseEntity<Void> signature(@RequestBody PaperlessDocumentSignatureDtoReq request) {
+    public ResponseEntity<Void> signature(@RequestBody RestRequest<PaperlessDocumentSignatureDtoReq> request) {
         PaperlessDocumentSignature documentSignature = PaperlessDocumentSignatureMapper.mapToDomain(request);
         notifyPaperlessDocumentSignatureUseCase.notifyDocumentSignature(documentSignature);
         return ResponseEntity.ok().build();
