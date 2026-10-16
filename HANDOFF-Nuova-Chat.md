@@ -40,3 +40,7 @@ Implementare i servizi di `account-raccordo-partitario` uno per volta, partendo 
 - I metodi fluenti `set*` del generatore vengono letti da Jackson come setter: nel modulo account lo evita il template `pojo.mustache` (da riverificare a ogni upgrade del plugin).
 - Su Windows servono `git config core.longpaths true` (percorsi lunghi) e, prima di rinominare directory, la chiusura dell'IDE.
 - Chiedere sempre un commit prima di un intervento ampio: Claude Code può trovare l'albero sporco o una modifica annullata da un revert.
+- Non terminare i processi Java per nome: solo il PID dell'app avviata da te.
+- Verificare l'app sempre su un jar prodotto da `mvn clean install`, non da `target/classes` compilato dall'IDE (può dare "Unresolved compilation problems").
+- Se l'albero è sporco il Passo 0 si ferma: fare prima il commit del lavoro precedente.
+- Quando YAML e software divergono, vince lo YAML: il software non aggiunge controlli né campi.
