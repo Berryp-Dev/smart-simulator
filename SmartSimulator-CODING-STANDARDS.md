@@ -48,16 +48,16 @@ com.capgemini.smart.simulator.<sottosistema>/
 │       │   └── exception/           DomainValidationException (solo se l'API ha invarianti)
 │       │
 │       ├── application/
-│       │   ├── port/in/             driving port, suffisso "UseCase", verbo+oggetto
-│       │   │                        (es. ConfigurePaperlessPracticeUseCase)
+│       │   ├── port/in/             driving port, interfaccia con suffisso "Service", verbo+oggetto
+│       │   │                        (es. ConfigurePaperlessPracticeService)
 │       │   ├── port/out/            driven port, suffisso "Port", naming = dipendenza
 │       │   │                        tecnica; solo tipi di dominio o primitivi Java
-│       │   ├── service/             implementazione use case
+│       │   ├── service/             implementazione, suffisso "ServiceImpl"
 │       │   └── validation/          un validator dedicato per scenario
 │       │
 │       └── adapter/
 │           ├── in/rest/
-│           │   ├── resource/        Resource dell'API, suffisso "Resource" (MAI "Controller"),
+│           │   ├── resource/        RestResource dell'API, suffisso "RestResource" (MAI "Controller"),
 │           │   │                    con @Tag dell'area (vedi sotto)
 │           │   ├── dto/             DTO radice, suffissi "DtoReq"/"DtoResp"
 │           │   ├── dto/model/       DTO annidati dell'API, suffisso "Dto" semplice
@@ -96,10 +96,10 @@ con il payload del messaggio che pubblica.
 ### Regole di dipendenza e confini tra layer
 
 - `domain` e `application` non devono dipendere da framework/librerie esterne
-  (Spring escluso dove strettamente necessario per le annotazioni sui bean).
+  (Spring escluso dove strettamente necessario per le annotazioni sui bean, `@Autowired` incluso).
   Gli `adapter` possono dipendere liberamente da framework/librerie.
 - **Domain vs DTO**: il modello di dominio resta separato dai DTO REST. Il
-  `Resource` converte il DTO in un oggetto di dominio tramite il **mapper**
+  `RestResource` converte il DTO in un oggetto di dominio tramite il **mapper**
   dell'API (`adapter/in/rest/mapper`) e invoca la porta in ingresso passando
   **solo il dominio**: né lo use case né il validator né il service ricevono o
   importano mai un DTO. Il validator lavora sul tipo di dominio. Il mapper
@@ -121,7 +121,7 @@ con il payload del messaggio che pubblica.
 
 ### Documentazione Swagger per area
 
-Ogni classe `Resource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
+Ogni classe `RestResource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
 `Document`), così gli endpoint sono raggruppati per area nella Swagger UI.
 
 ## Convenzioni di naming
@@ -161,17 +161,19 @@ Ogni classe `Resource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
   | `is` / `has` | funzioni che restituiscono un booleano |
   | *(altro)* | verbo comunque coerente con lo scopo specifico (es. `validate`, `publish`, `resolve`, `parse`, `format`, `configure`) |
 - **Port in/out**: suffissi diversi per ruolo, non solo per direzione —
-  `port/in` usa suffisso **`UseCase`** (verbo+oggetto, intento di
-  business); `port/out` usa suffisso **`Port`** (dipendenza tecnica)
-- **REST entry-point**: package e suffisso classe **`Resource`**, mai
-  `Controller`; un `Resource` per **API**, nome =
-  `<Sottosistema><Area><Api>Resource` (es.
-  `PaperlessPracticeConfigureResource`, `PaperlessDocumentSignatureResource`),
+  `port/in` usa suffisso **`Service`** (verbo+oggetto, intento di
+  business) per l'interfaccia, mentre `application/service` usa suffisso
+  **`ServiceImpl`** per l'implementazione (es. `ConfigurePaperlessPracticeService`
+  e `ConfigurePaperlessPracticeServiceImpl`); `port/out` usa suffisso **`Port`** (dipendenza tecnica)
+- **REST entry-point**: suffisso classe **`RestResource`** (il package resta `resource`), mai
+  `Controller`; un `RestResource` per **API**, nome =
+  `<Sottosistema><Area><Api>RestResource` (es.
+  `PaperlessPracticeConfigureRestResource`, `PaperlessDocumentSignatureRestResource`),
   con `@Tag(name = "<Area>")`
 - **DTO**: root request/response con suffisso `DtoReq`/`DtoResp`; DTO
   annidati/composti con solo `Dto`; un DTO non usa mai direttamente un
-  enum di dominio — ha un proprio enum gemello con mapping esplicito
-  (`switch`, mai `valueOf`) nel mapper, stesso principio di
+  enum di dominio — ha un proprio enum gemello con mapping nel mapper tramite
+  `valueOf` sul nome della costante (vedi "Mapping degli enum"), stesso principio di
   disaccoppiamento già applicato a DTO vs modello di dominio. **Ogni
   campo enum del dominio è un enum anche nel DTO** (mai `String`): il DTO
   usa il proprio enum gemello, in `adapter/in/rest/dto/enums`, con lo
@@ -182,6 +184,31 @@ Ogni classe `Resource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
   core, vedi "Gestione errori").
 - **Enum annidati in un DTO**: naming
   `<NomeScenarioSenzaDtoReq><Concetto>Code`
+
+## Mapping degli enum
+
+- La conversione tra un enum dell'adapter (enum gemello del DTO REST o enum
+  del modello generato) e l'enum di dominio, in entrambe le direzioni, si
+  esegue con `valueOf` sul nome della costante, mai con `switch`. Esempio:
+  `PaperlessDocumentSignatureScenarioCode.valueOf(request.getPayload().getScenarioCode().name())`.
+- Le costanti dei due enum hanno **nomi identici**: aggiungere o rinominare
+  una costante in un enum richiede di farlo anche nell'altro.
+- Il mapper resta null-safe: se l'enum sorgente è null il risultato è null e
+  `valueOf` non viene invocato (la presenza si controlla nel validator).
+- Una costante senza corrispondenza produce `IllegalArgumentException`: è un
+  errore di programmazione e non va nascosto né gestito. Ogni mapper con enum
+  ha un test unitario che verifica la corrispondenza di tutte le costanti.
+- La regola riguarda solo le conversioni enum -> enum; le altre conversioni
+  (es. enum -> `String` di una response) non cambiano.
+
+## Iniezione delle dipendenze
+
+- Le dipendenze dei bean Spring (`RestResource`, service, validator, adapter,
+  mapper, configurazioni) si iniettano con `@Autowired` sul campo
+  (field injection); non si usa l'iniezione tramite costruttore.
+- Restano fuori dalla regola i parametri dei metodi `@Bean`.
+- I test unitari istanziano la classe e valorizzano i campi con Mockito
+  (`@Mock` / `@InjectMocks`).
 
 ## Validazione per scenario
 
@@ -238,7 +265,7 @@ Ogni classe `Resource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
    mai il messaggio di Jackson; il messaggio originale va solo nel log.
 2. **Violazioni di invarianti di dominio** → `DomainValidationException`
    locale alla feature (puro Java, nessuna dipendenza da Spring/core),
-   intercettata da un `@ControllerAdvice` **scoped** al Resource, mappata
+   intercettata da un `@ControllerAdvice` **scoped** al RestResource, mappata
    alla stessa forma di `ApiError` (un singolo `ValidationError` con
    `field: null`).
 3. **Scenari dichiarati REPLICA ORIGINALE** (vedi sotto) — gestione errori
@@ -261,10 +288,10 @@ Comportamento: REPLICA ORIGINALE (sistema: <NomeSistema>, rif: <WSDL/doc>)
 **Come si traduce nel codice:**
 - Annotazione `com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior`
   (attributi: `system` obbligatorio, `reference` opzionale), applicata sul
-  Resource o sul singolo metodo che deroga
+  RestResource o sul singolo metodo che deroga
 - Il contratto REST segue il sistema originale, **non** le convenzioni
   standard — tipicamente tramite uno `@RestControllerAdvice` scoped al
-  singolo Resource, con priorità sul `GlobalExceptionHandler`
+  singolo RestResource, con priorità sul `GlobalExceptionHandler`
 - Anche la validazione può seguire una logica diversa (es. fail-fast) se è
   il comportamento del sistema originale
 - La business logic interna e i concetti di dominio restano comunque
@@ -274,7 +301,7 @@ Comportamento: REPLICA ORIGINALE (sistema: <NomeSistema>, rif: <WSDL/doc>)
 ### Moduli con interfacce autogenerate da YAML
 
 Quando il contratto di un intero modulo è definito da YAML OpenAPI (caso del
-raccordo partitario) la deroga REPLICA ORIGINALE vale per tutte le `Resource`
+raccordo partitario) la deroga REPLICA ORIGINALE vale per tutte le `RestResource`
 del modulo, con queste regole:
 
 - **Generazione**: `openapi-generator-maven-plugin` (versione gestita nel
@@ -292,7 +319,7 @@ del modulo, con queste regole:
   evitare che Jackson legga i metodi fluenti `set*` come setter e pubblichi
   proprietà non presenti nello YAML. Da riconfrontare con l'originale e da
   riscansionare a ogni upgrade del plugin.
-- **Resource**: implementa l'interfaccia generata, annotata
+- **RestResource**: implementa l'interfaccia generata, annotata
   `@ReplicatesOriginalBehavior(system, reference)` con `reference` = nome del
   file YAML. Per i servizi non implementati ogni metodo lancia
   `NotImplementedOperationException`.
@@ -313,13 +340,14 @@ del modulo, con queste regole:
   aggiunge nulla (né attributi né header HTTP). La regola degli errori non
   cambia.
 - **Lingua**: un interceptor del modulo imposta `Locale.ENGLISH` solo quando il
-  handler è una `Resource` del modulo (confronto sul tipo, non sul path), così
+  handler è una `RestResource` del modulo (confronto sul tipo, non sul path), così
   i messaggi di bean validation sono in inglese senza toccare gli altri
   sottosistemi.
 - **Confini**: `domain` e `application` seguono lo standard e non importano
   classi generate né web. Si creano solo all'implementazione di un servizio,
   con l'esagono diviso per operazione; il mapper converte tra modelli generati
-  e dominio.
+  e dominio; gli enum generati si convertono con `valueOf` sul nome della
+  costante (vedi "Mapping degli enum").
 - **Verifiche tipiche** dopo ogni intervento sul modulo: build verde, tutti gli
   endpoint non implementati rispondono 501, `/v3/api-docs` coincide con gli
   YAML, sha256 degli YAML invariati.
@@ -489,7 +517,7 @@ in `dependencyManagement` nel pom parent e inclusa come dipendenza diretta
 nel pom del **core** — ogni modulo sottosistema la eredita automaticamente
 senza configurazione aggiuntiva. UI disponibile su `/swagger-ui.html` di
 ciascun modulo avviato (oggi un'unica UI, quella dell'app). Gli endpoint
-sono raggruppati per area tramite `@Tag` sul `Resource`.
+sono raggruppati per area tramite `@Tag` sul `RestResource`.
 
 ## Nota di processo per Claude Code
 

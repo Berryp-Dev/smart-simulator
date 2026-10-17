@@ -270,6 +270,13 @@ application, mapper), senza persistenza; primi test unitari del modulo (surefire
 3.2.5 fissato nel pom del modulo, il default di Maven non esegue JUnit 5). Gli
 altri 11 servizi restano 501. Dettaglio in `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
+**Aggiornamento standard (2026-10-17): documentato, codice da allineare.** Quattro
+nuove direttive in CODING-STANDARDS.md: (1) classi REST con suffisso `RestResource`;
+(2) mapping degli enum adapter <-> dominio con `valueOf` (non più `switch`); (3) interfacce
+dei casi d'uso con suffisso `Service` e implementazioni con suffisso `ServiceImpl`
+(il suffisso `UseCase` è abolito); (4) injection con `@Autowired` sul campo. Il codice
+esistente va allineato con `PROMPT-ClaudeCode-Allineamento-Direttive.md` (da eseguire).
+
 **In attesa:** ambiente `sit` (profilo già ammesso dal controllo all'avvio,
 ma `application-sit.yml` e `paperless-config-sit.yml` non esistono ancora,
 mancano i valori).
@@ -292,13 +299,13 @@ mancano i valori).
 
 **Refactoring a struttura per aree (regole in CODING-STANDARDS.md, sezione
 "Architettura esagonale — Package by Area e Feature"): COMPLETATO**
-1. Package spostati in `practice.configure` e `document.signature`, `Resource`
-   rinominati (`PaperlessPracticeConfigureResource`,
-   `PaperlessDocumentSignatureResource`), `@Tag` per area. Fatto.
+1. Package spostati in `practice.configure` e `document.signature`, `RestResource`
+   rinominati (`PaperlessPracticeConfigureRestResource`,
+   `PaperlessDocumentSignatureRestResource`), `@Tag` per area. Fatto.
 2. Port in uscita senza JAXB (`PaperlessPracticeStatusUpdate`,
    `PaperlessDocumentStatusUpdate`, enum `PaperlessPracticeStatusCode`),
    conversione solo nell'adapter MQ. Fatto.
-3. Il `Resource` passa allo use case solo oggetti di dominio tramite mapper
+3. Il `RestResource` passa allo use case solo oggetti di dominio tramite mapper
    (mapper null-safe). Fatto, risposte HTTP identiche su 9 casi.
 4. Modello di dominio di Configure rinominato `PaperlessPracticeConfiguration`
    (nessun suffisso tecnico nei modelli di dominio). Fatto, build verde.
@@ -310,6 +317,8 @@ XML su MQ dopo i refactoring 2 e 3 — Configure su `DEV.QUEUE.2` (5 scenari,
 `CodiceFiscale` `XXXXXXXXXXXXXXXX`, un solo `PARZIALE`/`ERRORE_FIRMA`).
 
 **Da fare (prossimo passo):**
+- Eseguire `PROMPT-ClaudeCode-Allineamento-Direttive.md` (RestResource, valueOf, Service/ServiceImpl,
+  @Autowired) dopo un commit pulito, poi verificare a mano Swagger e messaggi MQ
 - Implementare i servizi di `account-raccordo-partitario` uno per volta (primo
   servizio da scegliere): per ciascuno specifica, design di `domain` e
   `application` (esagono diviso per operazione), prompt per Claude Code

@@ -19,8 +19,8 @@ fondo alla sezione).
 **Endpoint**: `POST /paperless/practice/configure`
 
 **Package**: `com.capgemini.smart.simulator.paperless.practice.configure`
-(area `practice`, API `configure`); `Resource`:
-`PaperlessPracticeConfigureResource` con `@Tag(name = "Practice")`.
+(area `practice`, API `configure`); `RestResource`:
+`PaperlessPracticeConfigureRestResource` con `@Tag(name = "Practice")`.
 
 **Comportamento**: standard di progetto (nessuna deroga
 `@ReplicatesOriginalBehavior`).
@@ -71,7 +71,7 @@ altri errori (vedi CODING-STANDARDS.md, "Gestione errori").
 
 **Enum — `PaperlessPracticeConfigureScenarioCode`** (stesso nome semplice
 in `domain/enums` e in `adapter/in/rest/dto/enums`; il mapper converte con
-`switch` esplicito, qualificando per esteso l'enum di dominio):
+`valueOf` sul nome della costante, qualificando per esteso l'enum di dominio):
 - `SIGNATORIES_WAITING`
 - `PRACTICE_LOCKED`
 - `PRACTICE_UNLOCKED`
@@ -160,7 +160,7 @@ I generatori locali alla feature sono stati rimossi.
 validazione e di deserializzazione, messaggi su `DEV.QUEUE.1`).
 
 **Endpoint**: `POST /paperless/document/signature`, in
-`PaperlessDocumentSignatureResource` con `@Tag(name = "Document")` (package
+`PaperlessDocumentSignatureRestResource` con `@Tag(name = "Document")` (package
 `com.capgemini.smart.simulator.paperless.document.signature`, area
 `document`, API `signature`).
 
@@ -183,7 +183,7 @@ informazioni compatibili con lo stato documento.
 `DtoResp`. Swagger: `200` senza schema, `400` con `ApiError`.
 
 **Enum — `PaperlessDocumentSignatureScenarioCode`** (stesso nome semplice in
-`domain/enums` e `adapter/in/rest/dto/enums`; mapper con `switch`):
+`domain/enums` e `adapter/in/rest/dto/enums`; mapper con `valueOf`):
 - `ALL_SIGNED` — firma cliente, tutti i documenti con firma finale
 - `PARTIAL_SIGNATURE` — firma cliente, 1 documento con firma parziale
 - `SIGNATURE_ERROR` — firma, 1 documento con firma in errore
@@ -249,8 +249,8 @@ Configure). La port accetta solo un oggetto di dominio
 documento, stato); la conversione nel messaggio JAXB e il `CodiceFiscale`
 fisso sono nell'adapter MQ.
 
-**Use case**: `NotifyPaperlessDocumentSignatureUseCase` (port/in), ritorna
-`void`.
+**Service**: `NotifyPaperlessDocumentSignatureService` (port/in, implementazione
+`NotifyPaperlessDocumentSignatureServiceImpl`), ritorna `void`.
 
 ---
 
@@ -266,7 +266,7 @@ specifica per ciascuno da aggiungere qui.
 `com.capgemini.smart.simulator.account.raccordopartitario`.
 
 **Comportamento**: REPLICA ORIGINALE (sistema: Raccordo Partitario Conti, rif:
-nome del file YAML). Le `Resource` sono annotate con
+nome del file YAML). Le `RestResource` sono annotate con
 `@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference =
 "<file yaml>")`. Contratto al 100% dello YAML; vedi ARCHITECTURE.md sezione 6 e
 CODING-STANDARDS "Moduli con interfacce autogenerate da YAML".
@@ -277,8 +277,8 @@ CODING-STANDARDS "Moduli con interfacce autogenerate da YAML".
 | File | Contenuto |
 |---|---|
 | `components-v1.2.2.yaml` | Non è un'API: schemi comuni (`Header`, `ErrorResponse`, `SrvAcntKey`, `Currency`, ...) e response `Error300`...`Error511`. Nessuna execution propria. |
-| `raccordopartitario_sales.yaml` | 11 operazioni POST, tag `Sales` → interfaccia `SalesApi`, `Resource` `AccountRaccordoPartitarioSalesResource` (package `...sales.adapter.in.rest`). |
-| `raccordopartitario_sales_currentaccounts_configure.yaml` | 1 operazione POST, tag `Current-Account` → `CurrentAccountApi`, `Resource` `AccountRaccordoPartitarioCurrentAccountConfigureResource` (package `...currentaccount.configure.adapter.in.rest`). |
+| `raccordopartitario_sales.yaml` | 11 operazioni POST, tag `Sales` → interfaccia `SalesApi`, `RestResource` `AccountRaccordoPartitarioSalesRestResource` (package `...sales.adapter.in.rest`). |
+| `raccordopartitario_sales_currentaccounts_configure.yaml` | 1 operazione POST, tag `Current-Account` → `CurrentAccountApi`, `RestResource` `AccountRaccordoPartitarioCurrentAccountConfigureRestResource` (package `...currentaccount.configure.adapter.in.rest`). |
 
 **Operazioni** (tutte POST):
 
@@ -297,7 +297,7 @@ CODING-STANDARDS "Moduli con interfacce autogenerate da YAML".
 | `cancel` | `/smartengine/raccordo/cancel` | 201, senza body |
 | `CurrentAccountConfigure` | `/ui-app/raccordo/sales/current-accounts/configure` | 204 |
 
-**Gestione errori** (advice scoped alle due `Resource`, busta dello YAML
+**Gestione errori** (advice scoped alle due `RestResource`, busta dello YAML
 `{header, payload{mainError{errorCode, errorMessage, technicalDescription},
 errorList[]}}`):
 
@@ -330,7 +330,7 @@ modulo (non uno per area/API), da definire quando un servizio ne avrà bisogno.
 **Endpoint**: POST `/smartengine/raccordo/create` (`SalesApi.create`), successo 201.
 Esagono nel package `...raccordopartitario.sales.create` (`domain/model`,
 `application/port/in`, `application/service`, `adapter/in/rest/mapper`); la
-`Resource` Sales resta in `sales/adapter/in/rest/resource`.
+`RestResource` Sales resta in `sales/adapter/in/rest/resource`.
 
 **Request** (`CreateDtoRequest`: `header` + `payload{caseID, srvActnData}`): i campi
 usati sono `payload.srvActnData.bankCod` e `payload.srvActnData.srvCod` (String,

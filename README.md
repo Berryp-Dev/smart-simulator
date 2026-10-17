@@ -52,9 +52,9 @@ smart-simulator/
         ├── java/com/capgemini/smart/simulator/account/raccordopartitario/
         │   ├── common/adapter/in/rest/   (advice, busta d'errore, eccezione "non implementato")
         │   ├── config/                   (interceptor locale + web config del modulo)
-        │   ├── sales/adapter/in/rest/resource/             (Resource Sales)
+        │   ├── sales/adapter/in/rest/resource/             (RestResource Sales)
         │   ├── sales/create/             (esagono di `create`: domain, application, adapter/in/rest/mapper)
-        │   └── currentaccount/configure/adapter/in/rest/resource/  (Resource Configure)
+        │   └── currentaccount/configure/adapter/in/rest/resource/  (RestResource Configure)
         ├── openapi-templates/pojo.mustache   (template del generatore, vedi sotto)
         └── test/java/...             (test unitari di `create`)
     Gli YAML NON stanno nel modulo ma in
@@ -64,7 +64,7 @@ smart-simulator/
 Un solo processo (`smart-simulator-app`) espone i servizi di tutti i
 sottosistemi, con un'unica Swagger UI. Core e sottosistemi sono solo
 librerie: nessuna classe main, nessun `spring-boot-maven-plugin`, nessun
-`application.yml`. I punti di ingresso REST sono classi `*Resource` dentro
+`application.yml`. I punti di ingresso REST sono classi `*RestResource` dentro
 ciascuna feature.
 
 ## Avvio locale
@@ -128,6 +128,10 @@ L'app gira sulla porta **9082**; Swagger UI su
   obbligatorio, il `DefaultsResolver` per quel campo viene rimosso.
 - Ogni campo enum è enum anche nel DTO; un valore non convertibile al tipo del
   campo è gestito dall'handler del core (HTTP 400 con `ApiError`).
+- Classi REST con suffisso `RestResource` (package `resource`); interfacce dei casi
+  d'uso con suffisso `Service`, implementazioni con suffisso `ServiceImpl`.
+- Mapping degli enum adapter <-> dominio con `valueOf` sul nome della costante
+  (costanti con nomi identici); dipendenze iniettate con `@Autowired` sul campo.
 
 ## Aggiungere un nuovo sottosistema simulato
 
@@ -149,7 +153,7 @@ L'app gira sulla porta **9082**; Swagger UI su
    e identiche in ogni ambiente.
 5. Organizzare il modulo per **area → API** (`<area>/<api>`), con struttura
    esagonale completa per ogni API (vedi `ARCHITECTURE.md` e CODING-STANDARDS): adapter di persistenza JDBC
-   (`JdbcTemplate`) sullo schema dedicato, `Resource` REST e/o endpoint SOAP, DTO per ciascuna operazione.
+   (`JdbcTemplate`) sullo schema dedicato, `RestResource` REST e/o endpoint SOAP, DTO per ciascuna operazione.
 6. Riusare `KafkaPublisherService` / `MqPublisherService` / `DefaultsResolver`
    dal core, con un producer/port/adapter dedicato per funzionalità.
 
@@ -181,12 +185,12 @@ autogenerate da YAML").
    `pojo.mustache` del modulo. Versione del plugin e property di
    `jackson-databind-nullable` sono già nel pom parent. Il generato non va
    committato.
-5. Creare una `Resource` per ogni interfaccia `*Api` generata (una per tag
+5. Creare una `RestResource` per ogni interfaccia `*Api` generata (una per tag
    dello YAML): implementa l'interfaccia generata, è annotata
    `@ReplicatesOriginalBehavior(system, reference)` e ogni metodo lancia
    `NotImplementedOperationException`.
 6. Aggiornare l'`assignableTypes` dell'advice e i tipi di handler riconosciuti
-   dall'interceptor locale sulle nuove `Resource`.
+   dall'interceptor locale sulle nuove `RestResource`.
 7. Verificare: build verde dalla root con `BUILD SUCCESS`; Swagger UI risponde
    200; ogni endpoint risponde 501 con la busta dello YAML; `/v3/api-docs`
    coincide con gli YAML (nessuna proprietà inventata); sha256 degli YAML

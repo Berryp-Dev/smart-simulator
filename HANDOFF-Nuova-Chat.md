@@ -15,6 +15,7 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 - Persistenza con `JdbcTemplate` (nessun Hibernate/JPA). Struttura per area → API con esagono completo per API, port in uscita senza JAXB/DTO, allo use case arriva solo il dominio tramite mapper. Paperless (Configure e Signature) è implementato, refactorizzato e verificato; resta solo da controllare a mano il contenuto dei messaggi MQ (vedi `PROJECT-CONTEXT.md`).
 
 - Modulo `smart-simulator-account-raccordo-partitario` creato: interfacce autogenerate da YAML, 12 servizi: `create` implementato, gli altri 11 non implementati (501). Procedura per un nuovo raccordo nel `README.md`; dettagli in `SERVICES-SPECIFICATION` e `CODING-STANDARDS`.
+- Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): documentate; il codice va allineato con `PROMPT-ClaudeCode-Allineamento-Direttive.md`.
 
 ## Prossimo obiettivo
 

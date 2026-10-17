@@ -58,11 +58,11 @@ com.capgemini.smart.simulator.<sottosistema>/
 | `domain/model/component` | Value object annidati dell'API (nessun suffisso `Dto`). |
 | `domain/enums` | Enum di dominio (suffisso `Code`). |
 | `domain/exception` | `DomainValidationException`, solo se l'API ha invarianti di dominio. |
-| `application/port/in` | Casi d'uso (driving port), suffisso `UseCase`, naming verbo+oggetto con intento di business. |
+| `application/port/in` | Casi d'uso (driving port), interfaccia con suffisso `Service`, naming verbo+oggetto con intento di business. |
 | `application/port/out` | Dipendenze verso l'esterno (driven port), suffisso `Port`. Solo tipi di dominio o primitivi: mai JAXB, DTO o payload di messaggi. |
-| `application/service` | Implementazione dei casi d'uso: prima il validator, poi la business logic tramite le port out. |
+| `application/service` | Implementazione dei casi d'uso, classi con suffisso `ServiceImpl` (es. `ConfigurePaperlessPracticeServiceImpl`): prima il validator, poi la business logic tramite le port out. |
 | `application/validation` | Un validator dedicato per ogni scenario/operazione (punto 3). |
-| `adapter/in/rest/resource` | `Resource` dell'API, suffisso `Resource` (mai `Controller`), nome `<Sottosistema><Area><Api>Resource`, con `@Tag(name = "<Area>")`. |
+| `adapter/in/rest/resource` | `RestResource` dell'API, suffisso `RestResource` (mai `Controller`; il package resta `resource`), nome `<Sottosistema><Area><Api>RestResource`, con `@Tag(name = "<Area>")`. |
 | `adapter/in/rest/dto` | DTO radice, suffissi `DtoReq`/`DtoResp`. |
 | `adapter/in/rest/dto/model` | DTO annidati, suffisso `Dto`. |
 | `adapter/in/rest/dto/enums` | Enum gemelli degli enum di dominio (stesso nome semplice). |
@@ -83,7 +83,7 @@ nemmeno della stessa area.
 
 **Regola di dipendenza:** `domain` e `application` NON devono dipendere da
 framework o librerie esterne (Spring escluso dove strettamente necessario per
-le annotazioni sui bean). Gli `adapter` possono usare framework e librerie. Le
+le annotazioni sui bean, `@Autowired` incluso). Gli `adapter` possono usare framework e librerie. Le
 dipendenze puntano sempre verso l'interno (adapter -> application -> domain).
 Il modello di dominio resta separato dai DTO REST: l'application layer non vede
 mai il DTO HTTP.
@@ -110,7 +110,13 @@ legacy stanno nell'adapter; le regole di business restano nel service.
 - **Enum nei DTO**: ogni campo enum del dominio è un enum anche nel DTO (mai
   `String`), con enum gemello in `adapter/in/rest/dto/enums` e stesso nome
   semplice; nel mapper l'enum di dominio è qualificato per esteso e la
-  conversione è un `switch` esplicito (mai `valueOf`).
+  conversione è `<EnumDominio>.valueOf(<enumDto>.name())` (mai `switch`):
+  le costanti dei due enum hanno nomi identici e il null si gestisce nel mapper
+  prima della chiamata.
+- **Service**: l'interfaccia in `port/in` ha suffisso `Service`, l'implementazione
+  in `application/service` suffisso `ServiceImpl`.
+- **Iniezione delle dipendenze**: sui bean Spring con `@Autowired` sul campo
+  (mai tramite costruttore).
 
 ## 3. Validazione e gestione errori
 
@@ -133,7 +139,7 @@ legacy stanno nell'adapter; le regole di business restano nel service.
   gestite restano 500.
 - Le violazioni di invarianti di dominio usano `DomainValidationException`
   locale alla feature, intercettata da un `@ControllerAdvice` scoped al
-  `Resource`.
+  `RestResource`.
 
 ## 4. Codice comune
 
@@ -152,7 +158,7 @@ eccezione DICHIARATA: si usa solo quando la specifica riporta
 "Comportamento: REPLICA ORIGINALE (sistema: ..., rif: ...)", mai per scelta
 libera dell'implementatore.
 
-- Si annota il `Resource` (o il singolo metodo, se la deroga riguarda una sola
+- Si annota il `RestResource` (o il singolo metodo, se la deroga riguarda una sola
   operazione) con `@ReplicatesOriginalBehavior(system = "...", reference = "...")`
   (`core/annotation`); `reference` (WSDL/doc/specifica) è opzionale.
   L'annotazione rende le deroghe cercabili con grep/IDE.
@@ -160,8 +166,8 @@ libera dell'implementatore.
   errori) e logica di validazione (es. fail-fast) seguono il sistema originale
   e possono discostarsi dallo standard.
 - Isolamento: la gestione errori specifica va in un `@RestControllerAdvice`
-  scoped al `Resource` (`@ControllerAdvice(assignableTypes = ...)`), che ha
-  priorità su `GlobalExceptionHandler` per quel `Resource`.
+  scoped al `RestResource` (`@ControllerAdvice(assignableTypes = ...)`), che ha
+  priorità su `GlobalExceptionHandler` per quel `RestResource`.
 - La deviazione resta confinata in `adapter/in/*`: NON va propagata ai layer
   `domain` e `application`, che continuano a seguire lo standard.
 
@@ -177,12 +183,12 @@ di REPLICA ORIGINALE (sezione 5) esteso a tutto il modulo.
   `DtoReq`/`DtoResp`, enum gemelli). Gli YAML stanno in
   `smart-simulator-app/src/main/resources/openapi/<nome-raccordo>/`, non nel
   modulo, e non si modificano.
-- Ogni `Resource` implementa l'interfaccia generata ed è annotata
+- Ogni `RestResource` implementa l'interfaccia generata ed è annotata
   `@ReplicatesOriginalBehavior`. Un'`*Api` per tag dello YAML, quindi una
-  `Resource` per tag.
+  `RestResource` per tag.
 - Gli errori (validazione, deserializzazione, corpo non leggibile, 501) usano la
   busta dichiarata nello YAML, prodotta da un `@RestControllerAdvice` scoped
-  alle `Resource` del modulo. Regole: `errorCode` = status come stringa;
+  alle `RestResource` del modulo. Regole: `errorCode` = status come stringa;
   messaggi in inglese; violazioni ordinate per percorso del campo e `mainError`
   uguale alla prima; `header` riecheggiato dalla richiesta se possibile,
   altrimenti generato. La lingua inglese è imposta solo agli endpoint del
