@@ -81,6 +81,13 @@ smart-simulator/
 │       │   └── configure/           (API, struttura esagonale completa)
 │       └── document/                (area)
 │           └── signature/           (API, struttura esagonale completa)
+├── smart-simulator-document-repository/  (modulo sottosistema, libreria)
+│   ├── pom.xml                      (dipende da smart-simulator-core; surefire 3.2.5)
+│   └── src/main/
+│       ├── java/com/capgemini/smart/simulator/documentrepository/
+│       │   ├── config/              (DocumentRepositoryProperties + wiring)
+│       │   └── document/            (API a due livelli, senza area; esagono completo)
+│       └── resources/document-repository-config{,-dev,-sit}.yml
 └── smart-simulator-account-raccordo-partitario/  (secondo modulo sottosistema, libreria)
     ├── pom.xml                      (una execution di openapi-generator per YAML con `paths`)
     └── src/main/
@@ -187,6 +194,21 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   paperless, 9082)
 
 ## Stato di avanzamento
+
+**Document Repository + context-path** (17/10/2026):
+- L'app ha il context-path `/smart-simulator` (`server.servlet.context-path`
+  in `application.yml`): i path degli endpoint nei documenti sono relativi a
+  questo prefisso; Swagger UI su `/smart-simulator/swagger-ui.html`.
+- Nuovo modulo libreria `smart-simulator-document-repository`, servizio
+  **Document (retrieve)**: `GET /smart-simulator/document-repository/document?productCode=...`,
+  restituisce il PDF letto dal filesystem (inline). **Implementato** e coperto
+  da test unitari; smoke test (400/404, Paperless invariato, Swagger) eseguito
+  da jar.
+- **Da fare**: sostituire i valori segnaposto di `document-repository-config*.yml`
+  (`PercorsoDev`, `PercorsoSit`, `CartellaProdotti`) con i percorsi reali;
+  **verifica manuale** del `200` con un PDF reale aperto nel browser, del 404
+  con maiuscole/minuscole diverse e dell'avvio da VSCode. Specifica in
+  `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
 **Fatto:**
 - Skeleton multi-modulo Maven, modulo `smart-simulator-core` avviabile e

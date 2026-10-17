@@ -362,6 +362,9 @@ del modulo, con queste regole:
   "Configurazione per ambiente"). Dipende da `smart-simulator-core` e da tutti i moduli
   sottosistema. Un solo processo espone i servizi di tutti i sottosistemi,
   con un'unica Swagger UI su `/swagger-ui.html`.
+- **Context-path**: l'app dichiara `server.servlet.context-path:
+  /smart-simulator`, valido per tutti i servizi; i path nelle annotazioni
+  delle RestResource restano senza prefisso.
 - `smart-simulator-core` e ogni modulo sottosistema sono **solo
   librerie**: nessuna classe main, nessun `spring-boot-maven-plugin`,
   nessun `application.yml`.

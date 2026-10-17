@@ -17,9 +17,11 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 - Modulo `smart-simulator-account-raccordo-partitario` creato: interfacce autogenerate da YAML, 12 servizi: `create` implementato, gli altri 11 non implementati (501). Procedura per un nuovo raccordo nel `README.md`; dettagli in `SERVICES-SPECIFICATION` e `CODING-STANDARDS`.
 - Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): documentate; il codice va allineato con `PROMPT-ClaudeCode-Allineamento-Direttive.md`.
 
+- Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-repository` (struttura a due livelli, deroga solo per questa API): servizio Document retrieve `GET /smart-simulator/document-repository/document?productCode=...` implementato; valori di configurazione `document-repository-config*.yml` ancora segnaposto e verifica manuale del `200` con PDF reale da fare.
+
 ## Prossimo obiettivo
 
-Implementare i servizi di `account-raccordo-partitario` uno per volta, partendo da quello da scegliere (servono: quale endpoint, cosa deve fare, da dove vengono i dati di risposta). Aperto: `.gitignore` e `target/` tracciato.
+Sostituire i segnaposto di `document-repository-config*.yml` e verificare a mano il Document retrieve (PDF inline nel browser, 404 con maiuscole/minuscole diverse, avvio da VSCode). Poi: implementare i servizi di `account-raccordo-partitario` uno per volta, partendo da quello da scegliere (servono: quale endpoint, cosa deve fare, da dove vengono i dati di risposta). Aperto: `.gitignore` e `target/` tracciato.
 
 ## Metodo di lavoro (da rispettare)
 

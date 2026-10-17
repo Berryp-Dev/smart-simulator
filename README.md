@@ -46,6 +46,15 @@ smart-simulator/
 │       └── resources/paperless-config.yml   (valori comuni del sottosistema)
 │           paperless-config-dev.yml, paperless-config-sit.yml
 │                                            (broker/code MQ per ambiente)
+├── smart-simulator-document-repository/   (sottosistema Document Repository, libreria)
+│   └── src/main/
+│       ├── java/com/capgemini/smart/simulator/documentrepository/
+│       │   ├── config/               (DocumentRepositoryProperties + wiring)
+│       │   └── document/             (API, due livelli: niente area; esagono completo,
+│       │                              adapter/out/filesystem legge il PDF)
+│       └── resources/document-repository-config.yml   (products-folder)
+│           document-repository-config-dev.yml, document-repository-config-sit.yml
+│                                            (root-path per ambiente)
 └── smart-simulator-account-raccordo-partitario/   (raccordo partitario, libreria)
     ├── pom.xml                  (una execution di openapi-generator per ogni YAML con `paths`)
     └── src/main/
@@ -97,8 +106,17 @@ Per un semplice smoke test senza infrastruttura si può aggiungere
 temporaneamente `spring.main.lazy-initialization: true` in `application-dev.yml`
 dell'app, così i bean vengono creati solo al primo utilizzo.
 
-L'app gira sulla porta **9082**; Swagger UI su
-`http://localhost:9082/swagger-ui.html`.
+L'app gira sulla porta **9082** con context-path `/smart-simulator`: tutti gli
+endpoint stanno sotto questo prefisso (es.
+`http://localhost:9082/smart-simulator/paperless/practice/configure`). Swagger UI su
+`http://localhost:9082/smart-simulator/swagger-ui.html`, API docs su
+`http://localhost:9082/smart-simulator/v3/api-docs`.
+
+**Valori segnaposto**: i file `document-repository-config*.yml` contengono
+valori segnaposto (`PercorsoDev`, `PercorsoSit`, `CartellaProdotti`) da
+sostituire con i percorsi reali. Per provare il Document Repository dal browser:
+`http://localhost:9082/smart-simulator/document-repository/document?productCode=12234`
+(il PDF `12234.pdf` deve stare in `<root-path>/<products-folder>`).
 
 ## Decisioni consolidate
 

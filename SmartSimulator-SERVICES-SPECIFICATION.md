@@ -7,6 +7,11 @@ Standard di codice/architettura comuni a tutti i servizi:
 `SmartSimulator-CODING-STANDARDS.md`. Stato generale del progetto:
 `SmartSimulator-PROJECT-CONTEXT.md`.
 
+> **Nota sui path**: i path degli endpoint riportati in questo file sono
+> relativi al context-path `/smart-simulator` dell'app (es.
+> `POST /paperless/practice/configure` risponde su
+> `/smart-simulator/paperless/practice/configure`).
+
 ---
 
 ## Sottosistema: Paperless
@@ -251,6 +256,82 @@ fisso sono nell'adapter MQ.
 
 **Service**: `NotifyPaperlessDocumentSignatureService` (port/in, implementazione
 `NotifyPaperlessDocumentSignatureServiceImpl`), ritorna `void`.
+
+---
+
+## Sottosistema: Document Repository
+
+### Servizio: Document (retrieve)
+
+**Stato**: implementato; valori di configurazione segnaposto da sostituire;
+verifica manuale del `200` con un PDF reale da eseguire.
+
+**Struttura a due livelli (deroga dichiarata solo per questa API)**:
+sottosistema → API, **senza livello area**, perché l'URL richiesto è
+`/document-repository/document`. Package radice
+`com.capgemini.smart.simulator.documentrepository`, con `config/` e
+`document/` (domain, application, adapter). Nessuna cartella `common`. Il
+servizio segue per il resto lo standard di progetto (nessuna deroga
+`@ReplicatesOriginalBehavior`).
+
+**Endpoint**: `GET /document-repository/document?productCode=<valore>`
+(con context-path: `/smart-simulator/document-repository/document`).
+Classe `DocumentRepositoryDocumentRestResource` (`@Tag(name = "Document")`).
+
+**Parametri**: `productCode` è un query param (`required = false` a livello
+Spring: la presenza è controllata dal validator, non da Spring).
+
+**Flusso**: `RestResource` → mapper (query param →
+`RepositoryDocumentSearchCriteria`, null-safe, senza validare) →
+`RetrieveRepositoryDocumentService.retrieveRepositoryDocument` → il service
+chiama prima `RetrieveRepositoryDocumentValidator` (se non valido lancia
+`ValidationException` del core), poi `LoadRepositoryDocumentPort`; se la port
+non trova il documento lancia `RepositoryDocumentNotFoundException`. La port
+restituisce `Optional<RepositoryDocument>` (productCode, content `byte[]`).
+
+**Validazione** (raccoglie tutti gli errori; campo = nome del contratto REST):
+
+1. `productCode` presente e non blank: `Campo obbligatorio`;
+2. `productCode`, se presente, solo caratteri alfanumerici (`^[A-Za-z0-9]+$`):
+   `Valore non valido: sono ammessi solo caratteri alfanumerici`.
+
+**Risposta**:
+
+| Esito | Status | Body |
+|---|---|---|
+| Successo | 200 | contenuto del PDF; `Content-Type: application/pdf`; `Content-Disposition: inline; filename="<productCode>.pdf"` |
+| Validazione fallita | 400 | `ApiError` con `errors` (`GlobalExceptionHandler` del core) |
+| Documento non trovato | 404 | `ApiError` con un solo errore `field: null`, `message: Documento non trovato` |
+
+Il 404 è gestito da un advice limitato alla RestResource
+(`@RestControllerAdvice(assignableTypes = DocumentRepositoryDocumentRestResource.class)`,
+`adapter/in/rest/advice`); il `message` di primo livello è
+`Risorsa non trovata: 1 errore/i`.
+
+**Adapter `adapter/out/filesystem`** (dettaglio del servizio,
+`DocumentRepositoryFilesystemAdapter`, implementa la port):
+
+- percorso `<rootPath>/<productsFolder>/<productCode>.pdf`;
+- ricerca **case-sensitive**: confronto esatto tra `<productCode>.pdf` e i nomi
+  delle voci della cartella (non basta `Files.exists` sul filesystem
+  Windows, case-insensitive); solo la cartella indicata, nessuna sottocartella;
+- difesa dal path traversal: il percorso risolto viene normalizzato e deve
+  restare dentro `<rootPath>/<productsFolder>`, altrimenti `Optional.empty()` e
+  log `warn` (seconda barriera, oltre al validator);
+- cartella o file assenti: `Optional.empty()` (quindi 404); nessun controllo
+  all'avvio sull'esistenza della cartella;
+- nessuna decisione di business: la conversione verso HTTP è nella RestResource.
+
+**Configurazione** (`@ConfigurationProperties(prefix =
+"smart-simulator.document-repository")`, classe `DocumentRepositoryProperties`
+in `config/`), file nel modulo in `src/main/resources`, importati da
+`application.yml` dell'app con `spring.config.import` (come quelli di Paperless):
+
+| File | Chiave | Valore attuale (segnaposto) |
+|---|---|---|
+| `document-repository-config.yml` | `products-folder` | `CartellaProdotti` |
+| `document-repository-config-dev.yml` | `root-path` | `PercorsoDev` |
+| `document-repository-config-sit.yml` | `root-path` | `PercorsoSit` |
 
 ---
 
