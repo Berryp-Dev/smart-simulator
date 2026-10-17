@@ -9,6 +9,7 @@ import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.P
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.StringWriter;
@@ -24,14 +25,10 @@ public class PaperlessPracticeConfigureMqAdapter implements PublishStatusUpdateP
 
     private static final String SCENARIO_QUEUE_KEY = "paperlessPracticeConfigure";
 
-    private final MqPublisherService mqPublisherService;
-    private final PaperlessMqProperties paperlessMqProperties;
-
-    public PaperlessPracticeConfigureMqAdapter(MqPublisherService mqPublisherService,
-                                               PaperlessMqProperties paperlessMqProperties) {
-        this.mqPublisherService = mqPublisherService;
-        this.paperlessMqProperties = paperlessMqProperties;
-    }
+    @Autowired
+    private MqPublisherService mqPublisherService;
+    @Autowired
+    private PaperlessMqProperties paperlessMqProperties;
 
     @Override
     public void publishStatusUpdate(PaperlessPracticeStatusUpdate statusUpdate) {

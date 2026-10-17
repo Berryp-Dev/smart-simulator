@@ -1,5 +1,6 @@
 package com.capgemini.smart.simulator.core.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -17,11 +18,8 @@ import java.util.Map;
 @EnableConfigurationProperties(SubsystemDefaultsProperties.class)
 public class StaticDefaultsResolver implements DefaultsResolver {
 
-    private final SubsystemDefaultsProperties properties;
-
-    public StaticDefaultsResolver(SubsystemDefaultsProperties properties) {
-        this.properties = properties;
-    }
+    @Autowired
+    private SubsystemDefaultsProperties properties;
 
     @Override
     public Object resolve(String subsystem, String property, Map<String, Object> conditions) {

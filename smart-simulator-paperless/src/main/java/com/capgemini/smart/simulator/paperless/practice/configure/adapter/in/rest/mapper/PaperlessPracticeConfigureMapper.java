@@ -11,7 +11,7 @@ import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.P
 /**
  * Mapping tra il DTO di request/response e l'entita' di dominio Practice
  * Configure. scenarioCode e' convertito dall'enum gemello lato DTO
- * all'enum di dominio con uno switch esplicito (mai valueOf). Il mapper non
+ * all'enum di dominio con valueOf sul nome della costante (mai switch). Il mapper non
  * valida: un campo assente resta null nel dominio.
  */
 public final class PaperlessPracticeConfigureMapper {

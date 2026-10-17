@@ -4,7 +4,7 @@ package com.capgemini.smart.simulator.paperless.practice.configure.adapter.in.re
  * Enum gemello lato DTO di
  * {@code domain.enums.PaperlessPracticeConfigureScenarioCode}: stesso nome
  * semplice, package separato. Il mapping verso l'enum di dominio avviene con
- * uno switch esplicito nel mapper.
+ * valueOf(name()) nel mapper (le costanti devono coincidere).
  */
 public enum PaperlessPracticeConfigureScenarioCode {
     SIGNATORIES_WAITING,

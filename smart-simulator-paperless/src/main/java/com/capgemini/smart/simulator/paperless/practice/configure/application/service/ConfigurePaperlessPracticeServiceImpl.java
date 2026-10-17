@@ -3,7 +3,7 @@ package com.capgemini.smart.simulator.paperless.practice.configure.application.s
 import com.capgemini.smart.simulator.core.exception.ValidationException;
 import com.capgemini.smart.simulator.core.util.RandomUtil;
 import com.capgemini.smart.simulator.core.validation.ValidationResult;
-import com.capgemini.smart.simulator.paperless.practice.configure.application.port.in.ConfigurePaperlessPracticeUseCase;
+import com.capgemini.smart.simulator.paperless.practice.configure.application.port.in.ConfigurePaperlessPracticeService;
 import com.capgemini.smart.simulator.paperless.practice.configure.application.port.out.PublishStatusUpdatePort;
 import com.capgemini.smart.simulator.paperless.practice.configure.application.validation.PaperlessPracticeConfigureValidator;
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.enums.PaperlessPracticeConfigureScenarioCode;
@@ -11,6 +11,7 @@ import com.capgemini.smart.simulator.paperless.practice.configure.domain.enums.P
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.PaperlessPracticeConfiguration;
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.PaperlessPracticeConfigureResult;
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.PaperlessPracticeStatusUpdate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,19 +20,15 @@ import org.springframework.stereotype.Service;
  * port in uscita. La conversione nel messaggio XML e' compito dell'adapter.
  */
 @Service
-public class ConfigurePaperlessPracticeService implements ConfigurePaperlessPracticeUseCase {
+public class ConfigurePaperlessPracticeServiceImpl implements ConfigurePaperlessPracticeService {
 
     private static final int PRACTICE_ID_LENGTH = 10;
     private static final int PROCESS_ID_LENGTH = 3;
 
-    private final PaperlessPracticeConfigureValidator practiceConfigureValidator;
-    private final PublishStatusUpdatePort publishStatusUpdatePort;
-
-    public ConfigurePaperlessPracticeService(PaperlessPracticeConfigureValidator practiceConfigureValidator,
-                                             PublishStatusUpdatePort publishStatusUpdatePort) {
-        this.practiceConfigureValidator = practiceConfigureValidator;
-        this.publishStatusUpdatePort = publishStatusUpdatePort;
-    }
+    @Autowired
+    private PaperlessPracticeConfigureValidator practiceConfigureValidator;
+    @Autowired
+    private PublishStatusUpdatePort publishStatusUpdatePort;
 
     @Override
     public PaperlessPracticeConfigureResult configurePractice(PaperlessPracticeConfiguration practiceConfiguration) {

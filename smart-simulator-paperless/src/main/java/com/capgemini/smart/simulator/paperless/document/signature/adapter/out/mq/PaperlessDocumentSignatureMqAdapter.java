@@ -8,6 +8,7 @@ import com.capgemini.smart.simulator.paperless.document.signature.domain.model.P
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.StringWriter;
@@ -25,14 +26,10 @@ public class PaperlessDocumentSignatureMqAdapter implements PublishDocumentStatu
     private static final String SCENARIO_QUEUE_KEY = "paperlessDocumentSignature";
     private static final String FIXED_CODICE_FISCALE = "XXXXXXXXXXXXXXXX";
 
-    private final MqPublisherService mqPublisherService;
-    private final PaperlessMqProperties paperlessMqProperties;
-
-    public PaperlessDocumentSignatureMqAdapter(MqPublisherService mqPublisherService,
-                                               PaperlessMqProperties paperlessMqProperties) {
-        this.mqPublisherService = mqPublisherService;
-        this.paperlessMqProperties = paperlessMqProperties;
-    }
+    @Autowired
+    private MqPublisherService mqPublisherService;
+    @Autowired
+    private PaperlessMqProperties paperlessMqProperties;
 
     @Override
     public void publishDocumentStatusUpdate(PaperlessDocumentStatusUpdate documentStatusUpdate) {

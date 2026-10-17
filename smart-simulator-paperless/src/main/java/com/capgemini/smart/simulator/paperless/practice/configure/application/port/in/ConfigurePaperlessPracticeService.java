@@ -6,7 +6,7 @@ import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.P
 /**
  * Driving port dello scenario Practice Configure.
  */
-public interface ConfigurePaperlessPracticeUseCase {
+public interface ConfigurePaperlessPracticeService {
 
     PaperlessPracticeConfigureResult configurePractice(PaperlessPracticeConfiguration practiceConfigure);
 }

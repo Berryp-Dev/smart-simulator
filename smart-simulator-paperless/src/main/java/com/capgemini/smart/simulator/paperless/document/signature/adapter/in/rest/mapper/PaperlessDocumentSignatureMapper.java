@@ -8,7 +8,7 @@ import com.capgemini.smart.simulator.paperless.document.signature.domain.model.P
 /**
  * Mapping tra il DTO di request e l'entita' di dominio Document Signature.
  * scenarioCode e' convertito dall'enum gemello lato DTO all'enum di dominio
- * con uno switch esplicito (mai valueOf). Il mapper non valida: un campo
+ * con valueOf sul nome della costante (mai switch). Il mapper non valida: un campo
  * assente resta null nel dominio.
  */
 public final class PaperlessDocumentSignatureMapper {

@@ -5,7 +5,7 @@ import com.capgemini.smart.simulator.paperless.document.signature.domain.model.P
 /**
  * Driving port dello scenario Document Signature.
  */
-public interface NotifyPaperlessDocumentSignatureUseCase {
+public interface NotifyPaperlessDocumentSignatureService {
 
     void notifyDocumentSignature(PaperlessDocumentSignature documentSignature);
 }

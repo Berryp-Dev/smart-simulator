@@ -2,6 +2,7 @@ package com.capgemini.smart.simulator.core.mq;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,8 @@ public class MqPublisherService {
 
     private static final Logger log = LoggerFactory.getLogger(MqPublisherService.class);
 
-    private final JmsTemplate jmsTemplate;
-
-    public MqPublisherService(JmsTemplate jmsTemplate) {
-        this.jmsTemplate = jmsTemplate;
-    }
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     /**
      * Invia un payload (serializzato in JSON dal converter configurato in

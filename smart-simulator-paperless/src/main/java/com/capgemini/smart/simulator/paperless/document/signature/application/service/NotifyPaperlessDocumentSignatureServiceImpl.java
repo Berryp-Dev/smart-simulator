@@ -3,13 +3,14 @@ package com.capgemini.smart.simulator.paperless.document.signature.application.s
 import com.capgemini.smart.simulator.core.exception.ValidationException;
 import com.capgemini.smart.simulator.core.util.RandomUtil;
 import com.capgemini.smart.simulator.core.validation.ValidationResult;
-import com.capgemini.smart.simulator.paperless.document.signature.application.port.in.NotifyPaperlessDocumentSignatureUseCase;
+import com.capgemini.smart.simulator.paperless.document.signature.application.port.in.NotifyPaperlessDocumentSignatureService;
 import com.capgemini.smart.simulator.paperless.document.signature.application.port.out.PublishDocumentStatusUpdatePort;
 import com.capgemini.smart.simulator.paperless.document.signature.application.validation.PaperlessDocumentSignatureValidator;
 import com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureScenarioCode;
 import com.capgemini.smart.simulator.paperless.document.signature.domain.enums.PaperlessDocumentSignatureStatusCode;
 import com.capgemini.smart.simulator.paperless.document.signature.domain.model.PaperlessDocumentSignature;
 import com.capgemini.smart.simulator.paperless.document.signature.domain.model.PaperlessDocumentStatusUpdate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,18 +23,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * compito dell'adapter.
  */
 @Service
-public class NotifyPaperlessDocumentSignatureService implements NotifyPaperlessDocumentSignatureUseCase {
+public class NotifyPaperlessDocumentSignatureServiceImpl implements NotifyPaperlessDocumentSignatureService {
 
     private static final int PRACTICE_ID_LENGTH = 10;
 
-    private final PaperlessDocumentSignatureValidator documentSignatureValidator;
-    private final PublishDocumentStatusUpdatePort publishDocumentStatusUpdatePort;
-
-    public NotifyPaperlessDocumentSignatureService(PaperlessDocumentSignatureValidator documentSignatureValidator,
-                                                   PublishDocumentStatusUpdatePort publishDocumentStatusUpdatePort) {
-        this.documentSignatureValidator = documentSignatureValidator;
-        this.publishDocumentStatusUpdatePort = publishDocumentStatusUpdatePort;
-    }
+    @Autowired
+    private PaperlessDocumentSignatureValidator documentSignatureValidator;
+    @Autowired
+    private PublishDocumentStatusUpdatePort publishDocumentStatusUpdatePort;
 
     @Override
     public void notifyDocumentSignature(PaperlessDocumentSignature documentSignature) {
