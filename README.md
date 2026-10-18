@@ -50,8 +50,10 @@ smart-simulator/
     └── src/main/
         ├── java/com/capgemini/smart/simulator/documentviewer/
         │   ├── config/               (DocumentViewerProperties + wiring)
-        │   └── document/             (area condivisa, due livelli; esagono completo,
-        │                              servizio getStatic: adapter/out/classpath legge il PDF)
+        │   ├── common/               (domain/exception: DocumentNotFoundException)
+        │   └── document/             (area)
+        │       └── getstatic/        (API, struttura esagonale completa;
+        │                              adapter/out/classpath legge il PDF)
         └── resources/document-viewer-config.yml   (products-folder: pdf/static)
             pdf/static/                    (i PDF, <productCode>.pdf)
 ```

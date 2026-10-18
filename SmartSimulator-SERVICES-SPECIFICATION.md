@@ -266,28 +266,28 @@ fisso sono nell'adapter MQ.
 **Stato**: implementato; verifica manuale del `200` con un PDF reale da
 eseguire (i PDF vanno inseriti nelle risorse del modulo, vedi sotto).
 
-**Struttura a due livelli (deroga dichiarata solo per questo sottosistema)**:
-sottosistema → `document`, con `domain`, `application` e `adapter` direttamente
-sotto `document` (nessun ulteriore livello per il singolo servizio). Package
-radice `com.capgemini.smart.simulator.documentviewer`, con `config/` e
-`document/`. `document` è l'area condivisa dai servizi del sottosistema: le
-classi specifiche del servizio `getStatic` hanno nome `GetStatic...`, quelle
-riutilizzabili da altri servizi dell'area hanno nome generico (`Document`,
-`DocumentNotFoundException`, RestResource, mapper e advice dell'area). Una
-funzione `dynamic` è prevista in futuro per un altro servizio e non esiste
-ancora. Nessuna cartella `common`. Il servizio segue per il resto lo standard
-di progetto (nessuna deroga `@ReplicatesOriginalBehavior`).
+**Struttura** (standard: sottosistema → area → API): sottosistema
+`document-viewer` → area `document` → API `getstatic`, con l'esagono dentro
+l'API. Package radice `com.capgemini.smart.simulator.documentviewer`, con
+`config/`, `common/` e `document/getstatic/{domain,application,adapter}`. Il
+`common` di modulo contiene `domain/exception/DocumentNotFoundException`;
+`Document` e `GetStaticDocumentSearchCriteria` stanno nel `domain/model`
+dell'API `getstatic`. Le classi specifiche del servizio hanno nome
+`GetStatic...`, le altre (RestResource, mapper e advice) hanno nome
+`<Sottosistema><Area><Api>`. Una funzione `dynamic` è prevista in futuro per un
+altro servizio e non esiste ancora. Il servizio segue lo standard di progetto
+(nessuna deroga `@ReplicatesOriginalBehavior`).
 
 **Endpoint**: `GET /document-viewer/document/getStatic?productCode=<valore>`
 (con context-path: `/smart-simulator/document-viewer/document/getStatic`).
-Classe `DocumentViewerDocumentRestResource` (`@Tag(name = "Document")`), metodo
-`getStatic`; l'`operationId` Swagger (`getStatic`) coincide con il metodo e con
-l'ultimo segmento del path.
+Classe `DocumentViewerDocumentGetStaticRestResource` (`@Tag(name = "Document")`),
+metodo `getStatic`; l'`operationId` Swagger (`getStatic`) coincide con il metodo
+e con l'ultimo segmento del path.
 
 **Parametri**: `productCode` è un query param (`required = false` a livello
 Spring: la presenza è controllata dal validator, non da Spring).
 
-**Flusso**: `RestResource` → mapper (`DocumentViewerDocumentMapper`, query
+**Flusso**: `RestResource` → mapper (`DocumentViewerDocumentGetStaticMapper`, query
 param → `GetStaticDocumentSearchCriteria`, null-safe, senza validare) →
 `RetrieveGetStaticDocumentService.getStaticDocument` → il service
 (`RetrieveGetStaticDocumentServiceImpl`) chiama prima
@@ -311,8 +311,8 @@ restituisce `Optional<Document>` (productCode, content `byte[]`).
 | Documento non trovato | 404 | `ApiError` con un solo errore `field: null`, `message: Documento non trovato` |
 
 Il 404 è gestito da un advice limitato alla RestResource
-(`DocumentViewerDocumentExceptionHandler`,
-`@RestControllerAdvice(assignableTypes = DocumentViewerDocumentRestResource.class)`
+(`DocumentViewerDocumentGetStaticExceptionHandler`,
+`@RestControllerAdvice(assignableTypes = DocumentViewerDocumentGetStaticRestResource.class)`
 con `@Order(HIGHEST_PRECEDENCE)` per precedere il `GlobalExceptionHandler`,
 `adapter/in/rest/advice`); `ApiError` popolato come per i 400 del core (solo
 `status` ed `error` diversi); il `message` di primo livello è

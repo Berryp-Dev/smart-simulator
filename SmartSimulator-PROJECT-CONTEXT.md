@@ -86,7 +86,9 @@ smart-simulator/
     └── src/main/
         ├── java/com/capgemini/smart/simulator/documentviewer/
         │   ├── config/              (DocumentViewerProperties + wiring)
-        │   └── document/            (area condivisa, due livelli; esagono completo, servizio getStatic)
+        │   ├── common/              (domain/exception: DocumentNotFoundException)
+        │   └── document/            (area)
+        │       └── getstatic/       (API, struttura esagonale completa)
         └── resources/document-viewer-config.yml  (products-folder: pdf/static)
             pdf/static/                           (i PDF, <productCode>.pdf)
 ```
