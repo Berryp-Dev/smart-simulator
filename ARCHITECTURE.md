@@ -80,7 +80,9 @@ port -> adapter.
 Swagger è organizzato per modulo / entità / servizi in una sola pagina: i tag
 (`<Modulo> / <Entità>`) sono ordinati per nome e i servizi di ogni tag per metodo
 (GET prima di POST), con `springdoc.swagger-ui.tags-sorter: alpha` e
-`operations-sorter: method` nell'`application.yml` dell'app.
+`operations-sorter: method` nell'`application.yml` dell'app. Ogni servizio ha
+anche un `@Operation(operationId = "<nome del servizio>")` esplicito (regola in
+`SmartSimulator-CODING-STANDARDS.md`, «Documentazione Swagger per modulo / entità»).
 
 **Condivisione (`common`)**: si crea solo quando serve (artefatto usato da una
 seconda API della stessa area, o da una seconda area), con la stessa struttura

@@ -136,6 +136,10 @@ e i servizi di ogni tag per metodo HTTP (GET prima di POST), con
 `springdoc.swagger-ui.tags-sorter: alpha` e `operations-sorter: method`
 nell'`application.yml` dell'app.
 
+`@Operation(operationId = "<nome del servizio>")` esplicito su ogni servizio REST,
+uguale al nome del servizio (ultimo segmento del path e nome del metodo del
+`RestResource`); deve essere unico nell'applicazione.
+
 ## Convenzioni di naming
 
 - **Nome del progetto — quattro forme, ciascuna col proprio ruolo**:

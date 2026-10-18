@@ -15,6 +15,7 @@ import com.capgemini.smart.simulator.paperless.practice.configure.application.po
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.PaperlessPracticeConfiguration;
 import com.capgemini.smart.simulator.paperless.practice.configure.domain.model.PaperlessPracticeConfigureResult;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -28,6 +29,7 @@ public class PaperlessPracticeConfigureRestResource {
     @Autowired
     private ConfigurePaperlessPracticeService configurePaperlessPracticeService;
 
+    @Operation(operationId = "configure")
     @PostMapping("/configure")
     public ResponseEntity<PaperlessPracticeConfigureDtoResp> configure(@RequestBody RestRequest<PaperlessPracticeConfigureDtoReq> request) {
         PaperlessPracticeConfiguration practiceConfiguration = PaperlessPracticeConfigureMapper.mapToDomain(request);
