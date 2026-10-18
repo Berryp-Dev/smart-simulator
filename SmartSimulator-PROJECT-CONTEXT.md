@@ -133,6 +133,13 @@ i servizi di tutti i sottosistemi.
 - **Swagger/OpenAPI**: dipendenza `springdoc-openapi-starter-webmvc-ui`
   nel core (ereditata automaticamente da ogni modulo sottosistema), UI
   disponibile su `/swagger-ui.html` di ciascun modulo avviato
+- **Swagger per modulo / entità / servizi** in una sola pagina: tag
+  `<Modulo> / <Entità>` in ordine alfabetico, servizi ordinati per metodo (GET
+  prima di POST)
+- **`operationId` esplicito**, uguale al nome del servizio
+- **Errori del chiamante** (path inesistente 404, metodo non supportato 405,
+  tipo di contenuto non supportato 415, formato non accettabile 406) con
+  `ApiError`, mappati dal `GlobalExceptionHandler`
 - **Request DTO per operazione**: ogni scenario/operazione ha la propria
   request dedicata; i valori non specificati esplicitamente E non
   obbligatori vengono risolti tramite `DefaultsResolver` (impl. base:
@@ -193,13 +200,7 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   ambienti i PDF stanno in `src/main/resources/pdf/static/` e finiscono nel
   jar, per aggiungerne uno si rifà il build. **Implementato** e coperto da
   test unitari; smoke test (200/400/404, Paperless invariato, Swagger)
-  eseguito da jar.
-- **Da verificare a mano**: mettere un PDF `12234.pdf` in
-  `smart-simulator-document-viewer/src/main/resources/pdf/static/`, rifare il
-  build o riavviare da IDE (Boot Dashboard, profilo `dev`) e aprire
-  `http://localhost:9082/smart-simulator/document-viewer/document/getStatic?productCode=12234`
-  (il PDF deve aprirsi inline nel browser); `productCode` con maiuscole
-  diverse → 404; inesistente → 404 con `ApiError`. Specifica in
+  eseguito da jar; **verificato a mano** il 2026-10-18. Specifica in
   `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
 Gli YAML OpenAPI in `smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/` restano nel repository in attesa della ripartenza del Raccordo; non sono usati dal codice.

@@ -63,7 +63,7 @@ com.capgemini.smart.simulator.<sottosistema>/
 | `application/service` | Implementazione dei casi d'uso, classi con suffisso `ServiceImpl` (es. `ConfigurePaperlessPracticeServiceImpl`): prima il validator, poi la business logic tramite le port out. |
 | `application/validation` | Un validator dedicato per ogni scenario/operazione (punto 3). |
 | `adapter/in/rest/resource` | `RestResource` dell'API, suffisso `RestResource` (mai `Controller`; il package resta `resource`), nome `<Sottosistema><Area><Api>RestResource`, con `@Tag(name = "<Modulo> / <Entità>")` (modulo = nome leggibile del sottosistema, entità = area). |
-| `adapter/in/rest/dto` | DTO radice, suffissi `DtoReq`/`DtoResp`. |
+| `adapter/in/rest/dto` | DTO radice, suffissi `DtoReq`/`DtoResp`. Assente nei servizi senza body (vedi `SmartSimulator-CODING-STANDARDS.md`). |
 | `adapter/in/rest/dto/model` | DTO annidati, suffisso `Dto`. |
 | `adapter/in/rest/dto/enums` | Enum gemelli degli enum di dominio (stesso nome semplice). |
 | `adapter/in/rest/mapper` | Mapping DTO <-> dominio. |
@@ -145,11 +145,16 @@ legacy stanno nell'adapter; le regole di business restano nel service.
   (percorso del campo, es. `scenarioCode` o `listDocuments[2]`), non aggregato
   con gli errori del validator.
 - Un corpo non leggibile (JSON malformato, body assente, struttura di tipo
-  sbagliato) dà 400 con `ApiError` e messaggio generico; le eccezioni non
-  gestite restano 500.
+  sbagliato) dà 400 con `ApiError` e messaggio generico; path inesistente,
+  metodo HTTP o tipo di contenuto non supportati e formato di risposta non
+  accettabile danno 404, 405, 415 e 406 con `ApiError` (dettaglio in
+  `SmartSimulator-CODING-STANDARDS.md`, «Gestione errori — tre percorsi»); le
+  altre eccezioni non gestite restano 500.
 - Le violazioni di invarianti di dominio usano `DomainValidationException`
   locale alla feature, intercettata da un `@ControllerAdvice` scoped al
-  `RestResource`.
+  `RestResource`; lo stesso vale per una risorsa di dominio non trovata (404,
+  dettaglio in `SmartSimulator-CODING-STANDARDS.md`, «Gestione errori — tre
+  percorsi»).
 
 ## 4. Codice comune
 

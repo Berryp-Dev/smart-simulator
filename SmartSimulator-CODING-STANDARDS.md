@@ -84,6 +84,11 @@ entry-point non condivide la cartella con i DTO; i DTO non condividono la
 cartella con i loro enum; un adapter in uscita non condivide la cartella
 con il payload del messaggio che pubblica.
 
+Un servizio senza body in ingresso o in uscita (query param, risposta binaria)
+non ha il package `adapter/in/rest/dto`: il mapper converte i parametri in
+oggetti di dominio e la risposta è costruita dal `RestResource`. Esempio:
+servizio `getStatic` di `document-viewer`.
+
 ### Regole di condivisione (`common`)
 
 - La cartella `common` si crea **solo quando serve**: nel momento in cui un
@@ -273,8 +278,14 @@ uguale al nome del servizio (ultimo segmento del path e nome del metodo del
    con `ApiError` e un solo `ValidationError`; `field` = percorso del campo
    se Jackson lo conosce, altrimenti `null`; `message` generico
    "Corpo della richiesta non valido o malformato" (non si espone il
-   messaggio di Jackson); log a livello `warn`. Le altre eccezioni non
-   gestite restano HTTP 500 (`handleGeneric`).
+   messaggio di Jackson); log a livello `warn`.
+   Altri errori del chiamante gestiti dal `GlobalExceptionHandler`, tutti con
+   `ApiError` a messaggio fisso e senza `errors`: path inesistente → HTTP 404
+   («Risorsa non trovata»); metodo HTTP non supportato → 405 («Metodo HTTP non
+   supportato», header `Allow`); tipo di contenuto non supportato → 415 («Tipo
+   di contenuto non supportato»); formato di risposta non accettabile → 406
+   («Formato di risposta non accettabile»). Le altre eccezioni non gestite
+   restano HTTP 500 (`handleGeneric`).
    In entrambi i rami (valore non convertibile e corpo non leggibile) il
    campo `message` di primo livello di `ApiError` è un testo fisso, nello
    stile di `ValidationException` (`Richiesta non valida: <N> errore/i`),
@@ -283,7 +294,12 @@ uguale al nome del servizio (ultimo segmento del path e nome del metodo del
    locale alla feature (puro Java, nessuna dipendenza da Spring/core),
    intercettata da un `@ControllerAdvice` **scoped** al RestResource, mappata
    alla stessa forma di `ApiError` (un singolo `ValidationError` con
-   `field: null`).
+   `field: null`). Anche una risorsa di dominio inesistente è un'eccezione di
+   dominio dell'API (es. `DocumentNotFoundException`, in
+   `documentviewer.common.domain.exception`), mappata dall'advice scoped
+   dell'API in HTTP 404 con `ApiError`: `message` «Risorsa non trovata: 1
+   errore/i», `errors` con un solo `ValidationError` (`field: null`, `message`
+   «Documento non trovato»).
 3. **Scenari dichiarati REPLICA ORIGINALE** (vedi sotto) — gestione errori
    completamente custom, non necessariamente `ApiError`.
 

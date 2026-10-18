@@ -16,11 +16,15 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 
 - Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): allineato e verificato (nessuna divergenza in `paperless` e `document-viewer`).
 
-- Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-viewer` (struttura standard sottosistema → area `document` → API `getstatic`, con `common` di modulo): servizio getStatic `GET /smart-simulator/document-viewer/document/getStatic?productCode=...` implementato, con i PDF nelle risorse del classpath del modulo (`src/main/resources/pdf/static/`, in tutti gli ambienti, rebuild per aggiungerne uno); verifica manuale del `200` con PDF reale da fare.
+- Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-viewer` (struttura standard sottosistema → area `document` → API `getstatic`, con `common` di modulo): servizio getStatic `GET /smart-simulator/document-viewer/document/getStatic?productCode=...` implementato, con i PDF nelle risorse del classpath del modulo (`src/main/resources/pdf/static/`, in tutti gli ambienti, rebuild per aggiungerne uno); verificato a mano il 2026-10-18.
 
 ## Prossimo obiettivo
 
-Verificare a mano il funzionamento di `document-viewer` (vedi 'Da verificare a mano' in `PROJECT-CONTEXT.md`). Poi: da definire, prossimo sottosistema o servizio da implementare. Aperto: `.gitignore` e `target/` tracciato.
+Da definire: prossimo sottosistema o servizio da implementare.
+
+Punti aperti:
+- Con `Accept: application/xml` gli errori 400 di validazione rispondono 500 (corpo JSON non scrivibile) e il 406 non ha corpo. Bassa priorità, non risolto.
+- Aggiornare il changelog e la versione in `OpenApiConfiguration` è a cura di Berry a fine di ogni intervento: ricordarglielo sempre.
 
 ## Metodo di lavoro (da rispettare)
 
@@ -45,3 +49,4 @@ Verificare a mano il funzionamento di `document-viewer` (vedi 'Da verificare a m
 - Verificare l'app sempre su un jar prodotto da `mvn clean install`, non da `target/classes` compilato dall'IDE (può dare "Unresolved compilation problems").
 - Se l'albero è sporco il Passo 0 si ferma: fare prima il commit del lavoro precedente.
 - Quando YAML e software divergono, vince lo YAML: il software non aggiunge controlli né campi.
+- Committare insieme codice e `.md` dello stesso intervento: i prompt per Code si fermano se l'albero non è pulito.
