@@ -5,5 +5,5 @@
 
 smart-simulator:
   document-viewer:
-    # Cartella dei PDF della funzione staticdoc, relativa alla radice del classpath
+    # Cartella dei PDF del servizio getStatic, relativa alla radice del classpath
     products-folder: pdf/static

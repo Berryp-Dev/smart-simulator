@@ -16,7 +16,7 @@
     <name>SmartSimulator :: Document Viewer</name>
     <description>
         Modulo sottosistema Document Viewer: visualizza nel browser il contenuto
-        di un PDF letto dal classpath del modulo (prima API: Static Doc).
+        di un PDF letto dal classpath del modulo (primo servizio: getStatic).
     </description>
 
     <dependencies>
