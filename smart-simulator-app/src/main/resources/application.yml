@@ -35,3 +35,8 @@ server:
   servlet:
     context-path: /smart-simulator
 
+springdoc:
+  swagger-ui:
+    tags-sorter: alpha        # i tag compaiono in ordine alfabetico: i moduli restano raggruppati
+    operations-sorter: method # dentro ogni tag, per metodo HTTP (GET prima di POST)
+

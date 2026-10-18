@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Entry point REST dello scenario Document Signature.
  */
 @RestController
-@Tag(name = "Document")
+@Tag(name = "Paperless / Document")
 @RequestMapping("/paperless/document")
 public class PaperlessDocumentSignatureRestResource {
 

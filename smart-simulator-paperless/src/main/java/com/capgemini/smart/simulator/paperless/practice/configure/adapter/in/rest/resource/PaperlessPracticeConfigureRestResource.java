@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Entry point REST dello scenario Practice Configure.
  */
 @RestController
-@Tag(name = "Practice")
+@Tag(name = "Paperless / Practice")
 @RequestMapping("/paperless/practice")
 public class PaperlessPracticeConfigureRestResource {
 

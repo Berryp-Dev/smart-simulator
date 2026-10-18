@@ -62,7 +62,7 @@ com.capgemini.smart.simulator.<sottosistema>/
 | `application/port/out` | Dipendenze verso l'esterno (driven port), suffisso `Port`. Solo tipi di dominio o primitivi: mai JAXB, DTO o payload di messaggi. |
 | `application/service` | Implementazione dei casi d'uso, classi con suffisso `ServiceImpl` (es. `ConfigurePaperlessPracticeServiceImpl`): prima il validator, poi la business logic tramite le port out. |
 | `application/validation` | Un validator dedicato per ogni scenario/operazione (punto 3). |
-| `adapter/in/rest/resource` | `RestResource` dell'API, suffisso `RestResource` (mai `Controller`; il package resta `resource`), nome `<Sottosistema><Area><Api>RestResource`, con `@Tag(name = "<Area>")`. |
+| `adapter/in/rest/resource` | `RestResource` dell'API, suffisso `RestResource` (mai `Controller`; il package resta `resource`), nome `<Sottosistema><Area><Api>RestResource`, con `@Tag(name = "<Modulo> / <Entità>")` (modulo = nome leggibile del sottosistema, entità = area). |
 | `adapter/in/rest/dto` | DTO radice, suffissi `DtoReq`/`DtoResp`. |
 | `adapter/in/rest/dto/model` | DTO annidati, suffisso `Dto`. |
 | `adapter/in/rest/dto/enums` | Enum gemelli degli enum di dominio (stesso nome semplice). |
@@ -74,6 +74,11 @@ com.capgemini.smart.simulator.<sottosistema>/
 
 `config/` resta a livello di **modulo** (non di feature): wiring Spring e binding
 port -> adapter.
+
+Swagger è organizzato per modulo / entità / servizi in una sola pagina: i tag
+(`<Modulo> / <Entità>`) sono ordinati per nome e i servizi di ogni tag per metodo
+(GET prima di POST), con `springdoc.swagger-ui.tags-sorter: alpha` e
+`operations-sorter: method` nell'`application.yml` dell'app.
 
 **Condivisione (`common`)**: si crea solo quando serve (artefatto usato da una
 seconda API della stessa area, o da una seconda area), con la stessa struttura

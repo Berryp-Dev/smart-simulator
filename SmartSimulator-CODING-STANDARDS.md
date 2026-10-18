@@ -58,7 +58,7 @@ com.capgemini.smart.simulator.<sottosistema>/
 │       └── adapter/
 │           ├── in/rest/
 │           │   ├── resource/        RestResource dell'API, suffisso "RestResource" (MAI "Controller"),
-│           │   │                    con @Tag dell'area (vedi sotto)
+│           │   │                    con @Tag "<Modulo> / <Entità>" (vedi sotto)
 │           │   ├── dto/             DTO radice, suffissi "DtoReq"/"DtoResp"
 │           │   ├── dto/model/       DTO annidati dell'API, suffisso "Dto" semplice
 │           │   ├── dto/enums/       enum gemelli degli enum di dominio
@@ -119,10 +119,16 @@ con il payload del messaggio che pubblica.
   testo di `MotivoBlocco`) restano nel service, che le passa alla port come
   campi del tipo di dominio.
 
-### Documentazione Swagger per area
+### Documentazione Swagger per modulo / entità
 
-Ogni classe `RestResource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
-`Document`), così gli endpoint sono raggruppati per area nella Swagger UI.
+Ogni classe `RestResource` riporta `@Tag(name = "<Modulo> / <Entità>")` (modulo =
+nome leggibile del sottosistema, entità = area; es. `Paperless / Practice`,
+`Paperless / Document`, `Document Viewer / Document`; il tag resta una stringa
+letterale nel `RestResource`). Swagger UI non ha livelli annidati: modulo ed
+entità stanno nel nome del tag, in una sola pagina. I tag sono ordinati per nome
+e i servizi di ogni tag per metodo HTTP (GET prima di POST), con
+`springdoc.swagger-ui.tags-sorter: alpha` e `operations-sorter: method`
+nell'`application.yml` dell'app.
 
 ## Convenzioni di naming
 
@@ -169,7 +175,7 @@ Ogni classe `RestResource` riporta `@Tag(name = "<Area>")` (es. `Practice`,
   `Controller`; un `RestResource` per **API**, nome =
   `<Sottosistema><Area><Api>RestResource` (es.
   `PaperlessPracticeConfigureRestResource`, `PaperlessDocumentSignatureRestResource`),
-  con `@Tag(name = "<Area>")`
+  con `@Tag(name = "<Modulo> / <Entità>")`
 - **DTO**: root request/response con suffisso `DtoReq`/`DtoResp`; DTO
   annidati/composti con solo `Dto`; un DTO non usa mai direttamente un
   enum di dominio — ha un proprio enum gemello con mapping nel mapper tramite
@@ -466,7 +472,8 @@ in `dependencyManagement` nel pom parent e inclusa come dipendenza diretta
 nel pom del **core** — ogni modulo sottosistema la eredita automaticamente
 senza configurazione aggiuntiva. UI disponibile su `/swagger-ui.html` di
 ciascun modulo avviato (oggi un'unica UI, quella dell'app). Gli endpoint
-sono raggruppati per area tramite `@Tag` sul `RestResource`.
+sono raggruppati per modulo / entità tramite `@Tag` sul `RestResource` (vedi
+«Documentazione Swagger per modulo / entità»).
 
 ## Nota di processo per Claude Code
 

@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * restituisce il PDF inline, per la visualizzazione nel browser.
  */
 @RestController
-@Tag(name = "Document")
+@Tag(name = "Document Viewer / Document")
 @RequestMapping("/document-viewer/document")
 public class DocumentViewerDocumentGetStaticRestResource {
 

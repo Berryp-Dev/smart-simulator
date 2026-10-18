@@ -25,7 +25,7 @@ fondo alla sezione).
 
 **Package**: `com.capgemini.smart.simulator.paperless.practice.configure`
 (area `practice`, API `configure`); `RestResource`:
-`PaperlessPracticeConfigureRestResource` con `@Tag(name = "Practice")`.
+`PaperlessPracticeConfigureRestResource` con `@Tag(name = "Paperless / Practice")`.
 
 **Comportamento**: standard di progetto (nessuna deroga
 `@ReplicatesOriginalBehavior`).
@@ -165,7 +165,7 @@ I generatori locali alla feature sono stati rimossi.
 validazione e di deserializzazione, messaggi su `DEV.QUEUE.1`).
 
 **Endpoint**: `POST /paperless/document/signature`, in
-`PaperlessDocumentSignatureRestResource` con `@Tag(name = "Document")` (package
+`PaperlessDocumentSignatureRestResource` con `@Tag(name = "Paperless / Document")` (package
 `com.capgemini.smart.simulator.paperless.document.signature`, area
 `document`, API `signature`).
 
@@ -280,7 +280,7 @@ altro servizio e non esiste ancora. Il servizio segue lo standard di progetto
 
 **Endpoint**: `GET /document-viewer/document/getStatic?productCode=<valore>`
 (con context-path: `/smart-simulator/document-viewer/document/getStatic`).
-Classe `DocumentViewerDocumentGetStaticRestResource` (`@Tag(name = "Document")`),
+Classe `DocumentViewerDocumentGetStaticRestResource` (`@Tag(name = "Document Viewer / Document")`),
 metodo `getStatic`; l'`operationId` Swagger (`getStatic`) coincide con il metodo
 e con l'ultimo segmento del path.
 
