@@ -308,8 +308,6 @@ XML su MQ dopo i refactoring 2 e 3 — Configure su `DEV.QUEUE.2` (5 scenari,
 `CodiceFiscale` `XXXXXXXXXXXXXXXX`, un solo `PARZIALE`/`ERRORE_FIRMA`).
 
 **Da fare (prossimo passo):**
-- Aperto, da decidere: `target/` risulta tracciato da git nel commit di partenza
-  e non esiste un `.gitignore`
 - Verificare a mano avvio da VSCode e messaggi MQ con il profilo `dev`;
   poi creare i file di `sit` quando arrivano i valori
 - Definire il prossimo sottosistema (nasce come libreria con struttura per
