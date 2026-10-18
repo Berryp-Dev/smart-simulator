@@ -259,35 +259,37 @@ fisso sono nell'adapter MQ.
 
 ---
 
-## Sottosistema: Document Repository
+## Sottosistema: Document Viewer
 
-### Servizio: Document (retrieve)
+### Servizio: Static Doc (retrieve)
 
-**Stato**: implementato; valori di configurazione segnaposto da sostituire;
-verifica manuale del `200` con un PDF reale da eseguire.
+**Stato**: implementato; verifica manuale del `200` con un PDF reale da
+eseguire (i PDF vanno inseriti nelle risorse del modulo, vedi sotto).
 
 **Struttura a due livelli (deroga dichiarata solo per questa API)**:
 sottosistema → API, **senza livello area**, perché l'URL richiesto è
-`/document-repository/document`. Package radice
-`com.capgemini.smart.simulator.documentrepository`, con `config/` e
-`document/` (domain, application, adapter). Nessuna cartella `common`. Il
-servizio segue per il resto lo standard di progetto (nessuna deroga
-`@ReplicatesOriginalBehavior`).
+`/document-viewer/staticdoc`. Package radice
+`com.capgemini.smart.simulator.documentviewer`, con `config/` e `staticdoc/`
+(domain, application, adapter). L'API si chiama `staticdoc` perché `static` è
+una parola riservata di Java e non può essere un package. Il livello
+`dynamic`/`dynamicdoc` è previsto in futuro per un altro servizio e non esiste
+ancora. Nessuna cartella `common`. Il servizio segue per il resto lo standard
+di progetto (nessuna deroga `@ReplicatesOriginalBehavior`).
 
-**Endpoint**: `GET /document-repository/document?productCode=<valore>`
-(con context-path: `/smart-simulator/document-repository/document`).
-Classe `DocumentRepositoryDocumentRestResource` (`@Tag(name = "Document")`).
+**Endpoint**: `GET /document-viewer/staticdoc?productCode=<valore>`
+(con context-path: `/smart-simulator/document-viewer/staticdoc`).
+Classe `DocumentViewerStaticDocRestResource` (`@Tag(name = "Document")`).
 
 **Parametri**: `productCode` è un query param (`required = false` a livello
 Spring: la presenza è controllata dal validator, non da Spring).
 
 **Flusso**: `RestResource` → mapper (query param →
-`RepositoryDocumentSearchCriteria`, null-safe, senza validare) →
-`RetrieveRepositoryDocumentService.retrieveRepositoryDocument` → il service
-chiama prima `RetrieveRepositoryDocumentValidator` (se non valido lancia
-`ValidationException` del core), poi `LoadRepositoryDocumentPort`; se la port
-non trova il documento lancia `RepositoryDocumentNotFoundException`. La port
-restituisce `Optional<RepositoryDocument>` (productCode, content `byte[]`).
+`DocumentSearchCriteria`, null-safe, senza validare) →
+`RetrieveDocumentService.getDocument` → il service
+chiama prima `RetrieveDocumentValidator` (se non valido lancia
+`ValidationException` del core), poi `LoadDocumentPort`; se la port
+non trova il documento lancia `DocumentNotFoundException`. La port
+restituisce `Optional<Document>` (productCode, content `byte[]`).
 
 **Validazione** (raccoglie tutti gli errori; campo = nome del contratto REST):
 
@@ -304,34 +306,48 @@ restituisce `Optional<RepositoryDocument>` (productCode, content `byte[]`).
 | Documento non trovato | 404 | `ApiError` con un solo errore `field: null`, `message: Documento non trovato` |
 
 Il 404 è gestito da un advice limitato alla RestResource
-(`@RestControllerAdvice(assignableTypes = DocumentRepositoryDocumentRestResource.class)`,
-`adapter/in/rest/advice`); il `message` di primo livello è
+(`DocumentViewerStaticDocExceptionHandler`,
+`@RestControllerAdvice(assignableTypes = DocumentViewerStaticDocRestResource.class)`
+con `@Order(HIGHEST_PRECEDENCE)` per precedere il `GlobalExceptionHandler`,
+`adapter/in/rest/advice`); `ApiError` popolato come per i 400 del core (solo
+`status` ed `error` diversi); il `message` di primo livello è
 `Risorsa non trovata: 1 errore/i`.
 
-**Adapter `adapter/out/filesystem`** (dettaglio del servizio,
-`DocumentRepositoryFilesystemAdapter`, implementa la port):
+**Provenienza dei PDF**: in tutti gli ambienti i PDF stanno nelle risorse del
+classpath del modulo, in `src/main/resources/pdf/static/<productCode>.pdf` (il
+livello `static` è specifico della funzione `staticdoc`), e finiscono nel jar:
+per aggiungere un PDF si rifà il build. Nessun file di configurazione per
+ambiente.
 
-- percorso `<rootPath>/<productsFolder>/<productCode>.pdf`;
-- ricerca **case-sensitive**: confronto esatto tra `<productCode>.pdf` e i nomi
-  delle voci della cartella (non basta `Files.exists` sul filesystem
-  Windows, case-insensitive); solo la cartella indicata, nessuna sottocartella;
-- difesa dal path traversal: il percorso risolto viene normalizzato e deve
-  restare dentro `<rootPath>/<productsFolder>`, altrimenti `Optional.empty()` e
-  log `warn` (seconda barriera, oltre al validator);
-- cartella o file assenti: `Optional.empty()` (quindi 404); nessun controllo
-  all'avvio sull'esistenza della cartella;
+**Adapter `adapter/out/classpath`** (dettaglio del servizio,
+`DocumentClasspathAdapter`, implementa la port):
+
+- legge la cartella del classpath indicata da `products-folder` (relativa alla
+  radice del classpath; slash iniziali/finali eventuali vengono tolti);
+- cerca il file **elencando** i `.pdf` della cartella
+  (`ResourcePatternResolver`, pattern `classpath:<products-folder>/*.pdf`) e
+  confrontando il nome in modo **esatto e case-sensitive** con
+  `<productCode>.pdf` (su Windows `target/classes` ignora le maiuscole, il jar
+  no: il confronto esplicito vale in entrambi i casi);
+- nessun percorso è costruito a partire da `productCode`: si confronta solo il
+  nome; la difesa resta la regex alfanumerica del validator;
+- cartella assente o vuota, o file non trovato: `Optional.empty()` (quindi
+  404); errori di I/O: `UncheckedIOException` (500);
+- il contenuto è restituito come `byte[]`;
 - nessuna decisione di business: la conversione verso HTTP è nella RestResource.
 
 **Configurazione** (`@ConfigurationProperties(prefix =
-"smart-simulator.document-repository")`, classe `DocumentRepositoryProperties`
-in `config/`), file nel modulo in `src/main/resources`, importati da
-`application.yml` dell'app con `spring.config.import` (come quelli di Paperless):
+"smart-simulator.document-viewer")`, classe `DocumentViewerProperties` in
+`config/`, valore obbligatorio con validazione fail-fast), file unico nel
+modulo in `src/main/resources`, importato da `application.yml` dell'app con
+`spring.config.import` (come quello di Paperless):
 
-| File | Chiave | Valore attuale (segnaposto) |
+| File | Chiave | Valore |
 |---|---|---|
-| `document-repository-config.yml` | `products-folder` | `CartellaProdotti` |
-| `document-repository-config-dev.yml` | `root-path` | `PercorsoDev` |
-| `document-repository-config-sit.yml` | `root-path` | `PercorsoSit` |
+| `document-viewer-config.yml` | `products-folder` | `pdf/static` |
+
+La chiave è unica perché la futura funzione `dynamic` avrà una propria chiave
+(`pdf/dynamic/`, non ancora creata).
 
 ---
 

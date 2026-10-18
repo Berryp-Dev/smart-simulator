@@ -12,7 +12,7 @@ spring:
     name: smart-simulator-app
 
   config:
-    import: classpath:paperless-config.yml
+    import: classpath:paperless-config.yml,classpath:document-viewer-config.yml
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   kafka:

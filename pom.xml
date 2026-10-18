@@ -80,6 +80,7 @@
     <modules>
         <module>smart-simulator-core</module>
         <module>smart-simulator-paperless</module>
+        <module>smart-simulator-document-viewer</module>
         <module>smart-simulator-app</module>
         <!--
             Ogni sottosistema simulato viene aggiunto qui come modulo separato,

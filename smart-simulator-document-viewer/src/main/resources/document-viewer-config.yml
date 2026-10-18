@@ -1,0 +1,9 @@
+# Configurazione del modulo sottosistema Document Viewer, importata da
+# smart-simulator-app/application.yml via spring.config.import. Valida in
+# tutti gli ambienti (nessun file per ambiente): i PDF stanno nelle risorse
+# del classpath del modulo e finiscono nel jar.
+
+smart-simulator:
+  document-viewer:
+    # Cartella dei PDF della funzione staticdoc, relativa alla radice del classpath
+    products-folder: pdf/static

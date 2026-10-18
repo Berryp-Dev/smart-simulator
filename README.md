@@ -46,15 +46,14 @@ smart-simulator/
 │       └── resources/paperless-config.yml   (valori comuni del sottosistema)
 │           paperless-config-dev.yml, paperless-config-sit.yml
 │                                            (broker/code MQ per ambiente)
-├── smart-simulator-document-repository/   (sottosistema Document Repository, libreria)
+├── smart-simulator-document-viewer/   (sottosistema Document Viewer, libreria)
 │   └── src/main/
-│       ├── java/com/capgemini/smart/simulator/documentrepository/
-│       │   ├── config/               (DocumentRepositoryProperties + wiring)
-│       │   └── document/             (API, due livelli: niente area; esagono completo,
-│       │                              adapter/out/filesystem legge il PDF)
-│       └── resources/document-repository-config.yml   (products-folder)
-│           document-repository-config-dev.yml, document-repository-config-sit.yml
-│                                            (root-path per ambiente)
+│       ├── java/com/capgemini/smart/simulator/documentviewer/
+│       │   ├── config/               (DocumentViewerProperties + wiring)
+│       │   └── staticdoc/            (API, due livelli: niente area; esagono completo,
+│       │                              adapter/out/classpath legge il PDF)
+│       └── resources/document-viewer-config.yml   (products-folder: pdf/static)
+│           pdf/static/                    (i PDF, <productCode>.pdf)
 └── smart-simulator-account-raccordo-partitario/   (raccordo partitario, libreria)
     ├── pom.xml                  (una execution di openapi-generator per ogni YAML con `paths`)
     └── src/main/
@@ -112,11 +111,12 @@ endpoint stanno sotto questo prefisso (es.
 `http://localhost:9082/smart-simulator/swagger-ui.html`, API docs su
 `http://localhost:9082/smart-simulator/v3/api-docs`.
 
-**Valori segnaposto**: i file `document-repository-config*.yml` contengono
-valori segnaposto (`PercorsoDev`, `PercorsoSit`, `CartellaProdotti`) da
-sostituire con i percorsi reali. Per provare il Document Repository dal browser:
-`http://localhost:9082/smart-simulator/document-repository/document?productCode=12234`
-(il PDF `12234.pdf` deve stare in `<root-path>/<products-folder>`).
+**PDF del Document Viewer**: i PDF stanno nelle risorse del modulo, in
+`smart-simulator-document-viewer/src/main/resources/pdf/static/<productCode>.pdf`,
+in tutti gli ambienti, e finiscono nel jar: per aggiungerne uno si rifà il
+build (o si riavvia da IDE). Per provare il Document Viewer dal browser:
+`http://localhost:9082/smart-simulator/document-viewer/staticdoc?productCode=12234`
+(con `12234.pdf` nella cartella indicata).
 
 ## Decisioni consolidate
 
