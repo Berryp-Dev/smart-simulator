@@ -50,8 +50,8 @@ smart-simulator/
     └── src/main/
         ├── java/com/capgemini/smart/simulator/documentviewer/
         │   ├── config/               (DocumentViewerProperties + wiring)
-        │   └── staticdoc/            (API, due livelli: niente area; esagono completo,
-        │                              adapter/out/classpath legge il PDF)
+        │   └── document/             (area condivisa, due livelli; esagono completo,
+        │                              servizio getStatic: adapter/out/classpath legge il PDF)
         └── resources/document-viewer-config.yml   (products-folder: pdf/static)
             pdf/static/                    (i PDF, <productCode>.pdf)
 ```
@@ -102,7 +102,7 @@ endpoint stanno sotto questo prefisso (es.
 `smart-simulator-document-viewer/src/main/resources/pdf/static/<productCode>.pdf`,
 in tutti gli ambienti, e finiscono nel jar: per aggiungerne uno si rifà il
 build (o si riavvia da IDE). Per provare il Document Viewer dal browser:
-`http://localhost:9082/smart-simulator/document-viewer/staticdoc?productCode=12234`
+`http://localhost:9082/smart-simulator/document-viewer/document/getStatic?productCode=12234`
 (con `12234.pdf` nella cartella indicata).
 
 ## Decisioni consolidate

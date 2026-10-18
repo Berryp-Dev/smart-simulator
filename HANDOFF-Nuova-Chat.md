@@ -16,7 +16,7 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 
 - Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): allineato e verificato (nessuna divergenza in `paperless` e `document-viewer`).
 
-- Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-viewer` (struttura a due livelli, deroga solo per questa API): servizio Static Doc (retrieve) `GET /smart-simulator/document-viewer/staticdoc?productCode=...` implementato, con i PDF nelle risorse del classpath del modulo (`src/main/resources/pdf/static/`, in tutti gli ambienti, rebuild per aggiungerne uno); verifica manuale del `200` con PDF reale da fare.
+- Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-viewer` (struttura a due livelli, deroga solo per questo sottosistema): servizio getStatic `GET /smart-simulator/document-viewer/document/getStatic?productCode=...` implementato, con i PDF nelle risorse del classpath del modulo (`src/main/resources/pdf/static/`, in tutti gli ambienti, rebuild per aggiungerne uno); verifica manuale del `200` con PDF reale da fare.
 
 ## Prossimo obiettivo
 

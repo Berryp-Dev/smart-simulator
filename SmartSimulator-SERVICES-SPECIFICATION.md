@@ -261,33 +261,38 @@ fisso sono nell'adapter MQ.
 
 ## Sottosistema: Document Viewer
 
-### Servizio: Static Doc (retrieve)
+### Servizio: getStatic
 
 **Stato**: implementato; verifica manuale del `200` con un PDF reale da
 eseguire (i PDF vanno inseriti nelle risorse del modulo, vedi sotto).
 
-**Struttura a due livelli (deroga dichiarata solo per questa API)**:
-sottosistema → API, **senza livello area**, perché l'URL richiesto è
-`/document-viewer/staticdoc`. Package radice
-`com.capgemini.smart.simulator.documentviewer`, con `config/` e `staticdoc/`
-(domain, application, adapter). L'API si chiama `staticdoc` perché `static` è
-una parola riservata di Java e non può essere un package. Il livello
-`dynamic`/`dynamicdoc` è previsto in futuro per un altro servizio e non esiste
+**Struttura a due livelli (deroga dichiarata solo per questo sottosistema)**:
+sottosistema → `document`, con `domain`, `application` e `adapter` direttamente
+sotto `document` (nessun ulteriore livello per il singolo servizio). Package
+radice `com.capgemini.smart.simulator.documentviewer`, con `config/` e
+`document/`. `document` è l'area condivisa dai servizi del sottosistema: le
+classi specifiche del servizio `getStatic` hanno nome `GetStatic...`, quelle
+riutilizzabili da altri servizi dell'area hanno nome generico (`Document`,
+`DocumentNotFoundException`, RestResource, mapper e advice dell'area). Una
+funzione `dynamic` è prevista in futuro per un altro servizio e non esiste
 ancora. Nessuna cartella `common`. Il servizio segue per il resto lo standard
 di progetto (nessuna deroga `@ReplicatesOriginalBehavior`).
 
-**Endpoint**: `GET /document-viewer/staticdoc?productCode=<valore>`
-(con context-path: `/smart-simulator/document-viewer/staticdoc`).
-Classe `DocumentViewerStaticDocRestResource` (`@Tag(name = "Document")`).
+**Endpoint**: `GET /document-viewer/document/getStatic?productCode=<valore>`
+(con context-path: `/smart-simulator/document-viewer/document/getStatic`).
+Classe `DocumentViewerDocumentRestResource` (`@Tag(name = "Document")`), metodo
+`getStatic`; l'`operationId` Swagger (`getStatic`) coincide con il metodo e con
+l'ultimo segmento del path.
 
 **Parametri**: `productCode` è un query param (`required = false` a livello
 Spring: la presenza è controllata dal validator, non da Spring).
 
-**Flusso**: `RestResource` → mapper (query param →
-`DocumentSearchCriteria`, null-safe, senza validare) →
-`RetrieveDocumentService.getDocument` → il service
-chiama prima `RetrieveDocumentValidator` (se non valido lancia
-`ValidationException` del core), poi `LoadDocumentPort`; se la port
+**Flusso**: `RestResource` → mapper (`DocumentViewerDocumentMapper`, query
+param → `GetStaticDocumentSearchCriteria`, null-safe, senza validare) →
+`RetrieveGetStaticDocumentService.getStaticDocument` → il service
+(`RetrieveGetStaticDocumentServiceImpl`) chiama prima
+`RetrieveGetStaticDocumentValidator` (se non valido lancia
+`ValidationException` del core), poi `LoadGetStaticDocumentPort`; se la port
 non trova il documento lancia `DocumentNotFoundException`. La port
 restituisce `Optional<Document>` (productCode, content `byte[]`).
 
@@ -306,8 +311,8 @@ restituisce `Optional<Document>` (productCode, content `byte[]`).
 | Documento non trovato | 404 | `ApiError` con un solo errore `field: null`, `message: Documento non trovato` |
 
 Il 404 è gestito da un advice limitato alla RestResource
-(`DocumentViewerStaticDocExceptionHandler`,
-`@RestControllerAdvice(assignableTypes = DocumentViewerStaticDocRestResource.class)`
+(`DocumentViewerDocumentExceptionHandler`,
+`@RestControllerAdvice(assignableTypes = DocumentViewerDocumentRestResource.class)`
 con `@Order(HIGHEST_PRECEDENCE)` per precedere il `GlobalExceptionHandler`,
 `adapter/in/rest/advice`); `ApiError` popolato come per i 400 del core (solo
 `status` ed `error` diversi); il `message` di primo livello è
@@ -315,12 +320,12 @@ con `@Order(HIGHEST_PRECEDENCE)` per precedere il `GlobalExceptionHandler`,
 
 **Provenienza dei PDF**: in tutti gli ambienti i PDF stanno nelle risorse del
 classpath del modulo, in `src/main/resources/pdf/static/<productCode>.pdf` (il
-livello `static` è specifico della funzione `staticdoc`), e finiscono nel jar:
+livello `static` è specifico del servizio `getStatic`), e finiscono nel jar:
 per aggiungere un PDF si rifà il build. Nessun file di configurazione per
 ambiente.
 
 **Adapter `adapter/out/classpath`** (dettaglio del servizio,
-`DocumentClasspathAdapter`, implementa la port):
+`GetStaticDocumentClasspathAdapter`, implementa la port):
 
 - legge la cartella del classpath indicata da `products-folder` (relativa alla
   radice del classpath; slash iniziali/finali eventuali vengono tolti);

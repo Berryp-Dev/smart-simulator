@@ -86,7 +86,7 @@ smart-simulator/
     └── src/main/
         ├── java/com/capgemini/smart/simulator/documentviewer/
         │   ├── config/              (DocumentViewerProperties + wiring)
-        │   └── staticdoc/           (API a due livelli, senza area; esagono completo)
+        │   └── document/            (area condivisa, due livelli; esagono completo, servizio getStatic)
         └── resources/document-viewer-config.yml  (products-folder: pdf/static)
             pdf/static/                           (i PDF, <productCode>.pdf)
 ```
@@ -186,7 +186,7 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   in `application.yml`): i path degli endpoint nei documenti sono relativi a
   questo prefisso; Swagger UI su `/smart-simulator/swagger-ui.html`.
 - Nuovo modulo libreria `smart-simulator-document-viewer`, servizio
-  **Static Doc (retrieve)**: `GET /smart-simulator/document-viewer/staticdoc?productCode=...`,
+  **getStatic**: `GET /smart-simulator/document-viewer/document/getStatic?productCode=...`,
   restituisce il PDF letto dal classpath del modulo (inline): in tutti gli
   ambienti i PDF stanno in `src/main/resources/pdf/static/` e finiscono nel
   jar, per aggiungerne uno si rifà il build. **Implementato** e coperto da
@@ -195,7 +195,7 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
 - **Da verificare a mano**: mettere un PDF `12234.pdf` in
   `smart-simulator-document-viewer/src/main/resources/pdf/static/`, rifare il
   build o riavviare da IDE (Boot Dashboard, profilo `dev`) e aprire
-  `http://localhost:9082/smart-simulator/document-viewer/staticdoc?productCode=12234`
+  `http://localhost:9082/smart-simulator/document-viewer/document/getStatic?productCode=12234`
   (il PDF deve aprirsi inline nel browser); `productCode` con maiuscole
   diverse → 404; inesistente → 404 con `ApiError`. Specifica in
   `SmartSimulator-SERVICES-SPECIFICATION.md`.
