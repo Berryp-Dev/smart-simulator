@@ -48,8 +48,8 @@ com.capgemini.smart.simulator.<sottosistema>/
 │   └── <api>/                       API / feature (es. configure, signature)
 │       ├── domain/                  model, model/component, enums, exception
 │       ├── application/             port/in, port/out, service, validation
-│       └── adapter/                 in/rest (resource, dto, dto/model, dto/enums, mapper),
-│                                    out (persistence, kafka, mq/message)
+│       └── adapter/                 in/rest (resource, dto, dto/model, dto/enums, mapper, advice),
+│                                    out (persistence, kafka, classpath, mq/message)
 ```
 
 | Pacchetto (nell'API) | Ruolo |
@@ -57,7 +57,7 @@ com.capgemini.smart.simulator.<sottosistema>/
 | `domain/model` | Entità/value object radice di dominio. |
 | `domain/model/component` | Value object annidati dell'API (nessun suffisso `Dto`). |
 | `domain/enums` | Enum di dominio (suffisso `Code`). |
-| `domain/exception` | `DomainValidationException`, solo se l'API ha invarianti di dominio. |
+| `domain/exception` | `DomainValidationException`, solo se l'API ha invarianti di dominio; contiene anche le eccezioni di dominio specifiche dell'API. |
 | `application/port/in` | Casi d'uso (driving port), interfaccia con suffisso `Service`, naming verbo+oggetto con intento di business. |
 | `application/port/out` | Dipendenze verso l'esterno (driven port), suffisso `Port`. Solo tipi di dominio o primitivi: mai JAXB, DTO o payload di messaggi. |
 | `application/service` | Implementazione dei casi d'uso, classi con suffisso `ServiceImpl` (es. `ConfigurePaperlessPracticeServiceImpl`): prima il validator, poi la business logic tramite le port out. |
@@ -67,10 +67,12 @@ com.capgemini.smart.simulator.<sottosistema>/
 | `adapter/in/rest/dto/model` | DTO annidati, suffisso `Dto`. |
 | `adapter/in/rest/dto/enums` | Enum gemelli degli enum di dominio (stesso nome semplice). |
 | `adapter/in/rest/mapper` | Mapping DTO <-> dominio. |
+| `adapter/in/rest/advice` | `@RestControllerAdvice` limitato (`assignableTypes`, `@Order(HIGHEST_PRECEDENCE)`) al `RestResource` della propria API: mappa le eccezioni di dominio dell'API in `ApiError` (es. 404); resta in `adapter/in/*` (vedi §3 e §5). Es. `DocumentViewerDocumentGetStaticExceptionHandler`. |
 | `adapter/in/soap` | Endpoint SOAP (CXF, contract-first). |
 | `adapter/out/persistence` | Adapter JDBC (`JdbcTemplate`, SQL scritto a mano, schema esplicito nell'SQL) che implementano le port/out di persistenza. Nessun Hibernate/JPA. |
 | `adapter/out/kafka` | Adapter che riusano `KafkaPublisherService` del core. |
 | `adapter/out/mq` | Adapter che implementano le port/out e riusano `MqPublisherService` del core; `message/` contiene il payload pubblicato (es. classi JAXB). |
+| `adapter/out/classpath` | Adapter che leggono risorse dal classpath del modulo (es. file in `src/main/resources`) e implementano le port/out. Es. `GetStaticDocumentClasspathAdapter`. |
 
 `config/` resta a livello di **modulo** (non di feature): wiring Spring e binding
 port -> adapter.
@@ -84,7 +86,8 @@ Swagger è organizzato per modulo / entità / servizi in una sola pagina: i tag
 seconda API della stessa area, o da una seconda area), con la stessa struttura
 delle API e solo ciò che è davvero condiviso. Livelli: API → `<area>/common` →
 `common` del sottosistema → core. Un'API non dipende mai da un'altra API,
-nemmeno della stessa area.
+nemmeno della stessa area. Es. di `common` del sottosistema:
+`DocumentNotFoundException` in `documentviewer.common.domain.exception`.
 
 **Regola di dipendenza:** `domain` e `application` NON devono dipendere da
 framework o librerie esterne (Spring escluso dove strettamente necessario per

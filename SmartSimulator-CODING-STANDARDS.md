@@ -45,7 +45,8 @@ com.capgemini.smart.simulator.<sottosistema>/
 │       │   ├── model/               entità/value object RADICE di dominio
 │       │   ├── model/component/     value object annidati dell'API (nessun suffisso "Dto")
 │       │   ├── enums/               enum di dominio (suffisso "Code" obbligatorio)
-│       │   └── exception/           DomainValidationException (solo se l'API ha invarianti)
+│       │   └── exception/           DomainValidationException (solo se l'API ha invarianti);
+│       │                            eccezioni di dominio specifiche dell'API
 │       │
 │       ├── application/
 │       │   ├── port/in/             driving port, interfaccia con suffisso "Service", verbo+oggetto
@@ -62,10 +63,14 @@ com.capgemini.smart.simulator.<sottosistema>/
 │           │   ├── dto/             DTO radice, suffissi "DtoReq"/"DtoResp"
 │           │   ├── dto/model/       DTO annidati dell'API, suffisso "Dto" semplice
 │           │   ├── dto/enums/       enum gemelli degli enum di dominio
-│           │   └── mapper/          mapping DTO <-> dominio
+│           │   ├── mapper/          mapping DTO <-> dominio
+│           │   └── advice/          @RestControllerAdvice scoped al RestResource dell'API
+│           │                        (assignableTypes, @Order(HIGHEST_PRECEDENCE)): eccezioni di dominio -> ApiError
 │           └── out/
 │               ├── persistence/     adapter JDBC (JdbcTemplate), schema esplicito nell'SQL
 │               ├── kafka/           adapter che usa KafkaPublisherService del core
+│               ├── classpath/       adapter che legge risorse dal classpath del modulo
+│               │                    (es. file in src/main/resources)
 │               └── mq/              adapter che implementa la port/out e usa MqPublisherService;
 │                   └── message/     payload pubblicato (es. classi JAXB)
 │
@@ -86,7 +91,8 @@ con il payload del messaggio che pubblica.
   seconda area (liv. 3). Non si creano cartelle vuote in anticipo.
 - Un `common` contiene la stessa struttura delle API, ma **solo** ciò che è
   davvero condiviso (value object, DTO annidati, e se serve anche una port, un
-  mapper, ecc.).
+  mapper, ecc.). Es. `common` del sottosistema: `DocumentNotFoundException` in
+  `documentviewer.common.domain.exception`.
 - **Livelli di condivisione**: API → `<area>/common` → `common` del
   sottosistema → core (`core/util`, codice trasversale a tutto il progetto).
 - **Dipendenze**: un'API può usare il `common` della propria area e quello del
