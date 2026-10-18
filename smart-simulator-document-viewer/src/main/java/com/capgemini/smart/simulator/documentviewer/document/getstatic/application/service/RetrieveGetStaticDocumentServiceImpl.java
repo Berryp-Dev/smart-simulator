@@ -1,13 +1,13 @@
-package com.capgemini.smart.simulator.documentviewer.document.application.service;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.application.service;
 
 import com.capgemini.smart.simulator.core.exception.ValidationException;
 import com.capgemini.smart.simulator.core.validation.ValidationResult;
-import com.capgemini.smart.simulator.documentviewer.document.application.port.in.RetrieveGetStaticDocumentService;
-import com.capgemini.smart.simulator.documentviewer.document.application.port.out.LoadGetStaticDocumentPort;
-import com.capgemini.smart.simulator.documentviewer.document.application.validation.RetrieveGetStaticDocumentValidator;
-import com.capgemini.smart.simulator.documentviewer.document.domain.exception.DocumentNotFoundException;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.Document;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.common.domain.exception.DocumentNotFoundException;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.application.port.in.RetrieveGetStaticDocumentService;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.application.port.out.LoadGetStaticDocumentPort;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.application.validation.RetrieveGetStaticDocumentValidator;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.Document;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

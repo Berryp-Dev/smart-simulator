@@ -1,10 +1,10 @@
-package com.capgemini.smart.simulator.documentviewer.document.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.rest.ApiError;
-import com.capgemini.smart.simulator.documentviewer.document.adapter.in.rest.mapper.DocumentViewerDocumentMapper;
-import com.capgemini.smart.simulator.documentviewer.document.application.port.in.RetrieveGetStaticDocumentService;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.Document;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.in.rest.mapper.DocumentViewerDocumentGetStaticMapper;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.application.port.in.RetrieveGetStaticDocumentService;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.Document;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = "Document")
 @RequestMapping("/document-viewer/document")
-public class DocumentViewerDocumentRestResource {
+public class DocumentViewerDocumentGetStaticRestResource {
 
     @Autowired
     private RetrieveGetStaticDocumentService retrieveGetStaticDocumentService;
@@ -42,7 +42,7 @@ public class DocumentViewerDocumentRestResource {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ApiError.class)))
     @GetMapping("/getStatic")
     public ResponseEntity<byte[]> getStatic(@RequestParam(name = "productCode", required = false) String productCode) {
-        GetStaticDocumentSearchCriteria criteria = DocumentViewerDocumentMapper.mapToDomain(productCode);
+        GetStaticDocumentSearchCriteria criteria = DocumentViewerDocumentGetStaticMapper.mapToDomain(productCode);
         Document document = retrieveGetStaticDocumentService.getStaticDocument(criteria);
         ContentDisposition contentDisposition = ContentDisposition.inline()
                 .filename(document.productCode() + ".pdf")

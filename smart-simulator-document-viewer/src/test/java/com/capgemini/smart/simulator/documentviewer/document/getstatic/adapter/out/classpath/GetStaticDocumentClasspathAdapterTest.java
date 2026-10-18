@@ -1,11 +1,11 @@
-package com.capgemini.smart.simulator.documentviewer.document.adapter.out.classpath;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.out.classpath;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.capgemini.smart.simulator.documentviewer.config.DocumentViewerProperties;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.Document;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.Document;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

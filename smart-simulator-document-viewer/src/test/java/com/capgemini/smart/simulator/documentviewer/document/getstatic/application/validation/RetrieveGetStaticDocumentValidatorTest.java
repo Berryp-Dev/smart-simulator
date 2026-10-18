@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.documentviewer.document.application.validation;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.application.validation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.capgemini.smart.simulator.core.validation.ValidationError;
 import com.capgemini.smart.simulator.core.validation.ValidationResult;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;

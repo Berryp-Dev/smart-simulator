@@ -1,7 +1,7 @@
-package com.capgemini.smart.simulator.documentviewer.document.application.port.out;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.application.port.out;
 
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.Document;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.Document;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 
 import java.util.Optional;
 

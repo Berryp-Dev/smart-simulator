@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.documentviewer.document.adapter.in.rest.advice;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.in.rest.advice;
 
 import com.capgemini.smart.simulator.core.rest.ApiError;
 import com.capgemini.smart.simulator.core.validation.ValidationError;
-import com.capgemini.smart.simulator.documentviewer.document.adapter.in.rest.resource.DocumentViewerDocumentRestResource;
-import com.capgemini.smart.simulator.documentviewer.document.domain.exception.DocumentNotFoundException;
+import com.capgemini.smart.simulator.documentviewer.common.domain.exception.DocumentNotFoundException;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.in.rest.resource.DocumentViewerDocumentGetStaticRestResource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -21,9 +21,9 @@ import java.util.List;
  * l'eccezione con il proprio handler generico). Stessa forma di ApiError
  * degli errori 400 del core, con status ed error propri.
  */
-@RestControllerAdvice(assignableTypes = DocumentViewerDocumentRestResource.class)
+@RestControllerAdvice(assignableTypes = DocumentViewerDocumentGetStaticRestResource.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class DocumentViewerDocumentExceptionHandler {
+public class DocumentViewerDocumentGetStaticExceptionHandler {
 
     private static final String MESSAGE = "Risorsa non trovata: 1 errore/i";
     private static final String ERROR_DETAIL = "Documento non trovato";

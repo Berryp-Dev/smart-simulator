@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.documentviewer.document.adapter.out.classpath;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.adapter.out.classpath;
 
 import com.capgemini.smart.simulator.documentviewer.config.DocumentViewerProperties;
-import com.capgemini.smart.simulator.documentviewer.document.application.port.out.LoadGetStaticDocumentPort;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.Document;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.application.port.out.LoadGetStaticDocumentPort;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.Document;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;

@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.documentviewer.document.domain.model;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model;
 
 /**
  * Criteri di ricerca del servizio getStatic: codice prodotto. Un valore

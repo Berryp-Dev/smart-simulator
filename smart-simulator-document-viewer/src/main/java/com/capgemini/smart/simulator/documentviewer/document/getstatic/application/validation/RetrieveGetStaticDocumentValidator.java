@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.documentviewer.document.application.validation;
+package com.capgemini.smart.simulator.documentviewer.document.getstatic.application.validation;
 
 import com.capgemini.smart.simulator.core.util.StringUtil;
 import com.capgemini.smart.simulator.core.validation.ScenarioValidator;
 import com.capgemini.smart.simulator.core.validation.ValidationResult;
-import com.capgemini.smart.simulator.documentviewer.document.domain.model.GetStaticDocumentSearchCriteria;
+import com.capgemini.smart.simulator.documentviewer.document.getstatic.domain.model.GetStaticDocumentSearchCriteria;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;

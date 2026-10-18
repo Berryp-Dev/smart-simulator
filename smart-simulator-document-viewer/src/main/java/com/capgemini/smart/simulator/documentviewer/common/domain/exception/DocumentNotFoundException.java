@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.documentviewer.document.domain.exception;
+package com.capgemini.smart.simulator.documentviewer.common.domain.exception;
 
 /**
  * Sollevata dal service quando nessun documento corrisponde ai criteri di
