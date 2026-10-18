@@ -7,11 +7,16 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -98,6 +103,57 @@ public class GlobalExceptionHandler {
         return null;
     }
 
+    /**
+     * Path senza handler ne' risorsa statica (es. URL inesistente, favicon.ico):
+     * errore del chiamante, HTTP 404 con ApiError dal messaggio fisso. Log a
+     * livello warn senza stacktrace, come per il corpo non leggibile.
+     */
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResourceFound(NoResourceFoundException ex, HttpServletRequest request) {
+        log.warn("Risorsa non trovata su {}", request.getRequestURI());
+        return build(HttpStatus.NOT_FOUND, "Risorsa non trovata", request, null);
+    }
+
+    /**
+     * Metodo HTTP non ammesso sul path: HTTP 405 con ApiError dal messaggio fisso
+     * e gli header forniti dall'eccezione (es. Allow). Log a livello warn senza
+     * stacktrace.
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex,
+                                                             HttpServletRequest request) {
+        log.warn("Metodo HTTP non supportato su {}: {}", request.getRequestURI(), request.getMethod());
+        return withHeaders(build(HttpStatus.METHOD_NOT_ALLOWED, "Metodo HTTP non supportato", request, null),
+                ex.getHeaders());
+    }
+
+    /**
+     * Content-Type della richiesta non supportato: HTTP 415 con ApiError dal
+     * messaggio fisso e gli header forniti dall'eccezione (es. Accept). Log a
+     * livello warn senza stacktrace.
+     */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ApiError> handleMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
+                                                                HttpServletRequest request) {
+        log.warn("Tipo di contenuto non supportato su {}: {}", request.getRequestURI(), request.getContentType());
+        return withHeaders(build(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Tipo di contenuto non supportato", request, null),
+                ex.getHeaders());
+    }
+
+    /**
+     * Formato di risposta richiesto (header Accept) non producibile: HTTP 406 con
+     * ApiError dal messaggio fisso. Se il corpo non e' scrivibile nel formato
+     * richiesto da Accept, Spring risponde con il solo status. Log a livello warn
+     * senza stacktrace.
+     */
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    public ResponseEntity<ApiError> handleMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+                                                                 HttpServletRequest request) {
+        log.warn("Formato di risposta non accettabile su {}: {}", request.getRequestURI(), request.getHeader(HttpHeaders.ACCEPT));
+        return withHeaders(build(HttpStatus.NOT_ACCEPTABLE, "Formato di risposta non accettabile", request, null),
+                ex.getHeaders());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneric(Exception ex, HttpServletRequest request) {
         log.error("Errore non gestito su {}: {}", request.getRequestURI(), ex.getMessage(), ex);
@@ -138,6 +194,11 @@ public class GlobalExceptionHandler {
         return Arrays.stream(enumType.getEnumConstants())
                 .map(Object::toString)
                 .collect(Collectors.joining(", "));
+    }
+
+    /** Aggiunge alla risposta gia' costruita gli header forniti dall'eccezione. */
+    private ResponseEntity<ApiError> withHeaders(ResponseEntity<ApiError> response, HttpHeaders headers) {
+        return ResponseEntity.status(response.getStatusCode()).headers(headers).body(response.getBody());
     }
 
     private ResponseEntity<ApiError> build(HttpStatus status, Exception ex, HttpServletRequest request,
