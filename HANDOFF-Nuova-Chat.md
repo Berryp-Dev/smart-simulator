@@ -11,17 +11,16 @@ Da incollare (o allegare) all'inizio della nuova chat insieme ai file del pacche
 
 ## Stato del progetto in due righe
 
-- Un solo modulo avviabile (`smart-simulator-app`, porta 9082); `smart-simulator-core` e `smart-simulator-paperless` sono librerie.
+- Un solo modulo avviabile (`smart-simulator-app`, porta 9082); `smart-simulator-core`, `smart-simulator-paperless` e `smart-simulator-document-viewer` sono librerie.
 - Persistenza con `JdbcTemplate` (nessun Hibernate/JPA). Struttura per area → API con esagono completo per API, port in uscita senza JAXB/DTO, allo use case arriva solo il dominio tramite mapper. Paperless (Configure e Signature) è implementato, refactorizzato e verificato; resta solo da controllare a mano il contenuto dei messaggi MQ (vedi `PROJECT-CONTEXT.md`).
 
-- Modulo `smart-simulator-account-raccordo-partitario` creato: interfacce autogenerate da YAML, 12 servizi: `create` implementato, gli altri 11 non implementati (501). Procedura per un nuovo raccordo nel `README.md`; dettagli in `SERVICES-SPECIFICATION` e `CODING-STANDARDS`.
-- Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): documentate; il codice va allineato con `PROMPT-ClaudeCode-Allineamento-Direttive.md`.
+- Direttive aggiornate il 17/10/2026 (`RestResource`, enum con `valueOf`, `Service`/`ServiceImpl`, `@Autowired` sul campo): allineato e verificato (nessuna divergenza in `paperless` e `document-viewer`).
 
 - Context-path `/smart-simulator` per l'intera app (endpoint e Swagger UI sotto questo prefisso). Nuovo modulo `smart-simulator-document-viewer` (struttura a due livelli, deroga solo per questa API): servizio Static Doc (retrieve) `GET /smart-simulator/document-viewer/staticdoc?productCode=...` implementato, con i PDF nelle risorse del classpath del modulo (`src/main/resources/pdf/static/`, in tutti gli ambienti, rebuild per aggiungerne uno); verifica manuale del `200` con PDF reale da fare.
 
 ## Prossimo obiettivo
 
-Mettere un PDF in `smart-simulator-document-viewer/src/main/resources/pdf/static/` e verificare a mano il Static Doc (retrieve) (PDF inline nel browser, 404 con maiuscole/minuscole diverse, avvio da VSCode). Poi: implementare i servizi di `account-raccordo-partitario` uno per volta, partendo da quello da scegliere (servono: quale endpoint, cosa deve fare, da dove vengono i dati di risposta). Aperto: `.gitignore` e `target/` tracciato.
+Verificare a mano il funzionamento di `document-viewer` (vedi 'Da verificare a mano' in `PROJECT-CONTEXT.md`). Poi: da definire, prossimo sottosistema o servizio da implementare. Aperto: `.gitignore` e `target/` tracciato.
 
 ## Metodo di lavoro (da rispettare)
 
@@ -40,7 +39,6 @@ Mettere un PDF in `smart-simulator-document-viewer/src/main/resources/pdf/static
 - Per rinomine di directory: chiudere l'IDE o disabilitare le estensioni Java e Spring Boot Tools del workspace (il language server ricrea `target/` e blocca le cartelle), e verificare i processi `java.exe` di `redhat.java`.
 - Messaggi d'errore e nomi di campo del contratto devono restare identici dopo i refactoring: confrontare le risposte prima/dopo.
 - Con gli YAML su disco non farli ricreare da testo: il prompt indica il percorso e Claude Code verifica gli sha256 (i file possono essere untracked in git, quindi `git diff` non basta).
-- I metodi fluenti `set*` del generatore vengono letti da Jackson come setter: nel modulo account lo evita il template `pojo.mustache` (da riverificare a ogni upgrade del plugin).
 - Su Windows servono `git config core.longpaths true` (percorsi lunghi) e, prima di rinominare directory, la chiusura dell'IDE.
 - Chiedere sempre un commit prima di un intervento ampio: Claude Code può trovare l'albero sporco o una modifica annullata da un revert.
 - Non terminare i processi Java per nome: solo il PID dell'app avviata da te.

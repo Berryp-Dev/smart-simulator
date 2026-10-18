@@ -81,24 +81,14 @@ smart-simulator/
 │       │   └── configure/           (API, struttura esagonale completa)
 │       └── document/                (area)
 │           └── signature/           (API, struttura esagonale completa)
-├── smart-simulator-document-viewer/  (modulo sottosistema, libreria)
-│   ├── pom.xml                      (dipende da smart-simulator-core; surefire 3.2.5)
-│   └── src/main/
-│       ├── java/com/capgemini/smart/simulator/documentviewer/
-│       │   ├── config/              (DocumentViewerProperties + wiring)
-│       │   └── staticdoc/           (API a due livelli, senza area; esagono completo)
-│       └── resources/document-viewer-config.yml  (products-folder: pdf/static)
-│           pdf/static/                           (i PDF, <productCode>.pdf)
-└── smart-simulator-account-raccordo-partitario/  (secondo modulo sottosistema, libreria)
-    ├── pom.xml                      (una execution di openapi-generator per YAML con `paths`)
+└── smart-simulator-document-viewer/  (modulo sottosistema, libreria)
+    ├── pom.xml                      (dipende da smart-simulator-core; surefire 3.2.5)
     └── src/main/
-        ├── java/com/capgemini/smart/simulator/account/raccordopartitario/
-        │   ├── common/adapter/in/rest/   (advice, busta d'errore, eccezione)
-        │   ├── config/                   (interceptor locale, web config)
-        │   ├── sales/adapter/in/rest/resource/
-        │   └── currentaccount/configure/adapter/in/rest/resource/
-        └── openapi-templates/pojo.mustache
-    (gli YAML stanno in smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/)
+        ├── java/com/capgemini/smart/simulator/documentviewer/
+        │   ├── config/              (DocumentViewerProperties + wiring)
+        │   └── staticdoc/           (API a due livelli, senza area; esagono completo)
+        └── resources/document-viewer-config.yml  (products-folder: pdf/static)
+            pdf/static/                           (i PDF, <productCode>.pdf)
 ```
 
 **Struttura (ristrutturazione eseguita e verificata)**:
@@ -141,11 +131,6 @@ i servizi di tutti i sottosistemi.
 - **Swagger/OpenAPI**: dipendenza `springdoc-openapi-starter-webmvc-ui`
   nel core (ereditata automaticamente da ogni modulo sottosistema), UI
   disponibile su `/swagger-ui.html` di ciascun modulo avviato
-- **Interfacce autogenerate da YAML** (raccordo partitario): contratto generato
-  con `openapi-generator-maven-plugin` 7.19.0 (property
-  `jackson-databind-nullable` 0.2.12 nel parent), `interfaceOnly`; gli YAML
-  vivono in `smart-simulator-app/src/main/resources/openapi/<raccordo>/` e non si
-  modificano. Vedi CODING-STANDARDS, "Moduli con interfacce autogenerate da YAML"
 - **Request DTO per operazione**: ogni scenario/operazione ha la propria
   request dedicata; i valori non specificati esplicitamente E non
   obbligatori vengono risolti tramite `DefaultsResolver` (impl. base:
@@ -215,6 +200,8 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   diverse → 404; inesistente → 404 con `ApiError`. Specifica in
   `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
+Gli YAML OpenAPI in `smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/` restano nel repository in attesa della ripartenza del Raccordo; non sono usati dal codice.
+
 **Fatto:**
 - Skeleton multi-modulo Maven, modulo `smart-simulator-core` avviabile e
   funzionante in locale (verificato in VSCode con Spring Boot Dashboard;
@@ -271,38 +258,12 @@ variabili `DB_*`, `MQ_*`, `KAFKA_BOOTSTRAP_SERVERS` non sono più lette.
 Da verificare a mano: avvio da VSCode (Boot Dashboard) e messaggi MQ con
 il profilo `dev`.
 
-**Modulo `smart-simulator-account-raccordo-partitario`: creato (2026-10-07).**
-Interfacce REST autogenerate da tre YAML (`components-v1.2.2.yaml`,
-`raccordopartitario_sales.yaml`, `raccordopartitario_sales_currentaccounts_configure.yaml`)
-con `openapi-generator-maven-plugin` 7.19.0; 12 operazioni, **tutte non
-implementate** (HTTP 501 con la busta dello YAML). Deroga REPLICA ORIGINALE
-(sistema: Raccordo Partitario Conti) confinata in `adapter/in/*`; `domain` e
-`application` esistono solo per i servizi implementati (oggi `create`). Package radice
-`com.capgemini.smart.simulator.account.raccordopartitario`; il livello
-`lifecycle` inizialmente previsto per Sales è stato rimosso. Corretto con un
-template `pojo.mustache` il problema dei metodi fluenti `set*` letti da Jackson
-(proprietà `tlement...` inventate). Errori in inglese, violazioni ordinate per
-percorso del campo (`mainError` deterministico), inglese imposto solo ai
-messaggi del modulo da un interceptor sul tipo del handler. Verificati: build
-verde, Swagger 200, 12 endpoint a 501, `/v3/api-docs` identico agli YAML,
-sha256 degli YAML invariati, Paperless invariato. Dettaglio in
-`SmartSimulator-SERVICES-SPECIFICATION.md`, procedura per un nuovo raccordo in
-`README.md`.
-
-**Primo servizio del raccordo implementato: `create` (2026-10-07).** POST
-`/smartengine/raccordo/create` → 201 con `srvAcntKey` (codici dalla request, `key`
-UUID), `statusInfo` (`CREATED`, `Creato`, `tsStatus` UTC al millisecondo); la
-response non ha `header` per contratto. Esagono in `sales/create` (domain,
-application, mapper), senza persistenza; primi test unitari del modulo (surefire
-3.2.5 fissato nel pom del modulo, il default di Maven non esegue JUnit 5). Gli
-altri 11 servizi restano 501. Dettaglio in `SmartSimulator-SERVICES-SPECIFICATION.md`.
-
-**Aggiornamento standard (2026-10-17): documentato, codice da allineare.** Quattro
+**Aggiornamento standard (2026-10-17): allineato e verificato.** Quattro
 nuove direttive in CODING-STANDARDS.md: (1) classi REST con suffisso `RestResource`;
 (2) mapping degli enum adapter <-> dominio con `valueOf` (non più `switch`); (3) interfacce
 dei casi d'uso con suffisso `Service` e implementazioni con suffisso `ServiceImpl`
 (il suffisso `UseCase` è abolito); (4) injection con `@Autowired` sul campo. Il codice
-esistente va allineato con `PROMPT-ClaudeCode-Allineamento-Direttive.md` (da eseguire).
+esistente (`paperless` e `document-viewer`) è allineato e verificato.
 
 **In attesa:** ambiente `sit` (profilo già ammesso dal controllo all'avvio,
 ma `application-sit.yml` e `paperless-config-sit.yml` non esistono ancora,
@@ -344,11 +305,6 @@ XML su MQ dopo i refactoring 2 e 3 — Configure su `DEV.QUEUE.2` (5 scenari,
 `CodiceFiscale` `XXXXXXXXXXXXXXXX`, un solo `PARZIALE`/`ERRORE_FIRMA`).
 
 **Da fare (prossimo passo):**
-- Eseguire `PROMPT-ClaudeCode-Allineamento-Direttive.md` (RestResource, valueOf, Service/ServiceImpl,
-  @Autowired) dopo un commit pulito, poi verificare a mano Swagger e messaggi MQ
-- Implementare i servizi di `account-raccordo-partitario` uno per volta (primo
-  servizio da scegliere): per ciascuno specifica, design di `domain` e
-  `application` (esagono diviso per operazione), prompt per Claude Code
 - Aperto, da decidere: `target/` risulta tracciato da git nel commit di partenza
   e non esiste un `.gitignore`
 - Verificare a mano avvio da VSCode e messaggi MQ con il profilo `dev`;
