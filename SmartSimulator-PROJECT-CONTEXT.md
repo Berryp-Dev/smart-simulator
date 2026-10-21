@@ -268,9 +268,29 @@ dei casi d'uso con suffisso `Service` e implementazioni con suffisso `ServiceImp
 (il suffisso `UseCase` è abolito); (4) injection con `@Autowired` sul campo. Il codice
 esistente (`paperless` e `document-viewer`) è allineato e verificato.
 
-**In attesa:** ambiente `sit` (profilo già ammesso dal controllo all'avvio,
-ma `application-sit.yml` e `paperless-config-sit.yml` non esistono ancora,
-mancano i valori).
+**Log MQ, log REST e CORS (2026-10-21): implementati.** Build verde.
+`MqPublisherService.sendRawText` traccia ogni scrittura (prima/dopo/errore,
+payload completo; nel log compare **solo il nome fisico della coda**, non la
+chiave `queueMap` né il broker). Il filtro `RestLoggingFilter` (core)
+traccia request/response di tutti i servizi REST (esclusi `OPTIONS`, Swagger UI,
+`/v3/api-docs*` e `/actuator/**`; limite noto: le richieste
+`application/x-www-form-urlencoded` non sono gestite) con `requestId` nell'MDC
+(`logging.pattern.level` in `application.yml`). CORS nell'app
+(`smart-simulator.cors.allowed-origins`: `dev` tutti gli origin, `sit`
+`http://smart-sales.test`). Verificato da jar su `dev` (porta di prova):
+header CORS presenti anche su 400 e 404, PDF di getStatic identico byte per
+byte, righe di log con lo stesso `requestId`. Regole in CODING-STANDARDS.md
+(sezioni «Logging» e «CORS»).
+**Da verificare a mano:** gli scenari MQ (Configure su `DEV.QUEUE.2`,
+Signature su `DEV.QUEUE.1`, errore di scrittura con coda non raggiungibile),
+il browser da `http://smart-sales.test` (preflight e `POST` senza errore
+CORS) e la questione della porta 8081 vista dal browser (in `dev` il
+`server.port` configurato è 9082).
+
+**In attesa:** ambiente `sit`: `application-sit.yml` esiste ora ma contiene
+**solo il blocco CORS**; mancano porta, IBM MQ, Kafka, datasource e
+`paperless-config-sit.yml`, quindi `sit` non è avviabile finché non
+arrivano i valori.
 
 **In corso:** nessuna esecuzione aperta.
 

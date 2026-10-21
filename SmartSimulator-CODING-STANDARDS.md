@@ -405,7 +405,10 @@ in ogni ambiente senza ricompilare.
   `application.yml` contiene solo ciò che è identico in tutti gli ambienti
   più `spring.config.import`; `application-<env>.yml` contiene i valori che
   dipendono dall'ambiente (porta, datasource, connessione IBM MQ, bootstrap
-  Kafka, livelli di log, Swagger).
+  Kafka, livelli di log, Swagger, origin ammessi dal CORS
+  `smart-simulator.cors.allowed-origins`). `application-sit.yml` esiste e
+  contiene per ora **solo il blocco CORS**: gli altri valori di `sit` sono
+  ancora da definire e finché mancano `sit` non è avviabile.
 - **File dei sottosistemi** (`<sottosistema>-config.yml` e
   `<sottosistema>-config-<env>.yml`, in `src/main/resources` del modulo, file
   separati e non documenti multipli): il file base contiene ciò che è
@@ -456,6 +459,81 @@ in ogni ambiente senza ricompilare.
   casi in cui il formato sul wire deve essere un formato specifico non-JSON
   (es. XML costruito via JAXB), per restare fedeli al contratto atteso dal
   sistema reale simulato
+
+## Logging
+
+Due tracciamenti, entrambi nel **core** e condivisi da tutti i moduli, senza
+modificare adapter MQ né `RestResource`. Messaggi di log in italiano, con
+prefisso fisso e ricercabile.
+
+### Scritture MQ
+
+- Il log sta in `MqPublisherService`, nel metodo di testo grezzo
+  `sendRawText(String queueName, String rawText)` (SLF4J). Tutti gli adapter
+  MQ di paperless passano da lì: nessun adapter ha un proprio log di scrittura.
+- Per **ogni** messaggio pubblicato, prefisso `Scrittura MQ`:
+  1. **prima** dell'invio, INFO: nome fisico della coda e **payload completo**
+     (l'intero XML, senza troncamenti né mascheramenti);
+  2. **dopo** l'invio riuscito, INFO: esito positivo e coda (il payload non è
+     ripetuto);
+  3. **in errore**, ERROR: esito negativo, coda, payload ed eccezione con stack
+     trace; poi l'eccezione è **rilanciata invariata** (per Signature resta
+     «nessun rollback, l'eccezione si propaga»).
+- Nel log compare **solo il nome fisico della coda** (es. `DEV.QUEUE.2`): la
+  chiave `queueMap` e il broker non sono disponibili nel core, perché
+  `sendRawText` riceve solo il nome fisico, e la firma non si cambia per
+  aggiungerli.
+- Signature scrive N messaggi per chiamata: una riga «prima» e una «dopo» per
+  ciascun messaggio.
+
+### Request/response REST
+
+- Il filtro `RestLoggingFilter` (`OncePerRequestFilter`, package
+  `com.capgemini.smart.simulator.core.logging`, registrato dalla scansione
+  dell'app, ordine `HIGHEST_PRECEDENCE + 10`, quindi prima degli altri filtri
+  applicativi) traccia, a livello INFO, **tutti i servizi REST di tutti i
+  moduli**, anche quelli futuri.
+- **Esclusi**: richieste `OPTIONS` (preflight CORS), Swagger UI
+  (`/swagger-ui*`), `/v3/api-docs*` e `/actuator/**` (path confrontati dopo il
+  context-path; l'esclusione di Actuator vale a prescindere dalla sua presenza
+  tra le dipendenze). Gli **header non sono loggati**.
+- **Limite noto**: le richieste `application/x-www-form-urlencoded` non sono
+  gestite dal filtro (il body verrebbe letto prima del parsing dei
+  parametri). Nessun servizio attuale le usa, quindi il codice non cambia; chi
+  introdurrà un servizio di quel tipo dovrà rivedere il filtro.
+- **Richiesta** (`Richiesta REST`, scritta prima di invocare la catena):
+  metodo, URI con query string, `Content-Type`, body completo (`(vuoto)` se
+  assente). Il body è letto subito in un array di byte e riesposto al
+  `RestResource` tramite un wrapper della richiesta, quindi arriva identico
+  (anche gli errori 400 per JSON malformato restano gli stessi).
+- **Risposta** (`Risposta REST`, scritta a fine richiesta, anche con eccezione):
+  status, `Content-Type`, durata in ms e body completo se **testuale** (JSON,
+  XML, `text/*`). Il body è catturato con un wrapper e sempre copiato sulla
+  risposta reale. Sono loggate anche le risposte 4xx/5xx.
+- **Body non testuale** (es. il PDF di getStatic) o tipo assente/ignoto: non si
+  logga il contenuto, solo status, `Content-Type`, lunghezza in byte e durata.
+  È un'eccezione motivata alla regola «payload sempre per intero».
+- **Correlazione**: ogni richiesta riceve un `requestId` (primi 8 caratteri di
+  un UUID) nell'MDC, rimosso sempre a fine richiesta. Il pubblicatore MQ gira
+  nello stesso thread, quindi le righe `Scrittura MQ` portano lo stesso
+  `requestId` (ordine nel log: richiesta, righe MQ, risposta). Il pattern è
+  esteso in `application.yml` con `logging.pattern.level: "%5p [%X{requestId:-}]"`
+  (resto del pattern di Spring Boot invariato).
+
+## CORS
+
+- La configurazione sta in `smart-simulator-app` (gli origin dipendono
+  dall'ambiente): `CorsConfig` (`WebMvcConfigurer`, `addCorsMappings` su
+  `/**`) legge gli origin da `CorsProperties`
+  (`@ConfigurationProperties`, prefisso `smart-simulator.cors`).
+- **Fail-fast**: `smart-simulator.cors.allowed-origins` è obbligatorio e non
+  vuoto, altrimenti l'app non parte (stesso pattern di
+  `DocumentViewerProperties`).
+- **Valori negli `application-<env>.yml`**, mai nel file base: `dev` ammette
+  tutti gli origin (`*`), `sit` ammette `http://smart-sales.test`.
+- Tutti i metodi e tutti gli header ammessi; **credenziali non abilitate**
+  (incompatibili con `*`); `maxAge` della preflight 3600 secondi. Non si
+  introduce Spring Security.
 
 Questa è una capacità **trasversale** (non specifica di un sottosistema),
 quindi vive nel core, coerente con la regola sul codice condiviso sotto.

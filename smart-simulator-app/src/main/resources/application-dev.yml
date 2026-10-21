@@ -4,6 +4,11 @@
 server:
   port: 9082
 
+smart-simulator:
+  cors:
+    allowed-origins:
+      - "*"   # in dev sono ammessi tutti gli origin
+
 # Auto-configurato da mq-jms-spring-boot-starter
 ibm:
   mq:

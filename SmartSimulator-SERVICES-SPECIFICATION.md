@@ -12,6 +12,16 @@ Standard di codice/architettura comuni a tutti i servizi:
 > `POST /paperless/practice/configure` risponde su
 > `/smart-simulator/paperless/practice/configure`).
 
+> **Log di request/response (tutti i servizi)**: ogni chiamata REST è
+> tracciata a livello INFO dal filtro `RestLoggingFilter` del core, senza
+> alcun intervento sui `RestResource` e senza cambiare i contratti: una
+> riga `Richiesta REST` (metodo, URI con query string, `Content-Type`, body
+> completo) e una riga `Risposta REST` (status, `Content-Type`, durata, body
+> completo se testuale). Gli header non sono loggati; `OPTIONS`, Swagger UI,
+> `/v3/api-docs` e `/actuator/**` sono esclusi. Le righe di una stessa chiamata (anche quelle
+> MQ) portano lo stesso `requestId`. Dettagli in
+> `SmartSimulator-CODING-STANDARDS.md`, sezione «Logging».
+
 ---
 
 ## Sottosistema: Paperless
@@ -91,6 +101,11 @@ La port accetta solo un oggetto di dominio (`PaperlessPracticeStatusUpdate`:
 id pratica, id processo, id esterno, ambito, motivo blocco, stato); la
 conversione nel messaggio JAXB avviene solo nell'adapter MQ. Il testo di
 `MotivoBlocco` è calcolato nel service.
+**Log di scrittura MQ**: la scrittura su `DEV.QUEUE.2` è tracciata dal core
+(`MqPublisherService`) con righe `Scrittura MQ` prima (coda e payload XML
+completo), dopo (esito positivo) e in caso di errore (ERROR con stack
+trace); vedi CODING-STANDARDS.md, sezione «Logging». Nessun cambiamento di
+contratto.
 Al termine ritorna al chiamante un risultato di dominio
 (`PaperlessPracticeConfigureResult`) con lo `Stato` calcolato, che il
 mapper converte in `PaperlessPracticeConfigureDtoResp`.
@@ -171,6 +186,13 @@ validazione e di deserializzazione, messaggi su `DEV.QUEUE.1`).
 
 **Scopo**: scrivere su IBM MQ un messaggio per ogni documento, con le
 informazioni compatibili con lo stato documento.
+
+**Log di scrittura MQ**: la scrittura su `DEV.QUEUE.1` è tracciata dal core
+(`MqPublisherService`): per **ciascun** messaggio una riga `Scrittura MQ`
+prima (coda e payload XML completo) e una dopo (esito positivo), oppure una
+riga ERROR con stack trace in caso di errore (l'eccezione si propaga come
+prima, senza rollback). Vedi CODING-STANDARDS.md, sezione «Logging». Nessun
+cambiamento di contratto.
 
 **Comportamento**: standard di progetto (nessuna deroga
 `@ReplicatesOriginalBehavior`).
@@ -286,6 +308,11 @@ e con l'ultimo segmento del path.
 
 **Parametri**: `productCode` è un query param (`required = false` a livello
 Spring: la presenza è controllata dal validator, non da Spring).
+
+**Log**: la risposta `200` è `application/pdf`, quindi il filtro di log del
+core registra solo status, `Content-Type`, lunghezza in byte e durata: il
+**contenuto del PDF non è loggato** (le risposte 400/404, in JSON, sono
+loggate per intero). Nessun cambiamento di contratto.
 
 **Flusso**: `RestResource` → mapper (`DocumentViewerDocumentGetStaticMapper`, query
 param → `GetStaticDocumentSearchCriteria`, null-safe, senza validare) →

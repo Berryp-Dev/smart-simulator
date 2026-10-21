@@ -1,0 +1,10 @@
+# Valori dell'ambiente sit. Attivo con il profilo Spring "sit".
+# ATTENZIONE: contiene per ora solo il blocco CORS. Gli altri valori
+# dipendenti dall'ambiente (porta, connessione IBM MQ, Kafka, datasource,
+# code/broker del sottosistema) sono ancora da definire: finche' non
+# arrivano, il profilo sit non e' avviabile.
+
+smart-simulator:
+  cors:
+    allowed-origins:
+      - http://smart-sales.test
