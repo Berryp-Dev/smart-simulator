@@ -9,8 +9,8 @@ smart-simulator:
     mq:
       queue-map:
         paperlessPracticeConfigure:
-          queue-name: DEV.QUEUE.2
+          queue-name: DEV.QUEUE.SIMULATOR
           broker: nhMqBroker
         paperlessDocumentSignature:
-          queue-name: DEV.QUEUE.1
+          queue-name: DEV.QUEUE.SIMULATOR
           broker: nhMqBroker
