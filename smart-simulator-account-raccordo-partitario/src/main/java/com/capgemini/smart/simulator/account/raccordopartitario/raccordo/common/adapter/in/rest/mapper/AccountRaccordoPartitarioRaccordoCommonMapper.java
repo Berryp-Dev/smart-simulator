@@ -1,26 +1,26 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.enums.StatusInfoRPStatus;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.AdditionalAttribute;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.Header;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.NdgInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.ProdInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.ProdInfoAgreement;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.ProdInfoProdAttr;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.SrvAcntExtKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.SrvAcntKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.SrvActnData;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.StatusInfoRP;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.AdditionalAttributeItem;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.NdgInformation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ProductAgreement;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ProductAttribute;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ProductInformation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.RequestHeader;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountData;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.StatusInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.enums.StatusInfoRPStatus;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.AdditionalAttribute;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.Header;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.NdgInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.ProdInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.ProdInfoAgreement;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.ProdInfoProdAttr;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.SrvAcntExtKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.SrvAcntKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.SrvActnData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.StatusInfoRP;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.AdditionalAttributeItem;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.NdgInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ProductAgreement;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ProductAttribute;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ProductInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.RequestHeader;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.StatusInformation;
 import java.util.List;
 import java.util.function.Function;
 
@@ -29,9 +29,9 @@ import java.util.function.Function;
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoCommonMapper {
+public final class AccountRaccordoPartitarioRaccordoCommonMapper {
 
-    private RaccordoPartitarioContiRaccordoCommonMapper() {
+    private AccountRaccordoPartitarioRaccordoCommonMapper() {
     }
 
     public static RequestHeader mapHeaderToDomain(Header dto) {
@@ -176,9 +176,9 @@ public final class RaccordoPartitarioContiRaccordoCommonMapper {
         return new ProductInformation(
                 dto.getProdKey(),
                 dto.getModuleKeys(),
-                mapList(dto.getAgrmnts(), RaccordoPartitarioContiRaccordoCommonMapper::mapProdInfoAgreementToDomain),
+                mapList(dto.getAgrmnts(), AccountRaccordoPartitarioRaccordoCommonMapper::mapProdInfoAgreementToDomain),
                 dto.getProdExtKeys(),
-                mapList(dto.getProdAttrs(), RaccordoPartitarioContiRaccordoCommonMapper::mapProdInfoProdAttrToDomain));
+                mapList(dto.getProdAttrs(), AccountRaccordoPartitarioRaccordoCommonMapper::mapProdInfoProdAttrToDomain));
     }
 
     public static ProdInfo mapProdInfoToDto(ProductInformation domain) {
@@ -188,9 +188,9 @@ public final class RaccordoPartitarioContiRaccordoCommonMapper {
         ProdInfo dto = new ProdInfo();
         dto.setProdKey(domain.prodKey());
         dto.setModuleKeys(domain.moduleKeys());
-        dto.setAgrmnts(mapList(domain.agrmnts(), RaccordoPartitarioContiRaccordoCommonMapper::mapProdInfoAgreementToDto));
+        dto.setAgrmnts(mapList(domain.agrmnts(), AccountRaccordoPartitarioRaccordoCommonMapper::mapProdInfoAgreementToDto));
         dto.setProdExtKeys(domain.prodExtKeys());
-        dto.setProdAttrs(mapList(domain.prodAttrs(), RaccordoPartitarioContiRaccordoCommonMapper::mapProdInfoProdAttrToDto));
+        dto.setProdAttrs(mapList(domain.prodAttrs(), AccountRaccordoPartitarioRaccordoCommonMapper::mapProdInfoProdAttrToDto));
         return dto;
     }
 
@@ -256,11 +256,11 @@ public final class RaccordoPartitarioContiRaccordoCommonMapper {
         return dto;
     }
 
-    public static com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.enums.ServiceAccountStatusCode mapStatusInfoRPStatusToDomain(StatusInfoRPStatus dto) {
-        return dto == null ? null : com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.enums.ServiceAccountStatusCode.valueOf(dto.name());
+    public static com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.enums.ServiceAccountStatusCode mapStatusInfoRPStatusToDomain(StatusInfoRPStatus dto) {
+        return dto == null ? null : com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.enums.ServiceAccountStatusCode.valueOf(dto.name());
     }
 
-    public static StatusInfoRPStatus mapStatusInfoRPStatusToDto(com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.enums.ServiceAccountStatusCode domain) {
+    public static StatusInfoRPStatus mapStatusInfoRPStatusToDto(com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.enums.ServiceAccountStatusCode domain) {
         return domain == null ? null : StatusInfoRPStatus.valueOf(domain.name());
     }
 

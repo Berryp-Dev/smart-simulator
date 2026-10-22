@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.application.port.in;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.application.port.in;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.domain.model.FinalNdgAssignment;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.domain.model.FinalNdgAssignment;
 
 /**
  * Driving port dell'API setFinalNdg.

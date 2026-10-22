@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.enums;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.enums;
 
 /**
  * Enum DTO dello schema YAML {@code Currency} (valori come da YAML). Gemello di {@code CurrencyCode}:

@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.enums.NdgNatureCode;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.enums.NdgNatureCode;
 import java.util.List;
 
 /**

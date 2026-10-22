@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.application.port.in.UpdateSettlementServiceAccountKeyService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.domain.model.SettlementServiceAccountKeyAssignment;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.application.port.in.UpdateSettlementServiceAccountKeyService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.domain.model.SettlementServiceAccountKeyAssignment;
 import org.springframework.stereotype.Service;
 
 /**

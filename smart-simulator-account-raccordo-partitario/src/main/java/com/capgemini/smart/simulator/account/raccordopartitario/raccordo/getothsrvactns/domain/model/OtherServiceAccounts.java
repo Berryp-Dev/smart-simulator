@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountData;
 import java.util.List;
 
 /**

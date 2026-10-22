@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.application.port.in.RetrieveServiceAccountMainInfoService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.domain.model.ServiceAccountMainInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.domain.model.ServiceAccountMainInfoSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.application.port.in.RetrieveServiceAccountMainInfoService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.domain.model.ServiceAccountMainInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.domain.model.ServiceAccountMainInfoSearchCriteria;
 import org.springframework.stereotype.Service;
 
 /**

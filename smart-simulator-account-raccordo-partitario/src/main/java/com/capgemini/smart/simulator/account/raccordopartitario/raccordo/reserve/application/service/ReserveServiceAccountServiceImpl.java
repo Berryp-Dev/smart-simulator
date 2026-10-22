@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.application.port.in.ReserveServiceAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.application.port.in.ReserveServiceAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservationResult;
 import org.springframework.stereotype.Service;
 
 /**

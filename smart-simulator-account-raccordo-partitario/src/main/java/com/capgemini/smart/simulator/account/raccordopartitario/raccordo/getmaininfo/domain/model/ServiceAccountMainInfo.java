@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountData;
 
 /**
  * Modello di dominio (response) corrispondente allo schema YAML {@code GetMainInfoDtoResponse}.

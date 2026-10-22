@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.application.port.in.RetrieveServiceAccountAdditionalAttributesService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.application.port.in.RetrieveServiceAccountAdditionalAttributesService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
 import org.springframework.stereotype.Service;
 
 /**

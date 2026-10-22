@@ -1,12 +1,12 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.dto.ReserveDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.dto.ReserveDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoReserveMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.application.port.in.ReserveServiceAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.dto.ReserveDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.dto.ReserveDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoReserveMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.application.port.in.ReserveServiceAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservationResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Contratto REPLICA ORIGINALE: path, request e response come da raccordopartitario_sales.yaml.
  */
 @RestController
-@Tag(name = "Raccordo Partitario Conti / Raccordo")
-@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
-public class RaccordoPartitarioContiRaccordoReserveRestResource {
+@Tag(name = "Account Raccordo Partitario / Raccordo")
+@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "raccordopartitario_sales.yaml")
+public class AccountRaccordoPartitarioRaccordoReserveRestResource {
 
     @Autowired
     private ReserveServiceAccountService reserveServiceAccountService;
@@ -31,8 +31,8 @@ public class RaccordoPartitarioContiRaccordoReserveRestResource {
     @Operation(operationId = "reserve")
     @PostMapping("/smartengine/raccordo/reserve")
     public ResponseEntity<ReserveDtoResponse> reserve(@RequestBody ReserveDtoRequest request) {
-        ServiceAccountReservation serviceAccountReservation = RaccordoPartitarioContiRaccordoReserveMapper.mapToDomain(request);
+        ServiceAccountReservation serviceAccountReservation = AccountRaccordoPartitarioRaccordoReserveMapper.mapToDomain(request);
         ServiceAccountReservationResult result = reserveServiceAccountService.reserveServiceAccount(serviceAccountReservation);
-        return ResponseEntity.status(HttpStatus.OK).body(RaccordoPartitarioContiRaccordoReserveMapper.mapToDtoResp(result));
+        return ResponseEntity.status(HttpStatus.OK).body(AccountRaccordoPartitarioRaccordoReserveMapper.mapToDtoResp(result));
     }
 }

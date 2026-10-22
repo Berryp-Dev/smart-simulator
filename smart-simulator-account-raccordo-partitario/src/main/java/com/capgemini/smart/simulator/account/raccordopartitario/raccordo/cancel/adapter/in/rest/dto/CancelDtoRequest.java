@@ -1,7 +1,7 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.dto;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.dto;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.dto.model.CancelDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.model.Header;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.dto.model.CancelDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.model.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;

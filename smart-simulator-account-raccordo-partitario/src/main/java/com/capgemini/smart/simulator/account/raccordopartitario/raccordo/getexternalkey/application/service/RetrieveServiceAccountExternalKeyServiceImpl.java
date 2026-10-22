@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.application.port.in.RetrieveServiceAccountExternalKeyService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.domain.model.ServiceAccountExternalKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.domain.model.ServiceAccountExternalKeySearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.application.port.in.RetrieveServiceAccountExternalKeyService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.domain.model.ServiceAccountExternalKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.domain.model.ServiceAccountExternalKeySearchCriteria;
 import org.springframework.stereotype.Service;
 
 /**

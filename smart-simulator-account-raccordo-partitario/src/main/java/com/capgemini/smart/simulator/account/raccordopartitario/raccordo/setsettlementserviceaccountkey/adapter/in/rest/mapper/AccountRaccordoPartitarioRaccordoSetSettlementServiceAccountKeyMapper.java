@@ -1,18 +1,18 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.SetSettlementServiceAccountKeyDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.model.SetSettlementServiceAccountKeyDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.domain.model.SettlementServiceAccountKeyAssignment;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.SetSettlementServiceAccountKeyDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.model.SetSettlementServiceAccountKeyDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.domain.model.SettlementServiceAccountKeyAssignment;
 
 /**
  * Mapping DTO <-> dominio dell'API setSettlementServiceAccountKey.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKeyMapper {
+public final class AccountRaccordoPartitarioRaccordoSetSettlementServiceAccountKeyMapper {
 
-    private RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKeyMapper() {
+    private AccountRaccordoPartitarioRaccordoSetSettlementServiceAccountKeyMapper() {
     }
 
     public static SettlementServiceAccountKeyAssignment mapToDomain(SetSettlementServiceAccountKeyDtoRequest dto) {
@@ -21,9 +21,9 @@ public final class RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKey
         }
         SetSettlementServiceAccountKeyDtoRequestPayload payload = dto.getPayload();
         return new SettlementServiceAccountKeyAssignment(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getCaseID(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntExtKeyToDomain(payload == null ? null : payload.getSettlementAccountSrv()));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntExtKeyToDomain(payload == null ? null : payload.getSettlementAccountSrv()));
     }
 }

@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.advice;
+package com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.advice;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.dto.ErrorResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.dto.model.ServiceErrorDto;
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.dto.ErrorResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.dto.model.ServiceErrorDto;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * con precedenza sul GlobalExceptionHandler del core. Non gestisce gli altri percorsi di errore
  * (JSON malformato, path inesistente, ecc.), che restano del GlobalExceptionHandler.
  */
-@RestControllerAdvice(basePackages = "com.capgemini.smart.simulator.raccordopartitario.conti")
+@RestControllerAdvice(basePackages = "com.capgemini.smart.simulator.account.raccordopartitario")
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class RaccordoPartitarioContiServiceNotImplementedExceptionHandler {
+public class AccountRaccordoPartitarioServiceNotImplementedExceptionHandler {
 
     @ExceptionHandler(ServiceNotImplementedException.class)
     public ResponseEntity<ErrorResponse> handleNotImplemented(ServiceNotImplementedException ex) {

@@ -10,12 +10,12 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smart-simulator-raccordo-partitario-conti</artifactId>
+    <artifactId>smart-simulator-account-raccordo-partitario</artifactId>
     <packaging>jar</packaging>
 
-    <name>SmartSimulator :: Raccordo Partitario Conti</name>
+    <name>SmartSimulator :: Account Raccordo Partitario</name>
     <description>
-        Modulo sottosistema Raccordo Partitario Conti: replica originale dei servizi
+        Modulo sottosistema Account Raccordo Partitario: replica originale dei servizi
         descritti dagli YAML OpenAPI (tutti i servizi sono al momento non implementati, HTTP 501).
     </description>
 

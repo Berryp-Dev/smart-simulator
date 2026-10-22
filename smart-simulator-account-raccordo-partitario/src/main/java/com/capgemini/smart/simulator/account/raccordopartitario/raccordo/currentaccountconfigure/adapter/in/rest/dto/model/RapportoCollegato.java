@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

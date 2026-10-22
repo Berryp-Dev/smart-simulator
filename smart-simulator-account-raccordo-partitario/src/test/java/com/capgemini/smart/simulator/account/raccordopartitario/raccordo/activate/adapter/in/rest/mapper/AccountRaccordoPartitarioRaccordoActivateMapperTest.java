@@ -1,43 +1,43 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.adapter.in.rest.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.adapter.in.rest.dto.ActivateDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.adapter.in.rest.dto.ActivateDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.domain.model.ServiceAccountActivation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.domain.model.ServiceAccountActivationResult;
-import com.capgemini.smart.simulator.raccordopartitario.conti.support.SamplePopulator;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.adapter.in.rest.dto.ActivateDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.adapter.in.rest.dto.ActivateDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.domain.model.ServiceAccountActivation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.domain.model.ServiceAccountActivationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.support.SamplePopulator;
 import org.junit.jupiter.api.Test;
 
-class RaccordoPartitarioContiRaccordoActivateMapperTest {
+class AccountRaccordoPartitarioRaccordoActivateMapperTest {
 
     @Test
     void mapToDomain_populatedRequest_mapsEveryField() {
         ActivateDtoRequest dto = SamplePopulator.populate(ActivateDtoRequest.class);
 
-        ServiceAccountActivation domain = RaccordoPartitarioContiRaccordoActivateMapper.mapToDomain(dto);
+        ServiceAccountActivation domain = AccountRaccordoPartitarioRaccordoActivateMapper.mapToDomain(dto);
 
         SamplePopulator.assertFullyPopulated(domain);
     }
 
     @Test
     void mapToDomain_emptyRequest_keepsNullsWithoutErrors() {
-        ServiceAccountActivation domain = RaccordoPartitarioContiRaccordoActivateMapper.mapToDomain(new ActivateDtoRequest());
+        ServiceAccountActivation domain = AccountRaccordoPartitarioRaccordoActivateMapper.mapToDomain(new ActivateDtoRequest());
 
         SamplePopulator.assertAllComponentsNull(domain);
     }
 
     @Test
     void mapToDomain_nullRequest_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoActivateMapper.mapToDomain(null));
+        assertNull(AccountRaccordoPartitarioRaccordoActivateMapper.mapToDomain(null));
     }
 
     @Test
     void mapToDtoResp_populatedResult_mapsEveryField() {
         ServiceAccountActivationResult domain = SamplePopulator.populate(ServiceAccountActivationResult.class);
 
-        ActivateDtoResponse dto = RaccordoPartitarioContiRaccordoActivateMapper.mapToDtoResp(domain);
+        ActivateDtoResponse dto = AccountRaccordoPartitarioRaccordoActivateMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertFullyPopulated(dto);
     }
@@ -46,13 +46,13 @@ class RaccordoPartitarioContiRaccordoActivateMapperTest {
     void mapToDtoResp_resultWithNulls_keepsNullsWithoutErrors() {
         ServiceAccountActivationResult domain = SamplePopulator.populateWithNulls(ServiceAccountActivationResult.class);
 
-        ActivateDtoResponse dto = RaccordoPartitarioContiRaccordoActivateMapper.mapToDtoResp(domain);
+        ActivateDtoResponse dto = AccountRaccordoPartitarioRaccordoActivateMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertAllPropertiesNull(dto);
     }
 
     @Test
     void mapToDtoResp_nullResult_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoActivateMapper.mapToDtoResp(null));
+        assertNull(AccountRaccordoPartitarioRaccordoActivateMapper.mapToDtoResp(null));
     }
 }

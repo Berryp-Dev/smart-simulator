@@ -1,22 +1,22 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.model.AdditionalAttributes;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.model.GetAdditionalAttributesDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.component.AdditionalAttributeGroup;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.model.AdditionalAttributes;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.model.GetAdditionalAttributesDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.component.AdditionalAttributeGroup;
 
 /**
  * Mapping DTO <-> dominio dell'API getAdditionalAttributes.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper {
+public final class AccountRaccordoPartitarioRaccordoGetAdditionalAttributesMapper {
 
-    private RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper() {
+    private AccountRaccordoPartitarioRaccordoGetAdditionalAttributesMapper() {
     }
 
     public static ServiceAccountAdditionalAttributesSearchCriteria mapToDomain(GetAdditionalAttributesDtoRequest dto) {
@@ -25,9 +25,9 @@ public final class RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper 
         }
         GetAdditionalAttributesDtoRequestPayload payload = dto.getPayload();
         return new ServiceAccountAdditionalAttributesSearchCriteria(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getCaseID(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
     }
 
     public static GetAdditionalAttributesDtoResponse mapToDtoResp(ServiceAccountAdditionalAttributes domain) {
@@ -45,8 +45,8 @@ public final class RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper 
             return null;
         }
         AdditionalAttributes dto = new AdditionalAttributes();
-        dto.setQualifiers(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.qualifiers(), RaccordoPartitarioContiRaccordoCommonMapper::mapAdditionalAttributeToDto));
-        dto.setAncillaryData(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.ancillaryData(), RaccordoPartitarioContiRaccordoCommonMapper::mapAdditionalAttributeToDto));
+        dto.setQualifiers(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.qualifiers(), AccountRaccordoPartitarioRaccordoCommonMapper::mapAdditionalAttributeToDto));
+        dto.setAncillaryData(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.ancillaryData(), AccountRaccordoPartitarioRaccordoCommonMapper::mapAdditionalAttributeToDto));
         return dto;
     }
 }

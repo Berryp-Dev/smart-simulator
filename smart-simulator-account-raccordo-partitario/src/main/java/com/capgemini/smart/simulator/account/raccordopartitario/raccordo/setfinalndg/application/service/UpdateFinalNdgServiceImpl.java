@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.application.port.in.UpdateFinalNdgService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.domain.model.FinalNdgAssignment;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.application.port.in.UpdateFinalNdgService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.domain.model.FinalNdgAssignment;
 import org.springframework.stereotype.Service;
 
 /**

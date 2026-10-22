@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedResult;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.Data;

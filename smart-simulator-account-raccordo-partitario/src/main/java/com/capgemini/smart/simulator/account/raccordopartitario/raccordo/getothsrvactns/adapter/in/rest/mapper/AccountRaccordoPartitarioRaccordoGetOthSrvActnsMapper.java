@@ -1,20 +1,20 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.model.GetOthSrvActnsDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.domain.model.OtherServiceAccounts;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.domain.model.OtherServiceAccountsSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.model.GetOthSrvActnsDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.domain.model.OtherServiceAccounts;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.domain.model.OtherServiceAccountsSearchCriteria;
 
 /**
  * Mapping DTO <-> dominio dell'API getOthSrvActns.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper {
+public final class AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper {
 
-    private RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper() {
+    private AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper() {
     }
 
     public static OtherServiceAccountsSearchCriteria mapToDomain(GetOthSrvActnsDtoRequest dto) {
@@ -23,9 +23,9 @@ public final class RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper {
         }
         GetOthSrvActnsDtoRequestPayload payload = dto.getPayload();
         return new OtherServiceAccountsSearchCriteria(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getCaseID(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
     }
 
     public static GetOthSrvActnsDtoResponse mapToDtoResp(OtherServiceAccounts domain) {
@@ -33,7 +33,7 @@ public final class RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper {
             return null;
         }
         GetOthSrvActnsDtoResponse dto = new GetOthSrvActnsDtoResponse();
-        dto.setSrvActnData(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.srvActnData(), RaccordoPartitarioContiRaccordoCommonMapper::mapSrvActnDataToDto));
+        dto.setSrvActnData(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.srvActnData(), AccountRaccordoPartitarioRaccordoCommonMapper::mapSrvActnDataToDto));
         return dto;
     }
 }

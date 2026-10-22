@@ -1,12 +1,12 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoGetMainInfoMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.application.port.in.RetrieveServiceAccountMainInfoService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.domain.model.ServiceAccountMainInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.domain.model.ServiceAccountMainInfoSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoGetMainInfoMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.application.port.in.RetrieveServiceAccountMainInfoService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.domain.model.ServiceAccountMainInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.domain.model.ServiceAccountMainInfoSearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Contratto REPLICA ORIGINALE: path, request e response come da raccordopartitario_sales.yaml.
  */
 @RestController
-@Tag(name = "Raccordo Partitario Conti / Raccordo")
-@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
-public class RaccordoPartitarioContiRaccordoGetMainInfoRestResource {
+@Tag(name = "Account Raccordo Partitario / Raccordo")
+@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "raccordopartitario_sales.yaml")
+public class AccountRaccordoPartitarioRaccordoGetMainInfoRestResource {
 
     @Autowired
     private RetrieveServiceAccountMainInfoService retrieveServiceAccountMainInfoService;
@@ -31,8 +31,8 @@ public class RaccordoPartitarioContiRaccordoGetMainInfoRestResource {
     @Operation(operationId = "getMainInfo")
     @PostMapping("/smartengine/raccordo/getmaininfo")
     public ResponseEntity<GetMainInfoDtoResponse> getMainInfo(@RequestBody GetMainInfoDtoRequest request) {
-        ServiceAccountMainInfoSearchCriteria serviceAccountMainInfoSearchCriteria = RaccordoPartitarioContiRaccordoGetMainInfoMapper.mapToDomain(request);
+        ServiceAccountMainInfoSearchCriteria serviceAccountMainInfoSearchCriteria = AccountRaccordoPartitarioRaccordoGetMainInfoMapper.mapToDomain(request);
         ServiceAccountMainInfo result = retrieveServiceAccountMainInfoService.getServiceAccountMainInfo(serviceAccountMainInfoSearchCriteria);
-        return ResponseEntity.status(HttpStatus.OK).body(RaccordoPartitarioContiRaccordoGetMainInfoMapper.mapToDtoResp(result));
+        return ResponseEntity.status(HttpStatus.OK).body(AccountRaccordoPartitarioRaccordoGetMainInfoMapper.mapToDtoResp(result));
     }
 }

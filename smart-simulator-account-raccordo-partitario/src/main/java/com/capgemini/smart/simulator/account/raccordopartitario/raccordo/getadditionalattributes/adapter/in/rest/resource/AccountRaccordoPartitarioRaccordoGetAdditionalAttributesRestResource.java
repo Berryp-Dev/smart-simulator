@@ -1,12 +1,12 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.application.port.in.RetrieveServiceAccountAdditionalAttributesService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoGetAdditionalAttributesMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.application.port.in.RetrieveServiceAccountAdditionalAttributesService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributes;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.ServiceAccountAdditionalAttributesSearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Contratto REPLICA ORIGINALE: path, request e response come da raccordopartitario_sales.yaml.
  */
 @RestController
-@Tag(name = "Raccordo Partitario Conti / Raccordo")
-@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
-public class RaccordoPartitarioContiRaccordoGetAdditionalAttributesRestResource {
+@Tag(name = "Account Raccordo Partitario / Raccordo")
+@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "raccordopartitario_sales.yaml")
+public class AccountRaccordoPartitarioRaccordoGetAdditionalAttributesRestResource {
 
     @Autowired
     private RetrieveServiceAccountAdditionalAttributesService retrieveServiceAccountAdditionalAttributesService;
@@ -31,8 +31,8 @@ public class RaccordoPartitarioContiRaccordoGetAdditionalAttributesRestResource 
     @Operation(operationId = "getAdditionalAttributes")
     @PostMapping("/smartengine/raccordo/getadditionalattributes")
     public ResponseEntity<GetAdditionalAttributesDtoResponse> getAdditionalAttributes(@RequestBody GetAdditionalAttributesDtoRequest request) {
-        ServiceAccountAdditionalAttributesSearchCriteria serviceAccountAdditionalAttributesSearchCriteria = RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper.mapToDomain(request);
+        ServiceAccountAdditionalAttributesSearchCriteria serviceAccountAdditionalAttributesSearchCriteria = AccountRaccordoPartitarioRaccordoGetAdditionalAttributesMapper.mapToDomain(request);
         ServiceAccountAdditionalAttributes result = retrieveServiceAccountAdditionalAttributesService.getServiceAccountAdditionalAttributes(serviceAccountAdditionalAttributesSearchCriteria);
-        return ResponseEntity.status(HttpStatus.OK).body(RaccordoPartitarioContiRaccordoGetAdditionalAttributesMapper.mapToDtoResp(result));
+        return ResponseEntity.status(HttpStatus.OK).body(AccountRaccordoPartitarioRaccordoGetAdditionalAttributesMapper.mapToDtoResp(result));
     }
 }

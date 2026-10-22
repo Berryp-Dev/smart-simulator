@@ -1,22 +1,22 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.CurrentAccountsConfigureRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.enums.Currency;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.model.CurrentAccountsSrvActnInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.model.RapportoCollegato;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.component.CurrentAccountServiceInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.component.LinkedAccountRelationship;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.CurrentAccountsConfigureRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.enums.Currency;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.model.CurrentAccountsSrvActnInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.model.RapportoCollegato;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.component.CurrentAccountServiceInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.component.LinkedAccountRelationship;
 
 /**
  * Mapping DTO <-> dominio dell'API CurrentAccountConfigure.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper {
+public final class AccountRaccordoPartitarioRaccordoCurrentAccountConfigureMapper {
 
-    private RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper() {
+    private AccountRaccordoPartitarioRaccordoCurrentAccountConfigureMapper() {
     }
 
     public static CurrentAccountConfiguration mapToDomain(CurrentAccountsConfigureRequest dto) {
@@ -24,7 +24,7 @@ public final class RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper 
             return null;
         }
         return new CurrentAccountConfiguration(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDomain(dto.getSrvAcntKey()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDomain(dto.getSrvAcntKey()),
                 mapCurrentAccountsSrvActnInfoToDomain(dto.getSrvActnInfo()));
     }
 
@@ -42,7 +42,7 @@ public final class RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper 
                 dto.getRiskCode(),
                 dto.getOffer(),
                 dto.getAgreement(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapList(dto.getLinkedAccount(), RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper::mapRapportoCollegatoToDomain),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapList(dto.getLinkedAccount(), AccountRaccordoPartitarioRaccordoCurrentAccountConfigureMapper::mapRapportoCollegatoToDomain),
                 dto.getLinkedNdg(),
                 dto.getLinkedNdgRelationType(),
                 dto.getAccountExpiryDate(),
@@ -64,7 +64,7 @@ public final class RaccordoPartitarioContiRaccordoCurrentAccountConfigureMapper 
                 dto.getAccountKey());
     }
 
-    public static com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.enums.CurrencyCode mapCurrencyToDomain(Currency dto) {
-        return dto == null ? null : com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.enums.CurrencyCode.valueOf(dto.name());
+    public static com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.enums.CurrencyCode mapCurrencyToDomain(Currency dto) {
+        return dto == null ? null : com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.enums.CurrencyCode.valueOf(dto.name());
     }
 }

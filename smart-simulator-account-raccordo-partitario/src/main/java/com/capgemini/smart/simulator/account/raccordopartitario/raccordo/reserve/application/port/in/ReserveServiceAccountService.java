@@ -1,7 +1,7 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.application.port.in;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.application.port.in;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model.ServiceAccountReservationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model.ServiceAccountReservationResult;
 
 /**
  * Driving port dell'API reserve.

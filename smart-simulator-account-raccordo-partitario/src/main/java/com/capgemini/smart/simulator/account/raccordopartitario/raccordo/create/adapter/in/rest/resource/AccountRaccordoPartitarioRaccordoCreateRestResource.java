@@ -1,12 +1,12 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.CreateDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCreateMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.application.port.in.CreateServiceAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.domain.model.ServiceAccountCreation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.domain.model.ServiceAccountCreationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.CreateDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCreateMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.application.port.in.CreateServiceAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.domain.model.ServiceAccountCreation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.domain.model.ServiceAccountCreationResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Contratto REPLICA ORIGINALE: path, request e response come da raccordopartitario_sales.yaml.
  */
 @RestController
-@Tag(name = "Raccordo Partitario Conti / Raccordo")
-@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
-public class RaccordoPartitarioContiRaccordoCreateRestResource {
+@Tag(name = "Account Raccordo Partitario / Raccordo")
+@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "raccordopartitario_sales.yaml")
+public class AccountRaccordoPartitarioRaccordoCreateRestResource {
 
     @Autowired
     private CreateServiceAccountService createServiceAccountService;
@@ -31,8 +31,8 @@ public class RaccordoPartitarioContiRaccordoCreateRestResource {
     @Operation(operationId = "create")
     @PostMapping("/smartengine/raccordo/create")
     public ResponseEntity<CreateDtoResponse> create(@RequestBody CreateDtoRequest request) {
-        ServiceAccountCreation serviceAccountCreation = RaccordoPartitarioContiRaccordoCreateMapper.mapToDomain(request);
+        ServiceAccountCreation serviceAccountCreation = AccountRaccordoPartitarioRaccordoCreateMapper.mapToDomain(request);
         ServiceAccountCreationResult result = createServiceAccountService.createServiceAccount(serviceAccountCreation);
-        return ResponseEntity.status(HttpStatus.CREATED).body(RaccordoPartitarioContiRaccordoCreateMapper.mapToDtoResp(result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(AccountRaccordoPartitarioRaccordoCreateMapper.mapToDtoResp(result));
     }
 }

@@ -34,7 +34,7 @@
     <description>
         Piattaforma per la simulazione di sistemi esterni (REST/SOAP),
         con pubblicazione eventi su Kafka e invio messaggi su IBM MQ.
-        Ogni sottosistema replicato (Paperless, RaccordoPartitarioConti, ecc.)
+        Ogni sottosistema replicato (Paperless, AccountRaccordoPartitario, ecc.)
         e' un modulo Maven separato che dipende da smart-simulator-core.
     </description>
 
@@ -81,7 +81,7 @@
         <module>smart-simulator-core</module>
         <module>smart-simulator-paperless</module>
         <module>smart-simulator-document-viewer</module>
-        <module>smart-simulator-raccordo-partitario-conti</module>
+        <module>smart-simulator-account-raccordo-partitario</module>
         <module>smart-simulator-app</module>
     </modules>
 

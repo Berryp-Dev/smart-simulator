@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.domain.model.component.AdditionalAttributeGroup;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.domain.model.component.AdditionalAttributeGroup;
 
 /**
  * Modello di dominio (response) corrispondente allo schema YAML {@code GetAdditionalAttributesDtoResponse}.

@@ -1,43 +1,43 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.domain.model.OtherServiceAccounts;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.domain.model.OtherServiceAccountsSearchCriteria;
-import com.capgemini.smart.simulator.raccordopartitario.conti.support.SamplePopulator;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.domain.model.OtherServiceAccounts;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.domain.model.OtherServiceAccountsSearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.support.SamplePopulator;
 import org.junit.jupiter.api.Test;
 
-class RaccordoPartitarioContiRaccordoGetOthSrvActnsMapperTest {
+class AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapperTest {
 
     @Test
     void mapToDomain_populatedRequest_mapsEveryField() {
         GetOthSrvActnsDtoRequest dto = SamplePopulator.populate(GetOthSrvActnsDtoRequest.class);
 
-        OtherServiceAccountsSearchCriteria domain = RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDomain(dto);
+        OtherServiceAccountsSearchCriteria domain = AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDomain(dto);
 
         SamplePopulator.assertFullyPopulated(domain);
     }
 
     @Test
     void mapToDomain_emptyRequest_keepsNullsWithoutErrors() {
-        OtherServiceAccountsSearchCriteria domain = RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDomain(new GetOthSrvActnsDtoRequest());
+        OtherServiceAccountsSearchCriteria domain = AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDomain(new GetOthSrvActnsDtoRequest());
 
         SamplePopulator.assertAllComponentsNull(domain);
     }
 
     @Test
     void mapToDomain_nullRequest_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDomain(null));
+        assertNull(AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDomain(null));
     }
 
     @Test
     void mapToDtoResp_populatedResult_mapsEveryField() {
         OtherServiceAccounts domain = SamplePopulator.populate(OtherServiceAccounts.class);
 
-        GetOthSrvActnsDtoResponse dto = RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDtoResp(domain);
+        GetOthSrvActnsDtoResponse dto = AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertFullyPopulated(dto);
     }
@@ -46,13 +46,13 @@ class RaccordoPartitarioContiRaccordoGetOthSrvActnsMapperTest {
     void mapToDtoResp_resultWithNulls_keepsNullsWithoutErrors() {
         OtherServiceAccounts domain = SamplePopulator.populateWithNulls(OtherServiceAccounts.class);
 
-        GetOthSrvActnsDtoResponse dto = RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDtoResp(domain);
+        GetOthSrvActnsDtoResponse dto = AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertAllPropertiesNull(dto);
     }
 
     @Test
     void mapToDtoResp_nullResult_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoGetOthSrvActnsMapper.mapToDtoResp(null));
+        assertNull(AccountRaccordoPartitarioRaccordoGetOthSrvActnsMapper.mapToDtoResp(null));
     }
 }

@@ -1,7 +1,7 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.StatusInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.StatusInformation;
 
 /**
  * Modello di dominio (response) corrispondente allo schema YAML {@code CreateDtoResponse}.

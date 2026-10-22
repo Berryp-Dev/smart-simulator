@@ -1,20 +1,20 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.CreateDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.model.CreateDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.domain.model.ServiceAccountCreation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.domain.model.ServiceAccountCreationResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.CreateDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.model.CreateDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.domain.model.ServiceAccountCreation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.domain.model.ServiceAccountCreationResult;
 
 /**
  * Mapping DTO <-> dominio dell'API create.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoCreateMapper {
+public final class AccountRaccordoPartitarioRaccordoCreateMapper {
 
-    private RaccordoPartitarioContiRaccordoCreateMapper() {
+    private AccountRaccordoPartitarioRaccordoCreateMapper() {
     }
 
     public static ServiceAccountCreation mapToDomain(CreateDtoRequest dto) {
@@ -23,9 +23,9 @@ public final class RaccordoPartitarioContiRaccordoCreateMapper {
         }
         CreateDtoRequestPayload payload = dto.getPayload();
         return new ServiceAccountCreation(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getCaseID(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvActnDataToDomain(payload == null ? null : payload.getSrvActnData()));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvActnDataToDomain(payload == null ? null : payload.getSrvActnData()));
     }
 
     public static CreateDtoResponse mapToDtoResp(ServiceAccountCreationResult domain) {
@@ -33,8 +33,8 @@ public final class RaccordoPartitarioContiRaccordoCreateMapper {
             return null;
         }
         CreateDtoResponse dto = new CreateDtoResponse();
-        dto.setSrvAcntKey(RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDto(domain.srvAcntKey()));
-        dto.setStatusInfo(RaccordoPartitarioContiRaccordoCommonMapper.mapStatusInfoRPToDto(domain.statusInfo()));
+        dto.setSrvAcntKey(AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDto(domain.srvAcntKey()));
+        dto.setStatusInfo(AccountRaccordoPartitarioRaccordoCommonMapper.mapStatusInfoRPToDto(domain.statusInfo()));
         return dto;
     }
 }

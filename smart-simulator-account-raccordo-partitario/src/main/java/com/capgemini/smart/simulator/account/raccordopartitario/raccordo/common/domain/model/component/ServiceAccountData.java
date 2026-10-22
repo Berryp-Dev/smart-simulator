@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

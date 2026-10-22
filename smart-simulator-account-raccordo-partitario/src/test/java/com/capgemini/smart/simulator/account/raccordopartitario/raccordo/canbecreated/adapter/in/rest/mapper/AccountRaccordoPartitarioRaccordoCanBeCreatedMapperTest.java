@@ -1,50 +1,50 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.enums.SimpleProductNdgNature;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProductNdgInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.enums.NdgNatureCode;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.PreCreationNdgInformation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.support.SamplePopulator;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.enums.SimpleProductNdgNature;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProductNdgInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.enums.NdgNatureCode;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.PreCreationNdgInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.support.SamplePopulator;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
-class RaccordoPartitarioContiRaccordoCanBeCreatedMapperTest {
+class AccountRaccordoPartitarioRaccordoCanBeCreatedMapperTest {
 
     @Test
     void mapToDomain_populatedRequest_mapsEveryField() {
         CanBeCreatedRequest dto = SamplePopulator.populate(CanBeCreatedRequest.class);
 
-        ServiceAccountCreationCheck domain = RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDomain(dto);
+        ServiceAccountCreationCheck domain = AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDomain(dto);
 
         SamplePopulator.assertFullyPopulated(domain);
     }
 
     @Test
     void mapToDomain_emptyRequest_keepsNullsWithoutErrors() {
-        ServiceAccountCreationCheck domain = RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDomain(new CanBeCreatedRequest());
+        ServiceAccountCreationCheck domain = AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDomain(new CanBeCreatedRequest());
 
         SamplePopulator.assertAllComponentsNull(domain);
     }
 
     @Test
     void mapToDomain_nullRequest_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDomain(null));
+        assertNull(AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDomain(null));
     }
 
     @Test
     void mapToDtoResp_populatedResult_mapsEveryField() {
         ServiceAccountCreationCheckResult domain = SamplePopulator.populate(ServiceAccountCreationCheckResult.class);
 
-        CanBeCreatedResponse dto = RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDtoResp(domain);
+        CanBeCreatedResponse dto = AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertFullyPopulated(dto);
     }
@@ -53,14 +53,14 @@ class RaccordoPartitarioContiRaccordoCanBeCreatedMapperTest {
     void mapToDtoResp_resultWithNulls_keepsNullsWithoutErrors() {
         ServiceAccountCreationCheckResult domain = SamplePopulator.populateWithNulls(ServiceAccountCreationCheckResult.class);
 
-        CanBeCreatedResponse dto = RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDtoResp(domain);
+        CanBeCreatedResponse dto = AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDtoResp(domain);
 
         SamplePopulator.assertAllPropertiesNull(dto);
     }
 
     @Test
     void mapToDtoResp_nullResult_returnsNull() {
-        assertNull(RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapToDtoResp(null));
+        assertNull(AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapToDtoResp(null));
     }
 
     @Test
@@ -70,19 +70,19 @@ class RaccordoPartitarioContiRaccordoCanBeCreatedMapperTest {
 
         assertEquals(dtoNames, domainNames);
         for (SimpleProductNdgNature constant : SimpleProductNdgNature.values()) {
-            assertEquals(constant.name(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDomain(constant).name());
+            assertEquals(constant.name(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDomain(constant).name());
         }
         for (NdgNatureCode constant : NdgNatureCode.values()) {
-            assertEquals(constant.name(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDto(constant).name());
+            assertEquals(constant.name(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDto(constant).name());
         }
-        assertNull(RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDomain(null));
+        assertNull(AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapSimpleProductNdgNatureToDomain(null));
     }
 
     @Test
     void mapSimpleProductNdgInfoToDomain_populatedChild_copiesParentFieldsToo() {
         SimpleProductNdgInfo dto = SamplePopulator.populate(SimpleProductNdgInfo.class);
 
-        PreCreationNdgInformation domain = RaccordoPartitarioContiRaccordoCanBeCreatedMapper.mapSimpleProductNdgInfoToDomain(dto);
+        PreCreationNdgInformation domain = AccountRaccordoPartitarioRaccordoCanBeCreatedMapper.mapSimpleProductNdgInfoToDomain(dto);
 
         SamplePopulator.assertFullyPopulated(domain);
     }

@@ -1,7 +1,7 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.application.port.in;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.application.port.in;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
 
 /**
  * Driving port dell'API canBeCreated.

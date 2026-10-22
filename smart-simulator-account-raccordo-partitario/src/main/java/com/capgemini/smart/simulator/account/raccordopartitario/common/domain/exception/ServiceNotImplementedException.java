@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception;
+package com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception;
 
 /**
  * Eccezione di dominio: il servizio richiamato non e' ancora implementato.

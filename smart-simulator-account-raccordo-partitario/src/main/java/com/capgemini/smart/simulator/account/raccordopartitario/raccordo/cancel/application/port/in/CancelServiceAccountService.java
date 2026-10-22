@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.application.port.in;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.application.port.in;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.domain.model.ServiceAccountCancellation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.domain.model.ServiceAccountCancellation;
 
 /**
  * Driving port dell'API cancel.

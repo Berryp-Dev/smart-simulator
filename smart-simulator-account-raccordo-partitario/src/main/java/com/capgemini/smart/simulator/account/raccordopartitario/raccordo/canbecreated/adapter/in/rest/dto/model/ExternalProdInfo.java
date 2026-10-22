@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;

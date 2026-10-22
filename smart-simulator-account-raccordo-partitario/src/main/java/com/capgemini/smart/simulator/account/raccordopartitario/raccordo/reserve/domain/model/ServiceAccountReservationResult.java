@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
 
 /**
  * Modello di dominio (response) corrispondente allo schema YAML {@code ReserveDtoResponse}.

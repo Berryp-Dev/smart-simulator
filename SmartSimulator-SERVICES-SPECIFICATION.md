@@ -481,21 +481,21 @@ tutti i valori obbligatori con validazione fail-fast):
 
 ---
 
-## Sottosistema: Raccordo Partitario Conti
+## Sottosistema: Account Raccordo Partitario
 
-**Comportamento**: REPLICA ORIGINALE (sistema: Raccordo Partitario Conti, rif: gli YAML OpenAPI in
-`smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`:
+**Comportamento**: REPLICA ORIGINALE (sistema: Account Raccordo Partitario, rif: gli YAML OpenAPI in
+`smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/`:
 `raccordopartitario_sales.yaml`, `raccordopartitario_sales_currentaccounts_configure.yaml` e i componenti
 comuni `components-v1.2.2.yaml`). Il contratto esterno (path, metodo, request/response, nomi dei campi JSON,
 enum, status code, envelope degli errori) segue lo YAML al 100%; gli standard di progetto non si applicano al
 contratto ma solo all'architettura interna. Ogni `RestResource` è annotato con
-`@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "<file YAML>")`.
+`@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "<file YAML>")`.
 
-**Struttura**: modulo `smart-simulator-raccordo-partitario-conti`, package radice
-`com.capgemini.smart.simulator.raccordopartitario.conti`, area unica `raccordo` con una API per operazione
+**Struttura**: modulo `smart-simulator-account-raccordo-partitario`, package radice
+`com.capgemini.smart.simulator.account.raccordopartitario`, area unica `raccordo` con una API per operazione
 (`<area>/<api>`: `canbecreated`, `create`, `reserve`, `activate`, `getmaininfo`, `getexternalkey`,
 `setsettlementserviceaccountkey`, `getothsrvactns`, `getadditionalattributes`, `setfinalndg`, `cancel`,
-`currentaccountconfigure`). Tag Swagger: `Raccordo Partitario Conti / Raccordo`. Nessuna persistenza, nessun
+`currentaccountconfigure`). Tag Swagger: `Account Raccordo Partitario / Raccordo`. Nessuna persistenza, nessun
 MQ/Kafka, nessun file di configurazione dedicato.
 
 **Stato**: tutti i servizi sono **non implementati**. Ogni `ServiceImpl` lancia subito
@@ -506,7 +506,7 @@ annotazione di bean validation sui DTO (la validazione sarà aggiunta con l'impl
 `{"mainError":{"errorMessage":"Servizio non implementato: <operationId>"}}` (`ErrorResponse`/`ServiceErrorDto`;
 `errorCode`, `technicalDescription` ed `errorList` omessi perché lo YAML non definisce valori per questo caso).
 Lo YAML non prevede header di response. La risposta è prodotta da un `@RestControllerAdvice` limitato al package
-del modulo (`RaccordoPartitarioContiServiceNotImplementedExceptionHandler`, `@Order(HIGHEST_PRECEDENCE)`).
+del modulo (`AccountRaccordoPartitarioServiceNotImplementedExceptionHandler`, `@Order(HIGHEST_PRECEDENCE)`).
 Gli altri percorsi di errore (JSON malformato, valore enum non ammesso, path inesistente, metodo non supportato,
 ecc.) restano del `GlobalExceptionHandler` del core.
 

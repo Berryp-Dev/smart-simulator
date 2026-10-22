@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.dto.enums;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.dto.enums;
 
 /**
  * Enum DTO dello schema YAML {@code StatusInfoRPStatus} (valori come da YAML). Gemello di {@code ServiceAccountStatusCode}:

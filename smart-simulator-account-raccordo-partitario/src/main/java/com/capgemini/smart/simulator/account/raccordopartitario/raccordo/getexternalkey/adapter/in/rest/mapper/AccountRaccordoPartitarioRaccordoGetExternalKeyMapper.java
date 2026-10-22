@@ -1,20 +1,20 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.dto.model.GetExternalKeyDtoRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.domain.model.ServiceAccountExternalKey;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.domain.model.ServiceAccountExternalKeySearchCriteria;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.dto.model.GetExternalKeyDtoRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.domain.model.ServiceAccountExternalKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.domain.model.ServiceAccountExternalKeySearchCriteria;
 
 /**
  * Mapping DTO <-> dominio dell'API getExternalKey.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoGetExternalKeyMapper {
+public final class AccountRaccordoPartitarioRaccordoGetExternalKeyMapper {
 
-    private RaccordoPartitarioContiRaccordoGetExternalKeyMapper() {
+    private AccountRaccordoPartitarioRaccordoGetExternalKeyMapper() {
     }
 
     public static ServiceAccountExternalKeySearchCriteria mapToDomain(GetExternalKeyDtoRequest dto) {
@@ -23,9 +23,9 @@ public final class RaccordoPartitarioContiRaccordoGetExternalKeyMapper {
         }
         GetExternalKeyDtoRequestPayload payload = dto.getPayload();
         return new ServiceAccountExternalKeySearchCriteria(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getCaseID(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntKeyToDomain(payload == null ? null : payload.getSrvAcntKey()));
     }
 
     public static GetExternalKeyDtoResponse mapToDtoResp(ServiceAccountExternalKey domain) {
@@ -33,7 +33,7 @@ public final class RaccordoPartitarioContiRaccordoGetExternalKeyMapper {
             return null;
         }
         GetExternalKeyDtoResponse dto = new GetExternalKeyDtoResponse();
-        dto.setSrvAcntExtKey(RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntExtKeyToDto(domain.srvAcntExtKey()));
+        dto.setSrvAcntExtKey(AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntExtKeyToDto(domain.srvAcntExtKey()));
         return dto;
     }
 }

@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.component;
 
 /**
  * Modello di dominio (value object annidato) corrispondente allo schema YAML {@code RapportoCollegato}.

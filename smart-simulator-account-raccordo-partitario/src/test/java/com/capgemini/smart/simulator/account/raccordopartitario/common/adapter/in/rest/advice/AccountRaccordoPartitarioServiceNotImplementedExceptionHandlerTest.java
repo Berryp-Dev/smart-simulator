@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.advice;
+package com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.advice;
 
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -7,44 +7,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.advice.RaccordoPartitarioContiServiceNotImplementedExceptionHandler;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.adapter.in.rest.dto.ActivateDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoActivateRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.application.service.ActivateServiceAccountServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoCanBeCreatedRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.application.service.CheckServiceAccountCreationServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.dto.CancelDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoCancelRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.application.service.CancelServiceAccountServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoCreateRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.create.application.service.CreateServiceAccountServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.dto.CurrentAccountsConfigureRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoCurrentAccountConfigureRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.application.service.ConfigureCurrentAccountServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoGetAdditionalAttributesRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getadditionalattributes.application.service.RetrieveServiceAccountAdditionalAttributesServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoGetExternalKeyRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getexternalkey.application.service.RetrieveServiceAccountExternalKeyServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoGetMainInfoRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.application.service.RetrieveServiceAccountMainInfoServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoGetOthSrvActnsRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getothsrvactns.application.service.RetrieveOtherServiceAccountsServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.dto.ReserveDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoReserveRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.reserve.application.service.ReserveServiceAccountServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.adapter.in.rest.dto.SetFinalNdgDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoSetFinalNdgRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setfinalndg.application.service.UpdateFinalNdgServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.SetSettlementServiceAccountKeyDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.adapter.in.rest.resource.RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKeyRestResource;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.setsettlementserviceaccountkey.application.service.UpdateSettlementServiceAccountKeyServiceImpl;
-import com.capgemini.smart.simulator.raccordopartitario.conti.support.SamplePopulator;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.advice.AccountRaccordoPartitarioServiceNotImplementedExceptionHandler;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.adapter.in.rest.dto.ActivateDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoActivateRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.application.service.ActivateServiceAccountServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoCanBeCreatedRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.application.service.CheckServiceAccountCreationServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.dto.CancelDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoCancelRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.application.service.CancelServiceAccountServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.dto.CreateDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoCreateRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.create.application.service.CreateServiceAccountServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.dto.CurrentAccountsConfigureRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoCurrentAccountConfigureRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.application.service.ConfigureCurrentAccountServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.dto.GetAdditionalAttributesDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoGetAdditionalAttributesRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getadditionalattributes.application.service.RetrieveServiceAccountAdditionalAttributesServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.dto.GetExternalKeyDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoGetExternalKeyRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getexternalkey.application.service.RetrieveServiceAccountExternalKeyServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.dto.GetMainInfoDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoGetMainInfoRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.application.service.RetrieveServiceAccountMainInfoServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.dto.GetOthSrvActnsDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoGetOthSrvActnsRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getothsrvactns.application.service.RetrieveOtherServiceAccountsServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.dto.ReserveDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoReserveRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.reserve.application.service.ReserveServiceAccountServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.adapter.in.rest.dto.SetFinalNdgDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoSetFinalNdgRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setfinalndg.application.service.UpdateFinalNdgServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.adapter.in.rest.dto.SetSettlementServiceAccountKeyDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.adapter.in.rest.resource.AccountRaccordoPartitarioRaccordoSetSettlementServiceAccountKeyRestResource;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.setsettlementserviceaccountkey.application.service.UpdateSettlementServiceAccountKeyServiceImpl;
+import com.capgemini.smart.simulator.account.raccordopartitario.support.SamplePopulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.stream.Stream;
@@ -62,7 +62,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
  * Per ogni endpoint del modulo: la chiamata arriva fino al ServiceImpl e risponde 501 con l'envelope
  * di errore dello YAML (Error501 -> ErrorResponse con mainError.errorMessage).
  */
-class RaccordoPartitarioContiServiceNotImplementedExceptionHandlerTest {
+class AccountRaccordoPartitarioServiceNotImplementedExceptionHandlerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
@@ -70,32 +70,32 @@ class RaccordoPartitarioContiServiceNotImplementedExceptionHandlerTest {
 
     @BeforeEach
     void setUp() {
-        RaccordoPartitarioContiRaccordoCanBeCreatedRestResource canBeCreatedResource = new RaccordoPartitarioContiRaccordoCanBeCreatedRestResource();
+        AccountRaccordoPartitarioRaccordoCanBeCreatedRestResource canBeCreatedResource = new AccountRaccordoPartitarioRaccordoCanBeCreatedRestResource();
         ReflectionTestUtils.setField(canBeCreatedResource, "checkServiceAccountCreationService", new CheckServiceAccountCreationServiceImpl());
-        RaccordoPartitarioContiRaccordoCreateRestResource createResource = new RaccordoPartitarioContiRaccordoCreateRestResource();
+        AccountRaccordoPartitarioRaccordoCreateRestResource createResource = new AccountRaccordoPartitarioRaccordoCreateRestResource();
         ReflectionTestUtils.setField(createResource, "createServiceAccountService", new CreateServiceAccountServiceImpl());
-        RaccordoPartitarioContiRaccordoReserveRestResource reserveResource = new RaccordoPartitarioContiRaccordoReserveRestResource();
+        AccountRaccordoPartitarioRaccordoReserveRestResource reserveResource = new AccountRaccordoPartitarioRaccordoReserveRestResource();
         ReflectionTestUtils.setField(reserveResource, "reserveServiceAccountService", new ReserveServiceAccountServiceImpl());
-        RaccordoPartitarioContiRaccordoActivateRestResource activateResource = new RaccordoPartitarioContiRaccordoActivateRestResource();
+        AccountRaccordoPartitarioRaccordoActivateRestResource activateResource = new AccountRaccordoPartitarioRaccordoActivateRestResource();
         ReflectionTestUtils.setField(activateResource, "activateServiceAccountService", new ActivateServiceAccountServiceImpl());
-        RaccordoPartitarioContiRaccordoGetMainInfoRestResource getMainInfoResource = new RaccordoPartitarioContiRaccordoGetMainInfoRestResource();
+        AccountRaccordoPartitarioRaccordoGetMainInfoRestResource getMainInfoResource = new AccountRaccordoPartitarioRaccordoGetMainInfoRestResource();
         ReflectionTestUtils.setField(getMainInfoResource, "retrieveServiceAccountMainInfoService", new RetrieveServiceAccountMainInfoServiceImpl());
-        RaccordoPartitarioContiRaccordoGetExternalKeyRestResource getExternalKeyResource = new RaccordoPartitarioContiRaccordoGetExternalKeyRestResource();
+        AccountRaccordoPartitarioRaccordoGetExternalKeyRestResource getExternalKeyResource = new AccountRaccordoPartitarioRaccordoGetExternalKeyRestResource();
         ReflectionTestUtils.setField(getExternalKeyResource, "retrieveServiceAccountExternalKeyService", new RetrieveServiceAccountExternalKeyServiceImpl());
-        RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKeyRestResource setSettlementServiceAccountKeyResource = new RaccordoPartitarioContiRaccordoSetSettlementServiceAccountKeyRestResource();
+        AccountRaccordoPartitarioRaccordoSetSettlementServiceAccountKeyRestResource setSettlementServiceAccountKeyResource = new AccountRaccordoPartitarioRaccordoSetSettlementServiceAccountKeyRestResource();
         ReflectionTestUtils.setField(setSettlementServiceAccountKeyResource, "updateSettlementServiceAccountKeyService", new UpdateSettlementServiceAccountKeyServiceImpl());
-        RaccordoPartitarioContiRaccordoGetOthSrvActnsRestResource getOthSrvActnsResource = new RaccordoPartitarioContiRaccordoGetOthSrvActnsRestResource();
+        AccountRaccordoPartitarioRaccordoGetOthSrvActnsRestResource getOthSrvActnsResource = new AccountRaccordoPartitarioRaccordoGetOthSrvActnsRestResource();
         ReflectionTestUtils.setField(getOthSrvActnsResource, "retrieveOtherServiceAccountsService", new RetrieveOtherServiceAccountsServiceImpl());
-        RaccordoPartitarioContiRaccordoGetAdditionalAttributesRestResource getAdditionalAttributesResource = new RaccordoPartitarioContiRaccordoGetAdditionalAttributesRestResource();
+        AccountRaccordoPartitarioRaccordoGetAdditionalAttributesRestResource getAdditionalAttributesResource = new AccountRaccordoPartitarioRaccordoGetAdditionalAttributesRestResource();
         ReflectionTestUtils.setField(getAdditionalAttributesResource, "retrieveServiceAccountAdditionalAttributesService", new RetrieveServiceAccountAdditionalAttributesServiceImpl());
-        RaccordoPartitarioContiRaccordoSetFinalNdgRestResource setFinalNdgResource = new RaccordoPartitarioContiRaccordoSetFinalNdgRestResource();
+        AccountRaccordoPartitarioRaccordoSetFinalNdgRestResource setFinalNdgResource = new AccountRaccordoPartitarioRaccordoSetFinalNdgRestResource();
         ReflectionTestUtils.setField(setFinalNdgResource, "updateFinalNdgService", new UpdateFinalNdgServiceImpl());
-        RaccordoPartitarioContiRaccordoCancelRestResource cancelResource = new RaccordoPartitarioContiRaccordoCancelRestResource();
+        AccountRaccordoPartitarioRaccordoCancelRestResource cancelResource = new AccountRaccordoPartitarioRaccordoCancelRestResource();
         ReflectionTestUtils.setField(cancelResource, "cancelServiceAccountService", new CancelServiceAccountServiceImpl());
-        RaccordoPartitarioContiRaccordoCurrentAccountConfigureRestResource currentAccountConfigureResource = new RaccordoPartitarioContiRaccordoCurrentAccountConfigureRestResource();
+        AccountRaccordoPartitarioRaccordoCurrentAccountConfigureRestResource currentAccountConfigureResource = new AccountRaccordoPartitarioRaccordoCurrentAccountConfigureRestResource();
         ReflectionTestUtils.setField(currentAccountConfigureResource, "configureCurrentAccountService", new ConfigureCurrentAccountServiceImpl());
         mockMvc = MockMvcBuilders.standaloneSetup(canBeCreatedResource, createResource, reserveResource, activateResource, getMainInfoResource, getExternalKeyResource, setSettlementServiceAccountKeyResource, getOthSrvActnsResource, getAdditionalAttributesResource, setFinalNdgResource, cancelResource, currentAccountConfigureResource)
-                .setControllerAdvice(new RaccordoPartitarioContiServiceNotImplementedExceptionHandler())
+                .setControllerAdvice(new AccountRaccordoPartitarioServiceNotImplementedExceptionHandler())
                 .build();
     }
 

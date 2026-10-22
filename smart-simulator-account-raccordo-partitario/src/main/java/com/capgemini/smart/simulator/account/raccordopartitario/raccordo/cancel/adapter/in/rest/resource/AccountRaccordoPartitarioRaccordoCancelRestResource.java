@@ -1,10 +1,10 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.resource;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.resource;
 
 import com.capgemini.smart.simulator.core.annotation.ReplicatesOriginalBehavior;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.dto.CancelDtoRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCancelMapper;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.application.port.in.CancelServiceAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.domain.model.ServiceAccountCancellation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.dto.CancelDtoRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCancelMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.application.port.in.CancelServiceAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.domain.model.ServiceAccountCancellation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
  * Contratto REPLICA ORIGINALE: path, request e response come da raccordopartitario_sales.yaml.
  */
 @RestController
-@Tag(name = "Raccordo Partitario Conti / Raccordo")
-@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "raccordopartitario_sales.yaml")
-public class RaccordoPartitarioContiRaccordoCancelRestResource {
+@Tag(name = "Account Raccordo Partitario / Raccordo")
+@ReplicatesOriginalBehavior(system = "Account Raccordo Partitario", reference = "raccordopartitario_sales.yaml")
+public class AccountRaccordoPartitarioRaccordoCancelRestResource {
 
     @Autowired
     private CancelServiceAccountService cancelServiceAccountService;
@@ -29,7 +29,7 @@ public class RaccordoPartitarioContiRaccordoCancelRestResource {
     @Operation(operationId = "cancel")
     @PostMapping("/smartengine/raccordo/cancel")
     public ResponseEntity<Void> cancel(@RequestBody CancelDtoRequest request) {
-        ServiceAccountCancellation serviceAccountCancellation = RaccordoPartitarioContiRaccordoCancelMapper.mapToDomain(request);
+        ServiceAccountCancellation serviceAccountCancellation = AccountRaccordoPartitarioRaccordoCancelMapper.mapToDomain(request);
         cancelServiceAccountService.cancelServiceAccount(serviceAccountCancellation);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

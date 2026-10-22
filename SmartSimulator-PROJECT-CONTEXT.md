@@ -91,9 +91,9 @@ smart-simulator/
 │       │       └── getstatic/       (API, struttura esagonale completa)
 │       └── resources/document-viewer-config.yml  (products-folder: pdf/static)
 │           pdf/static/                           (i PDF, <productCode>.pdf)
-└── smart-simulator-raccordo-partitario-conti/  (modulo sottosistema, libreria)
+└── smart-simulator-account-raccordo-partitario/  (modulo sottosistema, libreria)
     ├── pom.xml                      (dipende solo da smart-simulator-core; surefire 3.2.5)
-    └── src/main/java/com/capgemini/smart/simulator/raccordopartitario/conti/
+    └── src/main/java/com/capgemini/smart/simulator/account/raccordopartitario/
         ├── common/                  (ServiceNotImplementedException, advice 501, ErrorResponse)
         └── raccordo/                (area)
             ├── common/              (DTO e modelli condivisi tra le API dell'area)
@@ -210,9 +210,9 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   eseguito da jar; **verificato a mano** il 2026-10-18. Specifica in
   `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
-- Nuovo modulo libreria `smart-simulator-raccordo-partitario-conti`
-  (sottosistema **Raccordo Partitario Conti**): classi scritte una tantum a
-  partire dagli YAML in `smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`
+- Nuovo modulo libreria `smart-simulator-account-raccordo-partitario`
+  (sottosistema **Account Raccordo Partitario**): classi scritte una tantum a
+  partire dagli YAML in `smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/`
   (che restano nell'app, non usati a build-time). Contratto REPLICA ORIGINALE
   (`@ReplicatesOriginalBehavior`). **Creato; tutti i 12 servizi sono "non
   implementati"**: rispondono HTTP 501 con l'envelope `ErrorResponse` dello

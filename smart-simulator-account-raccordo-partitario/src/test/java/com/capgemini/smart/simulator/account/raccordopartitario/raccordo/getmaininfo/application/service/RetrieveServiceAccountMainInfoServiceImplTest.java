@@ -1,9 +1,9 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.getmaininfo.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.getmaininfo.application.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
 import org.junit.jupiter.api.Test;
 
 class RetrieveServiceAccountMainInfoServiceImplTest {

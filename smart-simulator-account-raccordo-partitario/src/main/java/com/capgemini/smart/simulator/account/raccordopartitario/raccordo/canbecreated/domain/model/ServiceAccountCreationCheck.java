@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.ServiceAccountPreCreationData;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.RequestHeader;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.ServiceAccountPreCreationData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.RequestHeader;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.ServiceAccountExtendedKey;
 import java.util.List;
 import java.util.Map;
 

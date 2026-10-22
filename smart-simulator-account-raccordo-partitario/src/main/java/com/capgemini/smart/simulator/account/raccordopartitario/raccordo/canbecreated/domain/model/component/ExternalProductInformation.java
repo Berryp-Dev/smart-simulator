@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component;
 
 import java.util.List;
 

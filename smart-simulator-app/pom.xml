@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>com.capgemini.smart.simulator</groupId>
-            <artifactId>smart-simulator-raccordo-partitario-conti</artifactId>
+            <artifactId>smart-simulator-account-raccordo-partitario</artifactId>
             <version>${project.version}</version>
         </dependency>
 

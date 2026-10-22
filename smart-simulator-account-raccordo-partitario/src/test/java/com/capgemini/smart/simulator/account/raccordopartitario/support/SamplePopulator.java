@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.support;
+package com.capgemini.smart.simulator.account.raccordopartitario.support;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

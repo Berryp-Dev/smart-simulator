@@ -56,18 +56,18 @@ smart-simulator/
 │       │                              adapter/out/classpath legge il PDF)
 │       └── resources/document-viewer-config.yml   (products-folder: pdf/static)
 │           pdf/static/                    (i PDF, <productCode>.pdf)
-└── smart-simulator-raccordo-partitario-conti/   (sottosistema Raccordo Partitario
-    │                                             Conti, libreria; tutti i servizi
+└── smart-simulator-account-raccordo-partitario/   (sottosistema Account Raccordo
+    │                                             Partitario, libreria; tutti i servizi
     │                                             "non implementati", HTTP 501)
-    └── src/main/java/com/capgemini/smart/simulator/raccordopartitario/conti/
+    └── src/main/java/com/capgemini/smart/simulator/account/raccordopartitario/
         ├── common/               (ServiceNotImplementedException, advice 501, ErrorResponse)
         └── raccordo/             (area, 12 API = 12 operazioni degli YAML)
             ├── common/           (DTO e modelli condivisi tra le API dell'area)
             └── <api>/            (struttura esagonale completa, senza port/out)
 ```
 
-Il sottosistema **Raccordo Partitario Conti** è una REPLICA ORIGINALE dei
-contratti OpenAPI in `smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`
+Il sottosistema **Account Raccordo Partitario** è una REPLICA ORIGINALE dei
+contratti OpenAPI in `smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/`
 (gli YAML restano nell'app, non sono copiati né generati a build-time: le
 classi sono scritte a mano). Al momento **tutti i servizi rispondono HTTP 501**
 (non implementati); l'implementazione dei singoli servizi arriverà in interventi

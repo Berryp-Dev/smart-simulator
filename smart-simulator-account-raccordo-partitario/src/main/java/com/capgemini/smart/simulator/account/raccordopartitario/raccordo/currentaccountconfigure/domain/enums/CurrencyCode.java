@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.enums;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.enums;
 
 /**
  * Enum di dominio gemello di {@code Currency} (DTO REST): le costanti hanno nomi identici.

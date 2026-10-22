@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.activate.domain.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.activate.domain.model;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component.AdditionalAttributeItem;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component.AdditionalAttributeItem;
 import java.util.List;
 
 /**

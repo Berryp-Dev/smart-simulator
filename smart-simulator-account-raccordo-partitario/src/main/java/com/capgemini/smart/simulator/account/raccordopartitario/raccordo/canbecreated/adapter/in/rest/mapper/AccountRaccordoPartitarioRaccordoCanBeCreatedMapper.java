@@ -1,31 +1,31 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.mapper;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.mapper;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedResponse;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.enums.SimpleProductNdgNature;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedRequestPayload;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedResult;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.ExternalProdInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.ExternalProdInfoProdAttr;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProduct;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProductNdgInfo;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.CreationCheckOutcome;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.ExternalProductAttribute;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.ExternalProductInformation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.PreCreationNdgInformation;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.model.component.ServiceAccountPreCreationData;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.adapter.in.rest.mapper.RaccordoPartitarioContiRaccordoCommonMapper;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedRequest;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.CanBeCreatedResponse;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.enums.SimpleProductNdgNature;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedRequestPayload;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.CanBeCreatedResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.ExternalProdInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.ExternalProdInfoProdAttr;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProduct;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.adapter.in.rest.dto.model.SimpleProductNdgInfo;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheck;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.ServiceAccountCreationCheckResult;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.CreationCheckOutcome;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.ExternalProductAttribute;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.ExternalProductInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.PreCreationNdgInformation;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.model.component.ServiceAccountPreCreationData;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.adapter.in.rest.mapper.AccountRaccordoPartitarioRaccordoCommonMapper;
 
 /**
  * Mapping DTO <-> dominio dell'API canBeCreated.
  * Null-safe e senza validazione: un campo assente resta null. Gli enum sono convertiti
  * con valueOf sul nome della costante (mai switch).
  */
-public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
+public final class AccountRaccordoPartitarioRaccordoCanBeCreatedMapper {
 
-    private RaccordoPartitarioContiRaccordoCanBeCreatedMapper() {
+    private AccountRaccordoPartitarioRaccordoCanBeCreatedMapper() {
     }
 
     public static ServiceAccountCreationCheck mapToDomain(CanBeCreatedRequest dto) {
@@ -34,10 +34,10 @@ public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
         }
         CanBeCreatedRequestPayload payload = dto.getPayload();
         return new ServiceAccountCreationCheck(
-                RaccordoPartitarioContiRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapHeaderToDomain(dto.getHeader()),
                 payload == null ? null : payload.getAdditionalUserData(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapSrvAcntExtKeyToDomain(payload == null ? null : payload.getSettlementSrvActn()),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapList(payload == null ? null : payload.getSrvActnPreDatas(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper::mapSimpleProductToDomain));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapSrvAcntExtKeyToDomain(payload == null ? null : payload.getSettlementSrvActn()),
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapList(payload == null ? null : payload.getSrvActnPreDatas(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper::mapSimpleProductToDomain));
     }
 
     public static CanBeCreatedResponse mapToDtoResp(ServiceAccountCreationCheckResult domain) {
@@ -45,7 +45,7 @@ public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
             return null;
         }
         CanBeCreatedResponse dto = new CanBeCreatedResponse();
-        dto.setResults(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.results(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper::mapCanBeCreatedResultToDto));
+        dto.setResults(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.results(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper::mapCanBeCreatedResultToDto));
         return dto;
     }
 
@@ -103,7 +103,7 @@ public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
         }
         return new ExternalProductInformation(
                 dto.getProdExtKey(),
-                RaccordoPartitarioContiRaccordoCommonMapper.mapList(dto.getProdAttrs(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper::mapExternalProdInfoProdAttrToDomain));
+                AccountRaccordoPartitarioRaccordoCommonMapper.mapList(dto.getProdAttrs(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper::mapExternalProdInfoProdAttrToDomain));
     }
 
     public static ExternalProdInfo mapExternalProdInfoToDto(ExternalProductInformation domain) {
@@ -112,7 +112,7 @@ public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
         }
         ExternalProdInfo dto = new ExternalProdInfo();
         dto.setProdExtKey(domain.prodExtKey());
-        dto.setProdAttrs(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.prodAttrs(), RaccordoPartitarioContiRaccordoCanBeCreatedMapper::mapExternalProdInfoProdAttrToDto));
+        dto.setProdAttrs(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.prodAttrs(), AccountRaccordoPartitarioRaccordoCanBeCreatedMapper::mapExternalProdInfoProdAttrToDto));
         return dto;
     }
 
@@ -144,15 +144,15 @@ public final class RaccordoPartitarioContiRaccordoCanBeCreatedMapper {
         dto.setCanBeCreated(domain.canBeCreated());
         dto.setMotivationCode(domain.motivationCode());
         dto.setMotivationDescription(domain.motivationDescription());
-        dto.setAdditionalInfo(RaccordoPartitarioContiRaccordoCommonMapper.mapList(domain.additionalInfo(), RaccordoPartitarioContiRaccordoCommonMapper::mapAdditionalAttributeToDto));
+        dto.setAdditionalInfo(AccountRaccordoPartitarioRaccordoCommonMapper.mapList(domain.additionalInfo(), AccountRaccordoPartitarioRaccordoCommonMapper::mapAdditionalAttributeToDto));
         return dto;
     }
 
-    public static com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.enums.NdgNatureCode mapSimpleProductNdgNatureToDomain(SimpleProductNdgNature dto) {
-        return dto == null ? null : com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.enums.NdgNatureCode.valueOf(dto.name());
+    public static com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.enums.NdgNatureCode mapSimpleProductNdgNatureToDomain(SimpleProductNdgNature dto) {
+        return dto == null ? null : com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.enums.NdgNatureCode.valueOf(dto.name());
     }
 
-    public static SimpleProductNdgNature mapSimpleProductNdgNatureToDto(com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.canbecreated.domain.enums.NdgNatureCode domain) {
+    public static SimpleProductNdgNature mapSimpleProductNdgNatureToDto(com.capgemini.smart.simulator.account.raccordopartitario.raccordo.canbecreated.domain.enums.NdgNatureCode domain) {
         return domain == null ? null : SimpleProductNdgNature.valueOf(domain.name());
     }
 }

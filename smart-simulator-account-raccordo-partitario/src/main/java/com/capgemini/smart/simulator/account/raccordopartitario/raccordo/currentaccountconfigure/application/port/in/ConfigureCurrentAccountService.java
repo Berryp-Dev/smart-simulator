@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.application.port.in;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.application.port.in;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
 
 /**
  * Driving port dell'API CurrentAccountConfigure.

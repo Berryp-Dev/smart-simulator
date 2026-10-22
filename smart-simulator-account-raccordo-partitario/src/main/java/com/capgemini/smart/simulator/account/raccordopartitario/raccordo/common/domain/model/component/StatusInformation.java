@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.model.component;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.enums.ServiceAccountStatusCode;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.common.domain.enums.ServiceAccountStatusCode;
 import java.time.OffsetDateTime;
 
 /**

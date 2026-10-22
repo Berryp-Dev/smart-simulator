@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.application.port.in.ConfigureCurrentAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.application.port.in.ConfigureCurrentAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.CurrentAccountConfiguration;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.model.component;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.model.component;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.currentaccountconfigure.domain.enums.CurrencyCode;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.currentaccountconfigure.domain.enums.CurrencyCode;
 import java.time.OffsetDateTime;
 import java.util.List;
 

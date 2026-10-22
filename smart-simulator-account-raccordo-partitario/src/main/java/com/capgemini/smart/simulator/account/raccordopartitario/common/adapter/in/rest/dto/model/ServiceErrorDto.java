@@ -1,4 +1,4 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.dto.model;
+package com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

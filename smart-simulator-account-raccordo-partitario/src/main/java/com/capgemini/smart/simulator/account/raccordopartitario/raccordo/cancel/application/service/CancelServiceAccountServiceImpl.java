@@ -1,8 +1,8 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.application.service;
+package com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.application.service;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.domain.exception.ServiceNotImplementedException;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.application.port.in.CancelServiceAccountService;
-import com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.cancel.domain.model.ServiceAccountCancellation;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.domain.exception.ServiceNotImplementedException;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.application.port.in.CancelServiceAccountService;
+import com.capgemini.smart.simulator.account.raccordopartitario.raccordo.cancel.domain.model.ServiceAccountCancellation;
 import org.springframework.stereotype.Service;
 
 /**

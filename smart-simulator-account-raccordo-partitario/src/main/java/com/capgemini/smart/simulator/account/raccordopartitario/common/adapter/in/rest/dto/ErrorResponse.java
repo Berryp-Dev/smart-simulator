@@ -1,6 +1,6 @@
-package com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.dto;
+package com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.dto;
 
-import com.capgemini.smart.simulator.raccordopartitario.conti.common.adapter.in.rest.dto.model.ServiceErrorDto;
+import com.capgemini.smart.simulator.account.raccordopartitario.common.adapter.in.rest.dto.model.ServiceErrorDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import lombok.Data;
