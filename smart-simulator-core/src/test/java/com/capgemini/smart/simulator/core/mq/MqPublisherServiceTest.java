@@ -29,7 +29,7 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 class MqPublisherServiceTest {
 
-    private static final String QUEUE = "DEV.QUEUE.2";
+    private static final String QUEUE = "DEV.QUEUE.SIMULATOR";
     private static final String XML = "<InvioAggiornamentoStato><IdPratica>123</IdPratica></InvioAggiornamentoStato>";
 
     @Mock

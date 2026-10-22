@@ -194,7 +194,7 @@ class RestLoggingFilterTest {
 
         @PostMapping(value = "/mq", produces = MediaType.APPLICATION_JSON_VALUE)
         Payload mq(@RequestBody Payload payload) {
-            mqPublisherService.sendRawText("DEV.QUEUE.2", "<xml>" + payload.name() + "</xml>");
+            mqPublisherService.sendRawText("DEV.QUEUE.SIMULATOR", "<xml>" + payload.name() + "</xml>");
             return payload;
         }
 

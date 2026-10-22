@@ -50,7 +50,7 @@ public class OpenApiConfiguration {
         .description("Unico modulo avviabile del progetto: espone in un solo processo tutti\r\n"
         		+ "        i sottosistemi simulati (core + ogni modulo sottosistema).")
         .summary("Simulatore di sottosistemi esterni")
-        .version("1.2.1")
+        .version("1.3.0")
         .contact(contact)
         .license(new License()
           .name("Capgemini")
@@ -65,8 +65,9 @@ public class OpenApiConfiguration {
     Map < String, Object > result = new HashMap < > ();
 
     List < Changelog > changelogs = List.of(
-    	 release_1_2_1(),	
-       release_1_2_0(),
+    		release_1_3_0(),
+    		release_1_2_1(),	
+    		release_1_2_0(),
     		release_1_1_0(),
     		release_1_0_0()
     		);
@@ -124,6 +125,19 @@ public class OpenApiConfiguration {
   // =========================================================================
   // CHANGELOG RELEASES
   // =========================================================================
+  private static Changelog release_1_3_0() {
+
+	  return Changelog.builder().withVersion(Version.of(1, 3, 0)).withDate(LocalDate.of(2026, 10, 21)).withChanges(
+	  ChangeLogDetail.builder()
+
+	  .withEndpoints(
+	  ChangeSection.builder()
+
+	  .withModified(Map.of("/document-viewer/document/getGenerated", List.of("endpoint implementation updated"))).build())
+
+	  .build()).build();
+	}
+  
   private static Changelog release_1_2_1() {
 
   return Changelog.builder().withVersion(Version.of(1, 2, 1)).withDate(LocalDate.of(2026, 10, 21)).withChanges(

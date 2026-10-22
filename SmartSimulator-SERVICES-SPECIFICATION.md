@@ -381,3 +381,100 @@ modulo in `src/main/resources`, importato da `application.yml` dell'app con
 La chiave è unica perché la futura funzione `dynamic` avrà una propria chiave
 (`pdf/dynamic/`, non ancora creata).
 
+---
+
+### Servizio: getGenerated
+
+**Stato**: implementato (non ci sono ancora documenti generati reali: la
+port in uscita restituisce sempre lo stesso PDF generico).
+
+**Struttura**: sottosistema `document-viewer` → area `document` (la stessa di
+`getStatic`) → API `getgenerated`, esagono completo e autosufficiente.
+Package radice `com.capgemini.smart.simulator.documentviewer.document.getgenerated`.
+Nessuna deroga `@ReplicatesOriginalBehavior`.
+
+**Endpoint**: `GET /document-viewer/document/getGenerated?appName=...&trackingId=...&callUnseal=...&bnlToken=...`
+(con context-path: `/smart-simulator/document-viewer/document/getGenerated`).
+Classe `DocumentViewerDocumentGetGeneratedRestResource` (`@Tag(name = "Document Viewer / Document")`),
+metodo `getGenerated`; l'`operationId` Swagger (`getGenerated`) coincide con il
+metodo e con l'ultimo segmento del path.
+
+**Parametri** (tutti query param, `required = false` a livello Spring: la
+presenza è controllata dal validator, non da Spring):
+
+| Parametro | Tipo contratto | Tipo a livello REST/dominio | Note |
+|---|---|---|---|
+| `appName` | String | String | solo controllo di presenza |
+| `trackingId` | UUID | String | presenza + formato UUID controllati dal validator (non binding Spring su `UUID`, per restare nel percorso di errore standard del progetto invece di un 500 non gestito) |
+| `callUnseal` | String | String | solo controllo di presenza |
+| `bnlToken` | String | String | solo controllo di presenza; decriptato lato service |
+
+**Flusso**: `RestResource` → mapper (`DocumentViewerDocumentGetGeneratedMapper`,
+query param → `GetGeneratedDocumentCriteria`, null-safe, senza validare) →
+`RetrieveGetGeneratedDocumentService.getGeneratedDocument` → il service
+(`RetrieveGetGeneratedDocumentServiceImpl`) chiama prima
+`RetrieveGetGeneratedDocumentValidator` (se non valido lancia
+`ValidationException` del core), poi `DecryptBnlTokenPort` (decripta
+`bnlToken` restituendo l'id del documento), poi `LoadGeneratedDocumentPort`
+con l'id decriptato; se la port non trova il documento lancia
+`DocumentNotFoundException`. La port restituisce `Optional<GeneratedDocument>`
+(documentId, content `byte[]`).
+
+**Validazione** (`RetrieveGetGeneratedDocumentValidator`, raccoglie tutti gli
+errori; campo = nome del contratto REST):
+
+1. `appName` presente: `Campo obbligatorio`;
+2. `trackingId` presente: `Campo obbligatorio`; se presente ma non è un UUID
+   valido (`UUID.fromString`): `Valore non valido: formato UUID atteso`;
+3. `callUnseal` presente: `Campo obbligatorio`;
+4. `bnlToken` presente: `Campo obbligatorio`.
+
+**Logica di business**: dopo validazione positiva, il service decripta
+`bnlToken` tramite `DecryptBnlTokenPort` → adapter `BnlTokenDecryptionAdapter`
+(`adapter/out/decryption`), che chiama `URLEncUtils.decodeAES(bnlToken, key)`
+della libreria `com.capgemini:encryption` con la chiave AES configurata
+(`token-decryption-key`). Il valore decriptato identifica l'id del documento
+da recuperare; al momento non esistono documenti reali, quindi
+`LoadGeneratedDocumentPort` (adapter `GeneratedDocumentClasspathAdapter`,
+`adapter/out/classpath`) ignora l'id e restituisce sempre lo stesso PDF
+generico, letto dal classpath del modulo in
+`<generated-products-folder>/<default-generated-name>`.
+
+**Risposta**:
+
+| Esito | Status | Body |
+|---|---|---|
+| Successo | 200 | contenuto del PDF; `Content-Type: application/pdf`; `Content-Disposition: inline; filename="<documentId>.pdf"` |
+| Validazione fallita | 400 | `ApiError` con `errors` (`GlobalExceptionHandler` del core) |
+| Documento non trovato | 404 | `ApiError` con un solo errore `field: null`, `message: Documento non trovato` |
+
+Il 404 è gestito da un advice limitato alla RestResource
+(`DocumentViewerDocumentGetGeneratedExceptionHandler`,
+`@RestControllerAdvice(assignableTypes = DocumentViewerDocumentGetGeneratedRestResource.class)`
+con `@Order(HIGHEST_PRECEDENCE)`, stessa forma del corrispondente advice di
+`getStatic`), riusa `DocumentNotFoundException` (`common` del modulo).
+
+**Dipendenza aggiunta** (pom di `smart-simulator-document-viewer`):
+
+```xml
+<dependency>
+    <groupId>com.capgemini</groupId>
+    <artifactId>encryption</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+**Provenienza del PDF generico**: in tutti gli ambienti sta nelle risorse del
+classpath del modulo, in `src/main/resources/pdf/generated/<default-generated-name>`,
+e finisce nel jar: per sostituirlo si rifà il build. Nessun file di
+configurazione per ambiente.
+
+**Configurazione** (aggiunta a `DocumentViewerProperties` / `document-viewer-config.yml`,
+tutti i valori obbligatori con validazione fail-fast):
+
+| File | Chiave | Valore |
+|---|---|---|
+| `document-viewer-config.yml` | `generated-products-folder` | `pdf/generated` |
+| `document-viewer-config.yml` | `default-generated-name` | `GENERATED.PDF` |
+| `document-viewer-config.yml` | `token-decryption-key` | `000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f` |
+

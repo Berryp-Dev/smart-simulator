@@ -40,7 +40,6 @@ logging:
     # Aggiunge l'id di richiesta (MDC, valorizzato da RestLoggingFilter del core)
     # al livello di log, senza toccare il resto del pattern di Spring Boot.
     level: "%5p [%X{requestId:-}]"
-
 springdoc:
   swagger-ui:
     tags-sorter: alpha        # i tag compaiono in ordine alfabetico: i moduli restano raggruppati
