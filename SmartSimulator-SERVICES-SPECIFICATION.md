@@ -478,3 +478,52 @@ tutti i valori obbligatori con validazione fail-fast):
 | `document-viewer-config.yml` | `default-generated-name` | `GENERATED.PDF` |
 | `document-viewer-config.yml` | `token-decryption-key` | `000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f` |
 
+
+---
+
+## Sottosistema: Raccordo Partitario Conti
+
+**Comportamento**: REPLICA ORIGINALE (sistema: Raccordo Partitario Conti, rif: gli YAML OpenAPI in
+`smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`:
+`raccordopartitario_sales.yaml`, `raccordopartitario_sales_currentaccounts_configure.yaml` e i componenti
+comuni `components-v1.2.2.yaml`). Il contratto esterno (path, metodo, request/response, nomi dei campi JSON,
+enum, status code, envelope degli errori) segue lo YAML al 100%; gli standard di progetto non si applicano al
+contratto ma solo all'architettura interna. Ogni `RestResource` è annotato con
+`@ReplicatesOriginalBehavior(system = "Raccordo Partitario Conti", reference = "<file YAML>")`.
+
+**Struttura**: modulo `smart-simulator-raccordo-partitario-conti`, package radice
+`com.capgemini.smart.simulator.raccordopartitario.conti`, area unica `raccordo` con una API per operazione
+(`<area>/<api>`: `canbecreated`, `create`, `reserve`, `activate`, `getmaininfo`, `getexternalkey`,
+`setsettlementserviceaccountkey`, `getothsrvactns`, `getadditionalattributes`, `setfinalndg`, `cancel`,
+`currentaccountconfigure`). Tag Swagger: `Raccordo Partitario Conti / Raccordo`. Nessuna persistenza, nessun
+MQ/Kafka, nessun file di configurazione dedicato.
+
+**Stato**: tutti i servizi sono **non implementati**. Ogni `ServiceImpl` lancia subito
+`ServiceNotImplementedException` (dominio, `common/domain/exception`), senza validazione né logica; nessuna
+annotazione di bean validation sui DTO (la validazione sarà aggiunta con l'implementazione di ciascun servizio).
+
+**Risposta 501** (da `Error501` dello YAML): `Content-Type: application/json`, body
+`{"mainError":{"errorMessage":"Servizio non implementato: <operationId>"}}` (`ErrorResponse`/`ServiceErrorDto`;
+`errorCode`, `technicalDescription` ed `errorList` omessi perché lo YAML non definisce valori per questo caso).
+Lo YAML non prevede header di response. La risposta è prodotta da un `@RestControllerAdvice` limitato al package
+del modulo (`RaccordoPartitarioContiServiceNotImplementedExceptionHandler`, `@Order(HIGHEST_PRECEDENCE)`).
+Gli altri percorsi di errore (JSON malformato, valore enum non ammesso, path inesistente, metodo non supportato,
+ecc.) restano del `GlobalExceptionHandler` del core.
+
+| operationId | Endpoint | YAML | Status di successo (YAML) | Stato |
+|---|---|---|---|---|
+| `canBeCreated` | POST `/smartcatalog/raccordo/can-be-created` | `raccordopartitario_sales.yaml` | 201 | non implementato (501) |
+| `create` | POST `/smartengine/raccordo/create` | `raccordopartitario_sales.yaml` | 201 | non implementato (501) |
+| `reserve` | POST `/smartengine/raccordo/reserve` | `raccordopartitario_sales.yaml` | 200 | non implementato (501) |
+| `activate` | POST `/smartengine/raccordo/activate` | `raccordopartitario_sales.yaml` | 201 | non implementato (501) |
+| `getMainInfo` | POST `/smartengine/raccordo/getmaininfo` | `raccordopartitario_sales.yaml` | 200 | non implementato (501) |
+| `getExternalKey` | POST `/smartengine/raccordo/getexternalkey` | `raccordopartitario_sales.yaml` | 200 | non implementato (501) |
+| `setSettlementServiceAccountKey` | POST `/smartengine/raccordo/setsettlementserviceaccountkey` | `raccordopartitario_sales.yaml` | 201 (senza body) | non implementato (501) |
+| `getOthSrvActns` | POST `/smartengine/raccordo/getothsrvactns` | `raccordopartitario_sales.yaml` | 200 | non implementato (501) |
+| `getAdditionalAttributes` | POST `/smartengine/raccordo/getadditionalattributes` | `raccordopartitario_sales.yaml` | 200 | non implementato (501) |
+| `setFinalNdg` | POST `/smartengine/raccordo/setfinalndg` | `raccordopartitario_sales.yaml` | 201 (senza body) | non implementato (501) |
+| `cancel` | POST `/smartengine/raccordo/cancel` | `raccordopartitario_sales.yaml` | 201 (senza body) | non implementato (501) |
+| `CurrentAccountConfigure` | POST `/ui-app/raccordo/sales/current-accounts/configure` | `raccordopartitario_sales_currentaccounts_configure.yaml` | 204 (senza body) | non implementato (501) |
+
+Tutte le operazioni accettano un body JSON (`application/json`); le request di `raccordopartitario_sales.yaml`
+hanno la forma `{ "header": {...}, "payload": {...} }` (`header` è un oggetto del body, non un header HTTP).

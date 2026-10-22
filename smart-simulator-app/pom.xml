@@ -40,6 +40,11 @@
             <artifactId>smart-simulator-document-viewer</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.capgemini.smart.simulator</groupId>
+            <artifactId>smart-simulator-raccordo-partitario-conti</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

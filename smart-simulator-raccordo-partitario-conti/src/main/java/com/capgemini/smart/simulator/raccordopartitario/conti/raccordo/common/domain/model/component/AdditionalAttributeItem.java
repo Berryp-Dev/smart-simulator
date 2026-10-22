@@ -1,0 +1,10 @@
+package com.capgemini.smart.simulator.raccordopartitario.conti.raccordo.common.domain.model.component;
+
+/**
+ * Modello di dominio (value object annidato) corrispondente allo schema YAML {@code AdditionalAttribute}.
+ * Separato dal DTO REST: nessuna dipendenza da framework.
+ */
+public record AdditionalAttributeItem(
+        String key,
+        String value) {
+}

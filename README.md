@@ -46,17 +46,32 @@ smart-simulator/
 │       └── resources/paperless-config.yml   (valori comuni del sottosistema)
 │           paperless-config-dev.yml, paperless-config-sit.yml
 │                                            (broker/code MQ per ambiente)
-└── smart-simulator-document-viewer/   (sottosistema Document Viewer, libreria)
-    └── src/main/
-        ├── java/com/capgemini/smart/simulator/documentviewer/
-        │   ├── config/               (DocumentViewerProperties + wiring)
-        │   ├── common/               (domain/exception: DocumentNotFoundException)
-        │   └── document/             (area)
-        │       └── getstatic/        (API, struttura esagonale completa;
-        │                              adapter/out/classpath legge il PDF)
-        └── resources/document-viewer-config.yml   (products-folder: pdf/static)
-            pdf/static/                    (i PDF, <productCode>.pdf)
+├── smart-simulator-document-viewer/   (sottosistema Document Viewer, libreria)
+│   └── src/main/
+│       ├── java/com/capgemini/smart/simulator/documentviewer/
+│       │   ├── config/               (DocumentViewerProperties + wiring)
+│       │   ├── common/               (domain/exception: DocumentNotFoundException)
+│       │   └── document/             (area)
+│       │       └── getstatic/        (API, struttura esagonale completa;
+│       │                              adapter/out/classpath legge il PDF)
+│       └── resources/document-viewer-config.yml   (products-folder: pdf/static)
+│           pdf/static/                    (i PDF, <productCode>.pdf)
+└── smart-simulator-raccordo-partitario-conti/   (sottosistema Raccordo Partitario
+    │                                             Conti, libreria; tutti i servizi
+    │                                             "non implementati", HTTP 501)
+    └── src/main/java/com/capgemini/smart/simulator/raccordopartitario/conti/
+        ├── common/               (ServiceNotImplementedException, advice 501, ErrorResponse)
+        └── raccordo/             (area, 12 API = 12 operazioni degli YAML)
+            ├── common/           (DTO e modelli condivisi tra le API dell'area)
+            └── <api>/            (struttura esagonale completa, senza port/out)
 ```
+
+Il sottosistema **Raccordo Partitario Conti** è una REPLICA ORIGINALE dei
+contratti OpenAPI in `smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`
+(gli YAML restano nell'app, non sono copiati né generati a build-time: le
+classi sono scritte a mano). Al momento **tutti i servizi rispondono HTTP 501**
+(non implementati); l'implementazione dei singoli servizi arriverà in interventi
+successivi. Il modulo non ha configurazione propria né dipendenze da DB/MQ/Kafka.
 
 Un solo processo (`smart-simulator-app`) espone i servizi di tutti i
 sottosistemi, con un'unica Swagger UI. Core e sottosistemi sono solo

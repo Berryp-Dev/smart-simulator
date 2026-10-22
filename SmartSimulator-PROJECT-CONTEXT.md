@@ -81,16 +81,23 @@ smart-simulator/
 │       │   └── configure/           (API, struttura esagonale completa)
 │       └── document/                (area)
 │           └── signature/           (API, struttura esagonale completa)
-└── smart-simulator-document-viewer/  (modulo sottosistema, libreria)
-    ├── pom.xml                      (dipende da smart-simulator-core; surefire 3.2.5)
-    └── src/main/
-        ├── java/com/capgemini/smart/simulator/documentviewer/
-        │   ├── config/              (DocumentViewerProperties + wiring)
-        │   ├── common/              (domain/exception: DocumentNotFoundException)
-        │   └── document/            (area)
-        │       └── getstatic/       (API, struttura esagonale completa)
-        └── resources/document-viewer-config.yml  (products-folder: pdf/static)
-            pdf/static/                           (i PDF, <productCode>.pdf)
+├── smart-simulator-document-viewer/  (modulo sottosistema, libreria)
+│   ├── pom.xml                      (dipende da smart-simulator-core; surefire 3.2.5)
+│   └── src/main/
+│       ├── java/com/capgemini/smart/simulator/documentviewer/
+│       │   ├── config/              (DocumentViewerProperties + wiring)
+│       │   ├── common/              (domain/exception: DocumentNotFoundException)
+│       │   └── document/            (area)
+│       │       └── getstatic/       (API, struttura esagonale completa)
+│       └── resources/document-viewer-config.yml  (products-folder: pdf/static)
+│           pdf/static/                           (i PDF, <productCode>.pdf)
+└── smart-simulator-raccordo-partitario-conti/  (modulo sottosistema, libreria)
+    ├── pom.xml                      (dipende solo da smart-simulator-core; surefire 3.2.5)
+    └── src/main/java/com/capgemini/smart/simulator/raccordopartitario/conti/
+        ├── common/                  (ServiceNotImplementedException, advice 501, ErrorResponse)
+        └── raccordo/                (area)
+            ├── common/              (DTO e modelli condivisi tra le API dell'area)
+            └── <api>/               (12 API, esagono senza port/out)
 ```
 
 **Struttura (ristrutturazione eseguita e verificata)**:
@@ -203,7 +210,14 @@ Valori dell'ambiente `dev` (dopo la configurazione per ambiente, in
   eseguito da jar; **verificato a mano** il 2026-10-18. Specifica in
   `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
-Gli YAML OpenAPI in `smart-simulator-app/src/main/resources/openapi/account-raccordo-partitario/` restano nel repository in attesa della ripartenza del Raccordo; non sono usati dal codice.
+- Nuovo modulo libreria `smart-simulator-raccordo-partitario-conti`
+  (sottosistema **Raccordo Partitario Conti**): classi scritte una tantum a
+  partire dagli YAML in `smart-simulator-app/src/main/resources/openapi/raccordo-partitario-conti/`
+  (che restano nell'app, non usati a build-time). Contratto REPLICA ORIGINALE
+  (`@ReplicatesOriginalBehavior`). **Creato; tutti i 12 servizi sono "non
+  implementati"**: rispondono HTTP 501 con l'envelope `ErrorResponse` dello
+  YAML (`Error501`). Nessuna persistenza, nessun MQ/Kafka, nessun file di
+  configurazione dedicato. Specifica in `SmartSimulator-SERVICES-SPECIFICATION.md`.
 
 **Fatto:**
 - Skeleton multi-modulo Maven, modulo `smart-simulator-core` avviabile e
