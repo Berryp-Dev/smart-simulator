@@ -7,3 +7,9 @@ smart-simulator:
   document-viewer:
     # Cartella dei PDF del servizio getStatic, relativa alla radice del classpath
     products-folder: pdf/static
+    # Cartella del PDF generico simulato dal servizio getGenerated, relativa alla radice del classpath
+    generated-products-folder: pdf/generated
+    # Nome del PDF generico restituito da getGenerated (nessun documento reale ancora disponibile)
+    default-generated-name: GENERATED.PDF
+    # Chiave AES per la decriptazione di bnlToken (servizio getGenerated), tramite URLEncUtils.decodeAES
+    token-decryption-key: 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
